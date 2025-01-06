@@ -8,7 +8,12 @@ signal charge_spent
 
 @onready var spin_root = $spin_root
 @onready var arrow_g = $arrow_pointer
+@onready var dir_pointer = $dir_pointer
+
 @onready var wheel_sfx = $wheel_sfx
+
+# --- timers ---
+@onready var _dash_recharge = $_dash_recharge
 
 @export var data : WheelStats
 
@@ -17,10 +22,10 @@ var _input_vector : Vector2 = Vector2.ZERO
 var _move_speed : float = 10
 var _dash_speed : float = 0
 var _dash_max_speed : float = 50
-var rotation_speed : float = 10
+#var rotation_speed : float = 10
 
 var _dashing : bool = false
-var _dash_charges : int = 3
+var _dash_charges : int 
 #var _dash_timer : float = 0.5
 var _dir : Vector3 = Vector3.ZERO
 
@@ -32,6 +37,11 @@ var acceleration : Vector3 = Vector3.ZERO
 #var deceleration : float = 10
 
 func _ready():
+	if data:
+		_move_speed = data._movespeed
+		_dash_charges = data.dash_max_charge
+		_dash_recharge.wait_time = data.dash_cooldown
+		#charge_spent.emit(_dash_charges)
 	#charge_spent.emit(_dash_charges)
 	#if gui:
 		#gui.
@@ -43,7 +53,7 @@ func _ready():
 
 func _spinny():
 	if velocity == Vector3.ZERO: return
-	spin_root.rotation.y += rotation_speed * data.stability
+	spin_root.rotation.y += data.rot_speed * data.stability
 	#print("rot: " + str(spin_root.rotation.y) + "deg: " + str(arrow_g.rotation_degrees.y))
 	#if spin_root.get_rotation_degrees() < -90:
 		#spin_root.set_rotation_degrees(360)
@@ -53,6 +63,7 @@ func _spinny():
 	#if _dir.length() > 0:
 	#arrow_g.look_at(self.position + _dir, Vector3.UP)
 	#arrow_g.rotation.y = velocity.
+	safe_look_at(dir_pointer, self.position + _dir)
 	safe_look_at(arrow_g, self.position + velocity)
 
 func _physics_process(delta):
@@ -64,6 +75,7 @@ func _physics_process(delta):
 	_spinny()
 	#if !_dashing:
 	if velocity.length() < 18:
+		wheel_sfx.pitch_scale = 1 + randf_range(-0.25, 0.25)
 		velocity += acceleration * delta
 		#move_and_collide(velocity * delta)
 		move_and_slide()
@@ -74,12 +86,14 @@ func _physics_process(delta):
 			wheel_sfx.play()
 			wheel_sfx.pitch_scale += 0.2
 			#data.bump_sound.play()
-			velocity *= 0.8
-			velocity = velocity.bounce(col.get_normal())
+			velocity *= 0.6
+			velocity = velocity.bounce(col.get_normal()) * randf_range(0.9, 1.1)
 			
 			_dash_speed -= 10
 			if _dash_speed <= 20:
+				dir_pointer.show()
 				_dashing = false
+				
 			
 			print("dash speed " + str(_dash_speed))
 	#print("accel: " + str(acceleration))
@@ -90,7 +104,10 @@ func _input(_event):
 	if Input.is_action_just_pressed("Spin Dash") and _dash_charges > 0:#&& _can_dash:
 		_dash_speed = _dash_max_speed
 		_dashing = true
+		dir_pointer.hide()
 		_dash_charges -= 1
+		if _dash_recharge.is_stopped():
+			_dash_recharge.start()
 		charge_spent.emit(_dash_charges)
 		velocity = _dir * _dash_speed
 		#await(get_tree().create_timer())
@@ -136,3 +153,9 @@ func safe_look_at(node : Node3D, target : Vector3) -> void:
 	# Look at the target
 	if up != Vector3.ZERO:
 		node.look_at(target, up)
+
+
+func _on__dash_recharge_timeout():
+	if _dash_charges >= data.dash_max_charge: return  
+	_dash_charges += 1
+	charge_spent.emit(_dash_charges)

@@ -1,13 +1,12 @@
-[gd_scene load_steps=22 format=3 uid="uid://cau0atwkvl67f"]
+[gd_scene load_steps=20 format=3 uid="uid://cau0atwkvl67f"]
 
 [ext_resource type="Shader" path="res://shader/grain_palette.gdshader" id="1_cmux6"]
 [ext_resource type="PackedScene" uid="uid://x0c0k7wt1t8u" path="res://scenes/grindwheel.tscn" id="1_rhsjv"]
 [ext_resource type="Texture2D" uid="uid://cvbxjk0rh5p8k" path="res://sprite/gui/frame1.png" id="2_7qsjr"]
 [ext_resource type="Script" path="res://script/gui.gd" id="2_chc5c"]
 [ext_resource type="Texture2D" uid="uid://dg541j7g66tnq" path="res://sprite/gui/frame2.png" id="3_bmkgg"]
-[ext_resource type="AudioStream" uid="uid://w4jg2q3un5o3" path="res://audio/sfx/bounce.wav" id="4_qqrgs"]
 [ext_resource type="Shader" path="res://shader/aerosky.gdshader" id="5_h8hid"]
-[ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="5_m32wb"]
+[ext_resource type="PackedScene" uid="uid://dnp37a43gamo6" path="res://scenes/opponent_wheel.tscn" id="7_yvsme"]
 
 [sub_resource type="Gradient" id="Gradient_1l226"]
 
@@ -63,18 +62,6 @@ process_mode = 1
 [sub_resource type="Environment" id="Environment_co0df"]
 background_mode = 2
 sky = SubResource("Sky_en7ca")
-
-[sub_resource type="Resource" id="Resource_enpb8"]
-resource_local_to_scene = true
-script = ExtResource("5_m32wb")
-dash_cooldown = 8
-_movespeed = 10.0
-damage = 5
-spin = 100
-rot_speed = 10.0
-stability = 10
-dash_max_charge = 4
-bump_sound = ExtResource("4_qqrgs")
 
 [node name="mach_arena" type="Node3D"]
 
@@ -200,7 +187,9 @@ transform = Transform3D(-2.18557e-08, 0.866025, -0.5, 3.78552e-08, 0.5, 0.866025
 
 [node name="grindwheel" parent="." groups=["Player"] instance=ExtResource("1_rhsjv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 10)
-data = SubResource("Resource_enpb8")
+
+[node name="opponent_wheel" parent="." instance=ExtResource("7_yvsme")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7938, -11)
 
 [node name="gui" type="Control" parent="."]
 layout_mode = 3

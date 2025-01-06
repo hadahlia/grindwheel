@@ -13,8 +13,9 @@ config_version=5
 config/name="Psionika"
 config/description="gamey game game. mode 7 target snes like
 "
+run/main_scene="res://scenes/mach_arena.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
-run/max_fps=60
+run/max_fps=300
 config/icon="res://icon.svg"
 
 [autoload]
@@ -25,13 +26,10 @@ BulletPoolHandler="res://script/arena/bullet_pool_handler.gd"
 [debug]
 
 settings/stdout/print_fps=true
+settings/max_fps=300
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=540
-window/size/window_width_override=1280
-window/size/window_height_override=540
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 
