@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3 uid="uid://c2swmjfjeg741"]
+
+[ext_resource type="Script" path="res://script/arena/spin_world.gd" id="1_5splg"]
+[ext_resource type="PackedScene" uid="uid://d0h7icnxq26ol" path="res://scenes/proto/player.tscn" id="2_s0tis"]
+[ext_resource type="Script" path="res://script/arena/bullet_pool_handler.gd" id="3_hptki"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2llfl"]
+shading_mode = 2
+albedo_color = Color(0.517647, 0.188235, 1, 1)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tfvrm"]
+sky_top_color = Color(0.384314, 0.172549, 0.54902, 1)
+sky_horizon_color = Color(0.950166, 0.532451, 0.160094, 1)
+sky_energy_multiplier = 1.2
+ground_bottom_color = Color(0.117647, 0.168627, 0.337255, 1)
+ground_horizon_color = Color(0.950166, 0.532451, 0.160094, 1)
+ground_curve = 0.045948
+ground_energy_multiplier = 1.2
+
+[sub_resource type="Sky" id="Sky_p3vy4"]
+sky_material = SubResource("ProceduralSkyMaterial_tfvrm")
+process_mode = 3
+
+[sub_resource type="Environment" id="Environment_ban6w"]
+background_mode = 2
+sky = SubResource("Sky_p3vy4")
+
+[node name="psychoworld" type="Node3D"]
+
+[node name="world_core" type="Node3D" parent="."]
+transform = Transform3D(1, 5.96046e-08, 0, -5.96046e-08, 1, 0, 0, 0, 1, 0, 0, 0)
+rotation_edit_mode = 2
+script = ExtResource("1_5splg")
+
+[node name="mother" type="CSGCylinder3D" parent="world_core"]
+transform = Transform3D(0.97377, 9.94588e-09, 0.227535, 0.227535, -4.25648e-08, -0.97377, 0, 1, -4.37114e-08, 0, 0, -53)
+radius = 8.0
+height = 132.0
+sides = 16
+smooth_faces = false
+material = SubResource("StandardMaterial3D_2llfl")
+
+[node name="sun" type="DirectionalLight3D" parent="world_core"]
+transform = Transform3D(-0.183013, -0.707107, 0.683013, -0.183013, 0.707107, 0.683013, -0.965926, -1.54304e-08, -0.258819, 46, 41, 0)
+light_color = Color(0.917647, 0.486275, 1, 1)
+
+[node name="sun2" type="DirectionalLight3D" parent="world_core"]
+transform = Transform3D(0.129409, 0.866025, -0.482963, 0.224144, -0.5, -0.836516, -0.965926, -5.80598e-07, -0.258819, -34, -20, 0)
+light_color = Color(0.27451, 0.384314, 0.835294, 1)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="world_core"]
+environment = SubResource("Environment_ban6w")
+
+[node name="cammy" type="Camera3D" parent="."]
+transform = Transform3D(1, 5.96046e-08, 0, -5.96046e-08, 1, 0, 0, 0, 1, 6.55651e-07, 11, 0)
+fov = 80.0
+far = 3333.0
+
+[node name="player" parent="." instance=ExtResource("2_s0tis")]
+transform = Transform3D(1, 5.96046e-08, 0, -5.96046e-08, 1, 0, 0, 0, 1, 5.96046e-07, 10, -2.45827)
+
+[node name="bullet_pool" type="Node3D" parent="."]
+script = ExtResource("3_hptki")

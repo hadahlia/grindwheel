@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://d5d3650m811r"
+path="res://.godot/imported/JDSherbert - Ultimate UI SFX Pack - Cancel - 2.mp3-ab02795a093b5e9fbdfe584b7429dfe8.mp3str"
+
+[deps]
+
+source_file="res://audio/sfx/JDSherbert - Ultimate UI SFX Pack - Cancel - 2.mp3"
+dest_files=["res://.godot/imported/JDSherbert - Ultimate UI SFX Pack - Cancel - 2.mp3-ab02795a093b5e9fbdfe584b7429dfe8.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

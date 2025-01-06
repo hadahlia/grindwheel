@@ -1,0 +1,20 @@
+i cant guarantee ive used all of these in the project or that ive been perfect at keeping track of all cc0 asset sources, it is simply to keep track of where i have downloaded assets from
+
+- sky textures
+
+https://free-game-assets.itch.io/free-sky-with-clouds-background-pixel-art-set
+
+https://free-game-assets.itch.io/ocean-and-clouds-free-pixel-art-backgrounds
+
+https://kenney.nl/assets/crosshair-pack
+
+
+-- sounds
+
+https://yourpalrob.itch.io/must-have-horror-sound-effects
+
+https://jdsherbert.itch.io/ultimate-ui-sfx-pack
+
+https://f8studios.itch.io/snakes-authentic-gun-sounds
+
+https://godotshaders.com/shader/stylized-cloud-as-texture/

@@ -1,0 +1,194 @@
+[gd_scene load_steps=15 format=3 uid="uid://cau0atwkvl67f"]
+
+[ext_resource type="PackedScene" uid="uid://x0c0k7wt1t8u" path="res://scenes/grindwheel.tscn" id="1_rhsjv"]
+[ext_resource type="Texture2D" uid="uid://cvbxjk0rh5p8k" path="res://sprite/gui/frame1.png" id="2_7qsjr"]
+[ext_resource type="Script" path="res://script/gui.gd" id="2_chc5c"]
+[ext_resource type="Texture2D" uid="uid://dg541j7g66tnq" path="res://sprite/gui/frame2.png" id="3_bmkgg"]
+[ext_resource type="Shader" path="res://shader/aerosky.gdshader" id="5_h8hid"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ed2co"]
+sky_top_color = Color(0.44825, 0.55, 0.385, 1)
+sky_horizon_color = Color(0.4087, 0.67, 0.63516, 1)
+ground_bottom_color = Color(0.2, 0.101667, 0.1, 1)
+ground_horizon_color = Color(0.407843, 0.670588, 0.635294, 1)
+
+[sub_resource type="Sky" id="Sky_en7ca"]
+sky_material = SubResource("ProceduralSkyMaterial_ed2co")
+process_mode = 1
+
+[sub_resource type="Environment" id="Environment_co0df"]
+background_mode = 2
+sky = SubResource("Sky_en7ca")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_734qv"]
+albedo_color = Color(0.59, 0.418703, 0.1947, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_004yl"]
+albedo_color = Color(0.129412, 0.0431373, 0.0470588, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0dlb1"]
+noise_type = 3
+frequency = 0.0088
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4vxvk"]
+seamless = true
+noise = SubResource("FastNoiseLite_0dlb1")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lskyi"]
+render_priority = 0
+shader = ExtResource("5_h8hid")
+shader_parameter/use_custom_texture = 0.0
+shader_parameter/clouds_speed = 2.99
+shader_parameter/clouds_direction = 0.187654
+shader_parameter/clouds_scale = 2.88
+shader_parameter/clouds_cutoff = 0.3
+shader_parameter/clouds_fuzziness = 0.46
+shader_parameter/clouds_color = Color(0.38, 0.0418, 0.0474366, 1)
+shader_parameter/edge_fade = 0.31
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_4vxvk")
+
+[sub_resource type="QuadMesh" id="QuadMesh_tnb8p"]
+material = SubResource("ShaderMaterial_lskyi")
+size = Vector2(200, 200)
+
+[node name="mach_arena" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_co0df")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 34.5001, 11.7996)
+fov = 60.0
+size = 40.0
+
+[node name="grindwheel" parent="." instance=ExtResource("1_rhsjv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-2.18557e-08, 0.866025, -0.5, 3.78552e-08, 0.5, 0.866025, 1, 0, -4.37114e-08, -32, 0, 0)
+
+[node name="gui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_chc5c")
+
+[node name="Label" type="Label" parent="gui"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_right = 40.0
+offset_bottom = 11.5
+grow_vertical = 2
+text = "test
+"
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="gui"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -232.0
+offset_top = -116.0
+offset_right = -104.0
+offset_bottom = -52.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(1.83675, 1.83675)
+value = 100.0
+texture_under = ExtResource("2_7qsjr")
+texture_progress = ExtResource("3_bmkgg")
+
+[node name="map_geo" type="Node3D" parent="."]
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="map_geo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+use_collision = true
+radius = 16.0
+sides = 12
+material = SubResource("StandardMaterial3D_734qv")
+
+[node name="wall0" type="CSGBox3D" parent="map_geo"]
+transform = Transform3D(0.965167, 0, -0.261633, 0, 1, 0, 0.261633, 0, 0.965167, -15.2718, 2, -3.99547)
+use_collision = true
+size = Vector3(1, 5, 9.23267)
+material = SubResource("StandardMaterial3D_004yl")
+
+[node name="wall1" type="CSGBox3D" parent="map_geo"]
+transform = Transform3D(0.705043, 0, -0.709165, 0, 1, 0, 0.709165, 0, 0.705043, -10.9402, 2, -11.5396)
+use_collision = true
+size = Vector3(1, 5, 9.23267)
+material = SubResource("StandardMaterial3D_004yl")
+
+[node name="wall2" type="CSGBox3D" parent="map_geo"]
+transform = Transform3D(0.281973, 0, -0.959422, 0, 1, 0, 0.959422, 0, 0.281973, -4.07302, 2, -15.3227)
+use_collision = true
+size = Vector3(1, 5, 9.23267)
+material = SubResource("StandardMaterial3D_004yl")
+
+[node name="wall3" type="CSGBox3D" parent="map_geo"]
+transform = Transform3D(-0.26421, 0, -0.964465, 0, 1, 0, 0.964465, 0, -0.26421, 4.23505, 2, -15.3234)
+use_collision = true
+size = Vector3(1, 5, 9.23267)
+material = SubResource("StandardMaterial3D_004yl")
+
+[node name="wall4" type="CSGBox3D" parent="map_geo"]
+transform = Transform3D(-0.702265, 0, -0.711916, 0, 1, 0, 0.711916, 0, -0.702265, 11.1439, 2, -11.0963)
+use_collision = true
+size = Vector3(1, 5, 9.23267)
+material = SubResource("StandardMaterial3D_004yl")
+
+[node name="wall5" type="CSGBox3D" parent="map_geo"]
+transform = Transform3D(-0.967294, 0, -0.253657, 0, 1, 0, 0.253657, 0, -0.967294, 15.3478, 2, -3.75684)
+use_collision = true
+size = Vector3(1, 5, 9.23267)
+material = SubResource("StandardMaterial3D_004yl")
+
+[node name="wall6" type="CSGBox3D" parent="map_geo"]
+transform = Transform3D(-0.96799, 0, 0.250988, 0, 1, 0, -0.250988, 0, -0.96799, 15.3501, 2, 3.74784)
+use_collision = true
+size = Vector3(1, 5, 9.23267)
+material = SubResource("StandardMaterial3D_004yl")
+
+[node name="wall7" type="CSGBox3D" parent="map_geo"]
+transform = Transform3D(-0.71281, 0, 0.701357, 0, 1, 0, -0.701357, 0, -0.71281, 11.1018, 2, 11.3392)
+use_collision = true
+size = Vector3(1, 5, 9.23267)
+material = SubResource("StandardMaterial3D_004yl")
+
+[node name="wall8" type="CSGBox3D" parent="map_geo"]
+transform = Transform3D(-0.292522, 0, 0.956259, 0, 1, 0, -0.956259, 0, -0.292522, 4.27675, 2, 15.1978)
+use_collision = true
+size = Vector3(1, 5, 9.23267)
+material = SubResource("StandardMaterial3D_004yl")
+
+[node name="wall9" type="CSGBox3D" parent="map_geo"]
+transform = Transform3D(0.253572, 0, 0.967317, 0, 1, 0, -0.967317, 0, 0.253572, -4.03081, 2, 15.2899)
+use_collision = true
+size = Vector3(1, 5, 9.23267)
+material = SubResource("StandardMaterial3D_004yl")
+
+[node name="wall10" type="CSGBox3D" parent="map_geo"]
+transform = Transform3D(0.694382, 0, 0.719607, 0, 1, 0, -0.719607, 0, 0.694382, -10.9858, 2, 11.1391)
+use_collision = true
+size = Vector3(1, 5, 9.23267)
+material = SubResource("StandardMaterial3D_004yl")
+
+[node name="wall11" type="CSGBox3D" parent="map_geo"]
+transform = Transform3D(0.964442, 0, 0.264294, 0, 1, 0, -0.264294, 0, 0.964442, -15.2703, 2, 3.84643)
+use_collision = true
+size = Vector3(1, 5, 9.23267)
+material = SubResource("StandardMaterial3D_004yl")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -17, 0)
+mesh = SubResource("QuadMesh_tnb8p")
+
+[connection signal="charge_spent" from="grindwheel" to="gui" method="_on_grindwheel_charge_spent"]

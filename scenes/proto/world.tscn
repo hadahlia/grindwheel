@@ -1,0 +1,68 @@
+[gd_scene load_steps=11 format=3 uid="uid://dmcoua3dbts35"]
+
+[ext_resource type="Texture2D" uid="uid://dbwewvxq53y36" path="res://sprite/env/ocean_layers/1.png" id="1_w5ovt"]
+[ext_resource type="Texture2D" uid="uid://d2bfrp475pf5g" path="res://sprite/env/test_slice.png" id="2_8waq3"]
+[ext_resource type="Shader" path="res://shader/mode.gdshader" id="2_rdj77"]
+[ext_resource type="Texture2D" uid="uid://ba3uskjlpgy0t" path="res://sprite/env/testmap.png" id="3_7qvgs"]
+[ext_resource type="Script" path="res://scenes/proto/cammy.gd" id="3_oy5ch"]
+[ext_resource type="Script" path="res://script/slice.gd" id="4_vqo36"]
+[ext_resource type="PackedScene" uid="uid://d0h7icnxq26ol" path="res://scenes/proto/player.tscn" id="7_7lkvn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ynim3"]
+shader = ExtResource("2_rdj77")
+shader_parameter/matrix = null
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0o2yd"]
+shader = ExtResource("2_rdj77")
+shader_parameter/matrix = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_udowv"]
+shader = ExtResource("2_rdj77")
+shader_parameter/matrix = Basis(1, 0, 0, 0, 1, 0, 0, 0, 0.645)
+
+[node name="world" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_ynim3")
+texture = ExtResource("1_w5ovt")
+
+[node name="cammy" type="Camera2D" parent="."]
+offset = Vector2(0, -80)
+process_callback = 0
+script = ExtResource("3_oy5ch")
+target_path = NodePath("../player")
+
+[node name="Mode 7" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_0o2yd")
+texture = ExtResource("3_7qvgs")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 1
+offset_left = -272.0
+offset_top = -112.0
+offset_right = -245.0
+offset_bottom = -89.0
+text = "gay"
+
+[node name="projected_root" type="Node2D" parent="."]
+visible = false
+
+[node name="slice" type="Sprite2D" parent="projected_root"]
+material = SubResource("ShaderMaterial_udowv")
+position = Vector2(0, 120)
+texture = ExtResource("2_8waq3")
+script = ExtResource("4_vqo36")
+
+[node name="player" parent="." instance=ExtResource("7_7lkvn")]

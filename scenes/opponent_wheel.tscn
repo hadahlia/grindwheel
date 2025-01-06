@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnp37a43gamo6"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_og54v"]
+radius = 2.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cogx4"]
+albedo_color = Color(0.61, 0.1159, 0.321775, 1)
+metallic = 0.79
+metallic_specular = 0.59
+
+[node name="opponent_wheel" type="CharacterBody3D"]
+
+[node name="col_body" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_og54v")
+
+[node name="spin_root" type="Node3D" parent="."]
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="spin_root"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.208302, 0)
+inner_radius = 0.279
+outer_radius = 2.0
+material = SubResource("StandardMaterial3D_cogx4")
+
+[node name="hurt_ball" type="Area3D" parent="."]
+
+[node name="hurt_radius" type="CollisionShape3D" parent="hurt_ball"]
+shape = SubResource("SphereShape3D_og54v")

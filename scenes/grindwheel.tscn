@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3 uid="uid://x0c0k7wt1t8u"]
+
+[ext_resource type="Script" path="res://script/grinder/grindwheel.gd" id="1_uw4wv"]
+[ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="2_gd5nx"]
+[ext_resource type="AudioStream" uid="uid://w4jg2q3un5o3" path="res://audio/sfx/bounce.wav" id="2_i25ww"]
+[ext_resource type="Texture2D" uid="uid://d3mshby6wthon" path="res://sprite/gui/pointer.png" id="3_ncc8r"]
+
+[sub_resource type="Resource" id="Resource_e6243"]
+script = ExtResource("2_gd5nx")
+dash_cooldown = 0.5
+speed = 200.0
+damage = 5
+spin = 100
+stability = 10
+bump_sound = ExtResource("2_i25ww")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_btaxy"]
+height = 1.28254
+radius = 1.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_88tdg"]
+albedo_color = Color(0.627451, 0.607843, 0.686275, 1)
+metallic = 0.79
+metallic_specular = 0.59
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vt5kx"]
+radius = 1.0
+
+[node name="grindwheel" type="CharacterBody3D"]
+script = ExtResource("1_uw4wv")
+data = SubResource("Resource_e6243")
+
+[node name="hitbox" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.208302, 0)
+shape = SubResource("CylinderShape3D_btaxy")
+
+[node name="spin_root" type="Node3D" parent="."]
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="spin_root"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.208302, 0)
+inner_radius = 0.27
+outer_radius = 1.8
+material = SubResource("StandardMaterial3D_88tdg")
+
+[node name="arrow_pointer" type="Node3D" parent="."]
+rotation_edit_mode = 2
+
+[node name="Sprite3D" type="Sprite3D" parent="arrow_pointer"]
+transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 0, -2.60807)
+pixel_size = 0.02
+texture_filter = 2
+render_priority = 1
+texture = ExtResource("3_ncc8r")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.208302, 0)
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_vt5kx")
+
+[node name="wheel_sfx" type="AudioStreamPlayer3D" parent="."]
+volume_db = 2.0
