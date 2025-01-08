@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://x0c0k7wt1t8u"]
+[gd_scene load_steps=12 format=3 uid="uid://x0c0k7wt1t8u"]
 
 [ext_resource type="Script" path="res://script/grinder/grindwheel.gd" id="1_uw4wv"]
 [ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="2_gd5nx"]
 [ext_resource type="AudioStream" uid="uid://w4jg2q3un5o3" path="res://audio/sfx/bounce.wav" id="2_i25ww"]
 [ext_resource type="Texture2D" uid="uid://d3mshby6wthon" path="res://sprite/gui/pointer.png" id="3_ncc8r"]
+[ext_resource type="AudioStream" uid="uid://be7a3kjxdenkm" path="res://audio/sfx/twirler.wav" id="5_qcflb"]
 
 [sub_resource type="Resource" id="Resource_e6243"]
 resource_local_to_scene = true
@@ -18,13 +19,19 @@ dash_max_charge = 4
 bump_sound = ExtResource("2_i25ww")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_yti04"]
-height = 1.0
+height = 1.17485
 radius = 1.6
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_88tdg"]
-albedo_color = Color(0.627451, 0.607843, 0.686275, 1)
-metallic = 0.79
-metallic_specular = 0.59
+albedo_color = Color(0.192675, 0.1869, 0.21, 1)
+metallic = 0.78
+metallic_specular = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6eyht"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ciyip"]
+albedo_color = Color(0.46, 0.092, 0.0981332, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_vt5kx"]
 radius = 1.0
@@ -34,16 +41,29 @@ script = ExtResource("1_uw4wv")
 data = SubResource("Resource_e6243")
 
 [node name="hitbox" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.610108, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.576487, 0)
 shape = SubResource("CylinderShape3D_yti04")
 
 [node name="spin_root" type="Node3D" parent="."]
 
 [node name="CSGTorus3D" type="CSGTorus3D" parent="spin_root"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.654483, 0)
+transform = Transform3D(1, 0, 0, 0, 0.999211, -0.0397132, 0, 0.0397132, 0.999211, 0, 0.72968, -0.0184461)
 inner_radius = 0.27
-outer_radius = 1.8
+outer_radius = 1.64
+smooth_faces = false
 material = SubResource("StandardMaterial3D_88tdg")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="spin_root"]
+transform = Transform3D(1, 0, 0, 0, 0.999211, -0.0397132, 0, 0.0397132, 0.999211, 0, 2.01306, 0.0355355)
+radius = 0.110892
+height = 2.46236
+material = SubResource("StandardMaterial3D_6eyht")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="spin_root"]
+transform = Transform3D(1, 0, 0, 0, 0.999211, -0.0397132, 0, 0.0397132, 0.999211, 0, 0.688982, -0.0170895)
+radius = 1.0
+height = 1.61994
+material = SubResource("StandardMaterial3D_ciyip")
 
 [node name="arrow_pointer" type="Node3D" parent="."]
 rotation_edit_mode = 2
@@ -75,6 +95,17 @@ shape = SubResource("SphereShape3D_vt5kx")
 
 [node name="wheel_sfx" type="AudioStreamPlayer3D" parent="."]
 volume_db = 2.0
+max_polyphony = 3
+
+[node name="spin_sfx" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_qcflb")
+volume_db = -11.789
+unit_size = 15.0
+max_db = -1.105
+pitch_scale = 0.37
+autoplay = true
+max_distance = 80.0
+panning_strength = 1.48
 
 [node name="_dash_recharge" type="Timer" parent="."]
 wait_time = 6.0

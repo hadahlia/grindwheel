@@ -19,9 +19,9 @@ signal charge_spent
 
 var _grav : float = -20
 var _input_vector : Vector2 = Vector2.ZERO
-var _move_speed : float = 10
+var _move_speed : float = 18
 var _dash_speed : float = 0
-var _dash_max_speed : float = 50
+var _dash_max_speed : float = 80
 #var rotation_speed : float = 10
 
 var _dashing : bool = false
@@ -31,7 +31,7 @@ var _dir : Vector3 = Vector3.ZERO
 
 
 #var fall_speed : float = 75
-var friction : float = -9
+var friction : float = -16
 
 var acceleration : Vector3 = Vector3.ZERO
 #var deceleration : float = 10
@@ -52,8 +52,8 @@ func _ready():
 	#add_child(_dash_timer)
 
 func _spinny():
-	if velocity == Vector3.ZERO: return
-	spin_root.rotation.y += data.rot_speed * data.stability
+	
+	spin_root.rotation.y += data.rot_speed * data.stability 
 	#print("rot: " + str(spin_root.rotation.y) + "deg: " + str(arrow_g.rotation_degrees.y))
 	#if spin_root.get_rotation_degrees() < -90:
 		#spin_root.set_rotation_degrees(360)
@@ -63,6 +63,7 @@ func _spinny():
 	#if _dir.length() > 0:
 	#arrow_g.look_at(self.position + _dir, Vector3.UP)
 	#arrow_g.rotation.y = velocity.
+	if velocity == Vector3.ZERO: return
 	safe_look_at(dir_pointer, self.position + _dir)
 	safe_look_at(arrow_g, self.position + velocity)
 
@@ -79,6 +80,9 @@ func _physics_process(delta):
 		velocity += acceleration * delta
 		#move_and_collide(velocity * delta)
 		move_and_slide()
+		if _dashing:
+			dir_pointer.show()
+			_dashing = false
 	else:
 		var col = move_and_collide(velocity * delta)
 		if col:
@@ -86,11 +90,12 @@ func _physics_process(delta):
 			wheel_sfx.play()
 			wheel_sfx.pitch_scale += 0.2
 			#data.bump_sound.play()
-			velocity *= 0.6
-			velocity = velocity.bounce(col.get_normal()) * randf_range(0.9, 1.1)
+			velocity *= 0.68
+			velocity = velocity.bounce(col.get_normal()) #* randf_range(0.85, 1.15)
 			
 			_dash_speed -= 10
-			if _dash_speed <= 20:
+			if _dash_speed <= 40:
+				_dash_speed = _dash_max_speed
 				dir_pointer.show()
 				_dashing = false
 				

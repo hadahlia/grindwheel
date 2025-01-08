@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cau0atwkvl67f"]
+[gd_scene load_steps=27 format=3 uid="uid://cau0atwkvl67f"]
 
 [ext_resource type="Shader" path="res://shader/grain_palette.gdshader" id="1_cmux6"]
 [ext_resource type="PackedScene" uid="uid://x0c0k7wt1t8u" path="res://scenes/grindwheel.tscn" id="1_rhsjv"]
@@ -8,6 +8,20 @@
 [ext_resource type="AudioStream" uid="uid://w4jg2q3un5o3" path="res://audio/sfx/bounce.wav" id="4_qqrgs"]
 [ext_resource type="Shader" path="res://shader/aerosky.gdshader" id="5_h8hid"]
 [ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="5_m32wb"]
+[ext_resource type="Shader" path="res://shader/blur_sharpen.gdshader" id="6_sikrn"]
+[ext_resource type="Shader" path="res://shader/downscale.gdshader" id="7_wtnmt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fcpmf"]
+shader = ExtResource("6_sikrn")
+shader_parameter/blur_sharp = -0.6
+shader_parameter/pixel = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_igr1u"]
+resource_local_to_scene = true
+shader = ExtResource("7_wtnmt")
+shader_parameter/fog_color = Color(0.84, 0.84, 0.84, 1)
+shader_parameter/resolution_downsampling = 2.0
+shader_parameter/bit_depth = 32.0
 
 [sub_resource type="Gradient" id="Gradient_1l226"]
 
@@ -19,11 +33,18 @@ shader = ExtResource("1_cmux6")
 shader_parameter/pixel = 1.0
 shader_parameter/pallete = SubResource("GradientTexture2D_ijf8a")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_734qv"]
-albedo_color = Color(0.59, 0.418703, 0.1947, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u3s1c"]
+albedo_color = Color(0.43, 0.275917, 0.215, 1)
+metallic = 0.77
+metallic_specular = 0.29
+roughness = 0.81
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_004yl"]
-albedo_color = Color(0.129412, 0.0431373, 0.0470588, 1)
+[sub_resource type="PlaneMesh" id="PlaneMesh_k002f"]
+material = SubResource("StandardMaterial3D_u3s1c")
+size = Vector2(50, 28)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a0xm6"]
+albedo_color = Color(0.0538333, 0.17, 0.0306, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_0dlb1"]
 noise_type = 3
@@ -51,18 +72,27 @@ material = SubResource("ShaderMaterial_lskyi")
 size = Vector2(200, 200)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ed2co"]
-sky_top_color = Color(0.44825, 0.55, 0.385, 1)
-sky_horizon_color = Color(0.4087, 0.67, 0.63516, 1)
-ground_bottom_color = Color(0.2, 0.101667, 0.1, 1)
-ground_horizon_color = Color(0.407843, 0.670588, 0.635294, 1)
+sky_top_color = Color(0, 0, 0, 1)
+sky_horizon_color = Color(1, 1, 1, 1)
+sky_curve = 0.0326456
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Sky" id="Sky_en7ca"]
 sky_material = SubResource("ProceduralSkyMaterial_ed2co")
-process_mode = 1
+process_mode = 3
 
 [sub_resource type="Environment" id="Environment_co0df"]
 background_mode = 2
 sky = SubResource("Sky_en7ca")
+tonemap_mode = 1
+tonemap_exposure = 0.98
+tonemap_white = 1.01
+sdfgi_use_occlusion = true
+adjustment_enabled = true
+adjustment_brightness = 0.98
+adjustment_contrast = 1.1
+adjustment_saturation = 0.9
 
 [sub_resource type="Resource" id="Resource_enpb8"]
 resource_local_to_scene = true
@@ -79,7 +109,6 @@ bump_sound = ExtResource("4_qqrgs")
 [node name="mach_arena" type="Node3D"]
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -89,9 +118,36 @@ stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = false
+scaling_3d_mode = 0
 canvas_item_default_texture_filter = 0
+audio_listener_enable_3d = true
 size = Vector2i(1152, 648)
-render_target_update_mode = 0
+render_target_update_mode = 4
+
+[node name="sharpen" type="ColorRect" parent="SubViewportContainer/SubViewport"]
+material = SubResource("ShaderMaterial_fcpmf")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="SubViewportContainer/SubViewport"]
+copy_mode = 2
+
+[node name="downsample" type="ColorRect" parent="SubViewportContainer/SubViewport/BackBufferCopy"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_igr1u")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = -100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1152, 648.5)
 
 [node name="TextureRect" type="TextureRect" parent="SubViewportContainer/SubViewport"]
 visible = false
@@ -99,110 +155,71 @@ material = SubResource("ShaderMaterial_vtfa2")
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="map_geo" type="Node3D" parent="."]
+[node name="map_geo" type="Node3D" parent="SubViewportContainer/SubViewport"]
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="map_geo"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+[node name="pool_table" type="Node3D" parent="SubViewportContainer/SubViewport/map_geo"]
+
+[node name="floor" type="CSGMesh3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
 use_collision = true
-radius = 16.0
-sides = 12
-material = SubResource("StandardMaterial3D_734qv")
+mesh = SubResource("PlaneMesh_k002f")
 
-[node name="wall0" type="CSGBox3D" parent="map_geo"]
-transform = Transform3D(0.965167, 0, -0.261633, 0, 1, 0, 0.261633, 0, 0.965167, -15.2718, 2, -3.99547)
+[node name="wall1" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.5, 1, 0)
 use_collision = true
-size = Vector3(1, 5, 9.23267)
-material = SubResource("StandardMaterial3D_004yl")
+size = Vector3(2, 3, 31)
+material = SubResource("StandardMaterial3D_a0xm6")
 
-[node name="wall1" type="CSGBox3D" parent="map_geo"]
-transform = Transform3D(0.705043, 0, -0.709165, 0, 1, 0, 0.709165, 0, 0.705043, -10.9402, 2, -11.5396)
+[node name="wall2" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.5, 1, 0)
 use_collision = true
-size = Vector3(1, 5, 9.23267)
-material = SubResource("StandardMaterial3D_004yl")
+size = Vector3(2, 3, 31)
+material = SubResource("StandardMaterial3D_a0xm6")
 
-[node name="wall2" type="CSGBox3D" parent="map_geo"]
-transform = Transform3D(0.281973, 0, -0.959422, 0, 1, 0, 0.959422, 0, 0.281973, -4.07302, 2, -15.3227)
+[node name="wall3" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.43051e-06, 1, -14.5)
 use_collision = true
-size = Vector3(1, 5, 9.23267)
-material = SubResource("StandardMaterial3D_004yl")
+size = Vector3(2, 3, 53)
+material = SubResource("StandardMaterial3D_a0xm6")
 
-[node name="wall3" type="CSGBox3D" parent="map_geo"]
-transform = Transform3D(-0.26421, 0, -0.964465, 0, 1, 0, 0.964465, 0, -0.26421, 4.23505, 2, -15.3234)
+[node name="wall4" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.43051e-06, 1, 14.5)
 use_collision = true
-size = Vector3(1, 5, 9.23267)
-material = SubResource("StandardMaterial3D_004yl")
+size = Vector3(2, 3, 53)
+material = SubResource("StandardMaterial3D_a0xm6")
 
-[node name="wall4" type="CSGBox3D" parent="map_geo"]
-transform = Transform3D(-0.702265, 0, -0.711916, 0, 1, 0, 0.711916, 0, -0.702265, 11.1439, 2, -11.0963)
-use_collision = true
-size = Vector3(1, 5, 9.23267)
-material = SubResource("StandardMaterial3D_004yl")
+[node name="visual_" type="Node3D" parent="SubViewportContainer/SubViewport"]
 
-[node name="wall5" type="CSGBox3D" parent="map_geo"]
-transform = Transform3D(-0.967294, 0, -0.253657, 0, 1, 0, 0.253657, 0, -0.967294, 15.3478, 2, -3.75684)
-use_collision = true
-size = Vector3(1, 5, 9.23267)
-material = SubResource("StandardMaterial3D_004yl")
-
-[node name="wall6" type="CSGBox3D" parent="map_geo"]
-transform = Transform3D(-0.96799, 0, 0.250988, 0, 1, 0, -0.250988, 0, -0.96799, 15.3501, 2, 3.74784)
-use_collision = true
-size = Vector3(1, 5, 9.23267)
-material = SubResource("StandardMaterial3D_004yl")
-
-[node name="wall7" type="CSGBox3D" parent="map_geo"]
-transform = Transform3D(-0.71281, 0, 0.701357, 0, 1, 0, -0.701357, 0, -0.71281, 11.1018, 2, 11.3392)
-use_collision = true
-size = Vector3(1, 5, 9.23267)
-material = SubResource("StandardMaterial3D_004yl")
-
-[node name="wall8" type="CSGBox3D" parent="map_geo"]
-transform = Transform3D(-0.292522, 0, 0.956259, 0, 1, 0, -0.956259, 0, -0.292522, 4.27675, 2, 15.1978)
-use_collision = true
-size = Vector3(1, 5, 9.23267)
-material = SubResource("StandardMaterial3D_004yl")
-
-[node name="wall9" type="CSGBox3D" parent="map_geo"]
-transform = Transform3D(0.253572, 0, 0.967317, 0, 1, 0, -0.967317, 0, 0.253572, -4.03081, 2, 15.2899)
-use_collision = true
-size = Vector3(1, 5, 9.23267)
-material = SubResource("StandardMaterial3D_004yl")
-
-[node name="wall10" type="CSGBox3D" parent="map_geo"]
-transform = Transform3D(0.694382, 0, 0.719607, 0, 1, 0, -0.719607, 0, 0.694382, -10.9858, 2, 11.1391)
-use_collision = true
-size = Vector3(1, 5, 9.23267)
-material = SubResource("StandardMaterial3D_004yl")
-
-[node name="wall11" type="CSGBox3D" parent="map_geo"]
-transform = Transform3D(0.964442, 0, 0.264294, 0, 1, 0, -0.264294, 0, 0.964442, -15.2703, 2, 3.84643)
-use_collision = true
-size = Vector3(1, 5, 9.23267)
-material = SubResource("StandardMaterial3D_004yl")
-
-[node name="visual_" type="Node3D" parent="."]
-
-[node name="clouds" type="MeshInstance3D" parent="visual_"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -17, 0)
+[node name="clouds" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/visual_"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -41, 0)
 mesh = SubResource("QuadMesh_tnb8p")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../../..")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="visual_"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport/visual_"]
 environment = SubResource("Environment_co0df")
 
-[node name="Camera3D" type="Camera3D" parent="visual_"]
-transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 34.5001, 11.7996)
-fov = 60.0
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport/visual_"]
+transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 42.5001, 13.7996)
+fov = 50.0
 size = 40.0
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="visual_"]
-transform = Transform3D(-2.18557e-08, 0.866025, -0.5, 3.78552e-08, 0.5, 0.866025, 1, -1.95399e-14, -4.37114e-08, -32, 0, 0)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/visual_"]
+transform = Transform3D(2.96116e-14, 1, -2.08616e-07, 4.37114e-08, 2.08616e-07, 1, 1, -1.89535e-14, -4.37114e-08, -32, 0, 0)
+shadow_enabled = true
+shadow_opacity = 0.92
+shadow_blur = 5.0
 
-[node name="grindwheel" parent="." groups=["Player"] instance=ExtResource("1_rhsjv")]
+[node name="SpotLight3D" type="SpotLight3D" parent="SubViewportContainer/SubViewport/visual_"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 22, 0)
+light_color = Color(1, 0.05, 0.0658331, 1)
+light_energy = 1.36
+spot_range = 20.8312
+spot_angle = 24.3384
+
+[node name="grindwheel" parent="SubViewportContainer/SubViewport" groups=["Player"] instance=ExtResource("1_rhsjv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 10)
 data = SubResource("Resource_enpb8")
 
-[node name="gui" type="Control" parent="."]
+[node name="gui" type="Control" parent="SubViewportContainer/SubViewport"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -211,7 +228,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_chc5c")
 
-[node name="Label" type="Label" parent="gui"]
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/gui"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -223,17 +240,17 @@ grow_vertical = 2
 text = "test
 "
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="gui"]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="SubViewportContainer/SubViewport/gui"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -232.0
-offset_top = -116.0
-offset_right = -104.0
-offset_bottom = -52.0
+offset_left = -256.0
+offset_top = -144.0
+offset_right = -128.0
+offset_bottom = -80.0
 grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(1.83675, 1.83675)
@@ -241,4 +258,6 @@ value = 100.0
 texture_under = ExtResource("2_7qsjr")
 texture_progress = ExtResource("3_bmkgg")
 
-[connection signal="charge_spent" from="grindwheel" to="gui" method="_on_grindwheel_charge_spent"]
+[node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport"]
+
+[connection signal="charge_spent" from="SubViewportContainer/SubViewport/grindwheel" to="SubViewportContainer/SubViewport/gui" method="_on_grindwheel_charge_spent"]
