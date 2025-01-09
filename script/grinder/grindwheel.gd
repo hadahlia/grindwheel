@@ -11,23 +11,30 @@ signal charge_spent
 @onready var dir_pointer = $dir_pointer
 
 @onready var wheel_sfx = $wheel_sfx
+@onready var lvl_sfx = $lvl_sfx
 
 # --- timers ---
 @onready var _dash_recharge = $_dash_recharge
+@onready var _spin_charge = $_spin_charge
+
 
 @export var data : WheelStats
 
 var _grav : float = -20
 var _input_vector : Vector2 = Vector2.ZERO
-var _move_speed : float = 18
+var _move_speed : float = 36
 var _dash_speed : float = 0
 var _dash_max_speed : float = 80
 #var rotation_speed : float = 10
 
 var _dashing : bool = false
 var _dash_charges : int 
+var _dash_lvl : int = 0
 #var _dash_timer : float = 0.5
 var _dir : Vector3 = Vector3.ZERO
+
+var _stability : int
+#var _max_stability : int
 
 
 #var fall_speed : float = 75
@@ -41,6 +48,7 @@ func _ready():
 		_move_speed = data._movespeed
 		_dash_charges = data.dash_max_charge
 		_dash_recharge.wait_time = data.dash_cooldown
+		_stability = data.stability
 		#charge_spent.emit(_dash_charges)
 	#charge_spent.emit(_dash_charges)
 	#if gui:
@@ -53,7 +61,7 @@ func _ready():
 
 func _spinny():
 	
-	spin_root.rotation.y += data.rot_speed * data.stability 
+	spin_root.rotation.y += data.rot_speed * _stability
 	#print("rot: " + str(spin_root.rotation.y) + "deg: " + str(arrow_g.rotation_degrees.y))
 	#if spin_root.get_rotation_degrees() < -90:
 		#spin_root.set_rotation_degrees(360)
@@ -75,8 +83,8 @@ func _physics_process(delta):
 	acceleration.y = _grav
 	_spinny()
 	#if !_dashing:
-	if velocity.length() < 18:
-		wheel_sfx.pitch_scale = 1 + randf_range(-0.25, 0.25)
+	if velocity.length() < 21:
+		wheel_sfx.pitch_scale = 1 + randf_range(-0.35, 0.35)
 		velocity += acceleration * delta
 		#move_and_collide(velocity * delta)
 		move_and_slide()
@@ -95,7 +103,7 @@ func _physics_process(delta):
 			
 			_dash_speed -= 10
 			if _dash_speed <= 40:
-				_dash_speed = _dash_max_speed
+				#_dash_speed = _dash_max_speed
 				dir_pointer.show()
 				_dashing = false
 				
@@ -106,11 +114,41 @@ func _physics_process(delta):
 
 func _input(_event):
 	if _dashing or _dir == Vector3.ZERO: return
-	if Input.is_action_just_pressed("Spin Dash") and _dash_charges > 0:#&& _can_dash:
-		_dash_speed = _dash_max_speed
+	if Input.is_action_just_pressed("Spin Dash"):
+		_dash_lvl = 0
+		lvl_sfx.pitch_scale = randf_range(1, 1.2)
+		if _spin_charge.is_stopped():
+			_spin_charge.start()
+	if Input.is_action_pressed("Spin Dash"):
+		#if _spin_charge.is_stopped():
+			
+			#_spin_charge.start()
+		_move_speed = 4
+			#friction = -32
+		#_dash_lvl += 1
+	if Input.is_action_just_released("Spin Dash"):#&& _can_dash:
+		#if _dash_charges == 0:
+			#_dash_lvl = 0
+		_move_speed = data._movespeed
+		#if !_spin_charge.is_stopped():
+		_spin_charge.stop()
+		match _dash_lvl:
+			0:
+				_dash_speed = 10
+			1:
+				_dash_speed = 20
+				_dash_charges -= 1
+			2:
+				_dash_speed = 40
+				_dash_charges -= 1
+			3:
+				_dash_speed = _dash_max_speed
+				_dash_charges -= 1
+		_dash_lvl = 0
+		
 		_dashing = true
 		dir_pointer.hide()
-		_dash_charges -= 1
+		
 		if _dash_recharge.is_stopped():
 			_dash_recharge.start()
 		charge_spent.emit(_dash_charges)
@@ -164,3 +202,16 @@ func _on__dash_recharge_timeout():
 	if _dash_charges >= data.dash_max_charge: return  
 	_dash_charges += 1
 	charge_spent.emit(_dash_charges)
+
+
+func _on__spin_charge_timeout():
+	if _dash_lvl == 3 or _dash_charges == 0: 
+		print("dash lvl is 3")
+		
+		#_spin_charge.stop()
+		return
+	
+	lvl_sfx.pitch_scale += 0.2
+	lvl_sfx.play()      
+	_dash_lvl += 1
+	print("charge proc: ", _dash_lvl)

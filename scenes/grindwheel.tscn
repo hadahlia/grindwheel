@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://x0c0k7wt1t8u"]
+[gd_scene load_steps=13 format=3 uid="uid://x0c0k7wt1t8u"]
 
 [ext_resource type="Script" path="res://script/grinder/grindwheel.gd" id="1_uw4wv"]
 [ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="2_gd5nx"]
 [ext_resource type="AudioStream" uid="uid://w4jg2q3un5o3" path="res://audio/sfx/bounce.wav" id="2_i25ww"]
 [ext_resource type="Texture2D" uid="uid://d3mshby6wthon" path="res://sprite/gui/pointer.png" id="3_ncc8r"]
+[ext_resource type="AudioStream" uid="uid://o25xxxjad6xe" path="res://audio/sfx/lvlup.mp3" id="5_8q7xo"]
 [ext_resource type="AudioStream" uid="uid://be7a3kjxdenkm" path="res://audio/sfx/twirler.wav" id="5_qcflb"]
 
 [sub_resource type="Resource" id="Resource_e6243"]
@@ -97,9 +98,13 @@ shape = SubResource("SphereShape3D_vt5kx")
 volume_db = 2.0
 max_polyphony = 3
 
+[node name="lvl_sfx" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_8q7xo")
+max_polyphony = 3
+
 [node name="spin_sfx" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("5_qcflb")
-volume_db = -11.789
+volume_db = -5.052
 unit_size = 15.0
 max_db = -1.105
 pitch_scale = 0.37
@@ -110,4 +115,8 @@ panning_strength = 1.48
 [node name="_dash_recharge" type="Timer" parent="."]
 wait_time = 6.0
 
+[node name="_spin_charge" type="Timer" parent="."]
+wait_time = 0.8
+
 [connection signal="timeout" from="_dash_recharge" to="." method="_on__dash_recharge_timeout"]
+[connection signal="timeout" from="_spin_charge" to="." method="_on__spin_charge_timeout"]

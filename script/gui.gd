@@ -8,7 +8,7 @@ var player : GrindWheel
 func _ready():
 	player = get_tree().get_first_node_in_group("Player")
 	#plyr.
-	label.text = "charges: " + str(player._dash_charges) #"charges: 3"
+	label.text = "charges: " #+ str(player._dash_charges) + "\n STABILITY: " + str(player._stability) + "\n dash lvl: " + str(player._dash_lvl)#"charges: 3"
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
