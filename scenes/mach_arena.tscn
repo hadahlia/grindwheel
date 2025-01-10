@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cau0atwkvl67f"]
+[gd_scene load_steps=32 format=3 uid="uid://cau0atwkvl67f"]
 
 [ext_resource type="PackedScene" uid="uid://x0c0k7wt1t8u" path="res://scenes/grindwheel.tscn" id="1_rhsjv"]
 [ext_resource type="Texture2D" uid="uid://cvbxjk0rh5p8k" path="res://sprite/gui/frame1.png" id="2_7qsjr"]
@@ -12,6 +12,7 @@
 [ext_resource type="Shader" path="res://shader/high_quality_outline.gdshader" id="5_oxb0f"]
 [ext_resource type="Shader" path="res://shader/blur_sharpen.gdshader" id="6_sikrn"]
 [ext_resource type="Shader" path="res://shader/downscale.gdshader" id="7_wtnmt"]
+[ext_resource type="PackedScene" uid="uid://dnp37a43gamo6" path="res://scenes/opponent_wheel.tscn" id="13_5uvjd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fcpmf"]
 shader = ExtResource("6_sikrn")
@@ -21,8 +22,8 @@ shader_parameter/pixel = 1.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_igr1u"]
 shader = ExtResource("7_wtnmt")
 shader_parameter/fog_color = Color(0.84, 0.84, 0.84, 1)
-shader_parameter/resolution_downsampling = 2.0
-shader_parameter/bit_depth = 64.0
+shader_parameter/resolution_downsampling = 1.0
+shader_parameter/bit_depth = 32.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_10u5f"]
 shader = ExtResource("2_sm6va")
@@ -30,9 +31,9 @@ shader_parameter/level1 = Color(0.105882, 0.0117647, 0.14902, 1)
 shader_parameter/level2 = Color(0.478431, 0.109804, 0.294118, 1)
 shader_parameter/level3 = Color(0.729412, 0.313726, 0.266667, 1)
 shader_parameter/level4 = Color(0.937255, 0.976471, 0.839216, 1)
-shader_parameter/num_colors = 8.0
-shader_parameter/luminance_threshold = 0.227
-shader_parameter/threshold2 = 0.025
+shader_parameter/num_colors = 14.0
+shader_parameter/luminance_threshold = 0.394
+shader_parameter/threshold2 = 0.139
 shader_parameter/threshold3 = 0.243
 shader_parameter/threshold4 = 0.8
 
@@ -143,6 +144,18 @@ damage = 5
 spin = 100
 rot_speed = 10.0
 stability = 10
+dash_max_charge = 4
+bump_sound = ExtResource("4_qqrgs")
+
+[sub_resource type="Resource" id="Resource_bgu1x"]
+resource_local_to_scene = true
+script = ExtResource("5_m32wb")
+dash_cooldown = 8
+_movespeed = 5.0
+damage = 5
+spin = 100
+rot_speed = 10.0
+stability = 20
 dash_max_charge = 4
 bump_sound = ExtResource("4_qqrgs")
 
@@ -258,13 +271,32 @@ shadow_opacity = 0.92
 shadow_blur = 5.0
 
 [node name="SpotLight3D" type="SpotLight3D" parent="SubViewportContainer/SubViewport/visual_"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 22, 0)
-light_color = Color(0.882639, 0.341728, 0, 1)
-light_energy = 2.0
-shadow_enabled = true
-spot_range = 27.0
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 22.6588, 0)
+light_color = Color(11.93, 6.082, 6.667, 1)
+light_energy = 2.899
+spot_range = 43.1259
 spot_attenuation = 1.51
-spot_angle = 24.3384
+spot_angle = 51.7466
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="SubViewportContainer/SubViewport/visual_"]
+transform = Transform3D(0.882882, -2.05266e-08, 0.469595, -0.469595, -3.8592e-08, 0.882882, 0, -1, -4.37114e-08, 30, 22.6588, 0)
+light_color = Color(10.76, 10.761, 8.421, 1)
+light_energy = 1.462
+light_indirect_energy = 2.518
+light_bake_mode = 1
+spot_range = 36.0027
+spot_attenuation = 1.51
+spot_angle = 17.4622
+
+[node name="SpotLight3D3" type="SpotLight3D" parent="SubViewportContainer/SubViewport/visual_"]
+transform = Transform3D(-0.882882, 1.07949e-07, -0.469595, -0.469595, -3.8592e-08, 0.882882, 7.7184e-08, 1, 8.47647e-08, -30, 22.6588, 0)
+light_color = Color(10.76, 10.761, 8.421, 1)
+light_energy = 1.462
+light_indirect_energy = 2.518
+light_bake_mode = 1
+spot_range = 36.0027
+spot_attenuation = 1.51
+spot_angle = 17.772
 
 [node name="cammie" type="Camera3D" parent="SubViewportContainer/SubViewport/visual_"]
 transform = Transform3D(1, 0, 0, 0, 0.0871557, 0.996195, 0, -0.996195, 0.0871557, 0, 43.5001, 7.7996)
@@ -276,6 +308,8 @@ size = 40.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0210409, -0.18462)
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_fknp4")
+
+[node name="LightmapGI" type="LightmapGI" parent="SubViewportContainer/SubViewport/visual_"]
 
 [node name="grindwheel" parent="SubViewportContainer/SubViewport" groups=["Player"] instance=ExtResource("1_rhsjv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 10)
@@ -320,6 +354,34 @@ value = 100.0
 texture_under = ExtResource("2_7qsjr")
 texture_progress = ExtResource("3_bmkgg")
 
+[node name="Panel" type="Panel" parent="SubViewportContainer/SubViewport/gui"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="boss_health" type="ProgressBar" parent="SubViewportContainer/SubViewport/gui/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 100.0
+
 [node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport"]
+
+[node name="opponent_wheel" parent="." instance=ExtResource("13_5uvjd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -11)
+stats = SubResource("Resource_bgu1x")
 
 [connection signal="charge_spent" from="SubViewportContainer/SubViewport/grindwheel" to="SubViewportContainer/SubViewport/gui" method="_on_grindwheel_charge_spent"]

@@ -25,8 +25,8 @@ void fragment() {
 	c = pow(c, vec3(1.0/gamma));
 	
 	//vec4 alpha_col = vec4(c.rgb, COLOR.a);
-	COLOR.rgb = c;
-	//COLOR = mix(COLOR, alpha_col, step(luminance, luminance_threshold));
+	//COLOR.rgb = c;
+	COLOR.rgb = mix(COLOR.rgb, c, step(luminance, luminance_threshold));
 	//float rgb_avg = (COLOR.r + COLOR.g + COLOR.b)/3.0;
 	//if(luminance < threshold1){
 		//COLOR = level1.rgba* luminance;

@@ -13,7 +13,8 @@ func physics_update(_dt: float):
 	var dir = player.global_position - enem.global_position
 	#print(str(dir))
 	if dir.length() > 5:
-		enem.velocity = dir.normalized() * move_speed
+		enem.set_direction(dir)
+		#enem.velocity = dir.normalized() * move_speed
 	else:
-		enem.velocity = Vector3.ZERO
+		enem.set_direction(Vector3.ZERO)
 	#enem.move_and_slide()

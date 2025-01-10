@@ -1,19 +1,22 @@
-[gd_scene load_steps=9 format=3 uid="uid://dnp37a43gamo6"]
+[gd_scene load_steps=10 format=3 uid="uid://dnp37a43gamo6"]
 
 [ext_resource type="Script" path="res://script/util/state/state_machine.gd" id="1_51oic"]
 [ext_resource type="Script" path="res://script/grinder/boss_spinner.gd" id="1_e7753"]
 [ext_resource type="Script" path="res://script/util/state/BossChase.gd" id="2_a7us7"]
 [ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="2_b31gf"]
+[ext_resource type="AudioStream" uid="uid://w4jg2q3un5o3" path="res://audio/sfx/bounce.wav" id="2_tnwpy"]
 
 [sub_resource type="Resource" id="Resource_0j8l7"]
+resource_local_to_scene = true
 script = ExtResource("2_b31gf")
 dash_cooldown = 8
-_movespeed = 10.0
+_movespeed = 5.0
 damage = 5
 spin = 100
 rot_speed = 10.0
 stability = 20
 dash_max_charge = 4
+bump_sound = ExtResource("2_tnwpy")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ymlrj"]
 height = 1.37734
@@ -56,3 +59,8 @@ visible = false
 
 [node name="hurt_radius" type="CollisionShape3D" parent="hurt_ball"]
 shape = SubResource("SphereShape3D_og54v")
+
+[node name="wheel_sfx" type="AudioStreamPlayer3D" parent="."]
+volume_db = 1.2
+pitch_scale = 0.41
+max_polyphony = 3
