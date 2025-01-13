@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://dnp37a43gamo6"]
+[gd_scene load_steps=13 format=3 uid="uid://dnp37a43gamo6"]
 
 [ext_resource type="Script" path="res://script/util/state/state_machine.gd" id="1_51oic"]
 [ext_resource type="Script" path="res://script/grinder/boss_spinner.gd" id="1_e7753"]
 [ext_resource type="Script" path="res://script/util/state/BossChase.gd" id="2_a7us7"]
 [ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="2_b31gf"]
 [ext_resource type="AudioStream" uid="uid://w4jg2q3un5o3" path="res://audio/sfx/bounce.wav" id="2_tnwpy"]
+[ext_resource type="PackedScene" uid="uid://bjkmyvklh5di" path="res://object/weapons/bronzer.tscn" id="6_tm7t4"]
 
 [sub_resource type="Resource" id="Resource_0j8l7"]
 resource_local_to_scene = true
@@ -20,19 +21,29 @@ bump_sound = ExtResource("2_tnwpy")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ymlrj"]
 height = 1.37734
-radius = 2.0
+radius = 1.55426
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cogx4"]
-albedo_color = Color(0.61, 0.1159, 0.321775, 1)
+albedo_color = Color(0.61, 0.1159, 0.124135, 1)
 metallic = 0.79
 metallic_specular = 0.59
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1k38f"]
+albedo_color = Color(0, 0.1, 0.0366667, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_og54v"]
 radius = 2.0
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_tr0d1"]
+radius = 1.83537
+
 [node name="opponent_wheel" type="CharacterBody3D"]
 script = ExtResource("1_e7753")
 stats = SubResource("Resource_0j8l7")
+
+[node name="col_body" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.677951, 0)
+shape = SubResource("CylinderShape3D_ymlrj")
 
 [node name="state_machine" type="Node" parent="." node_paths=PackedStringArray("init_state")]
 script = ExtResource("1_51oic")
@@ -42,17 +53,28 @@ init_state = NodePath("pursuit")
 script = ExtResource("2_a7us7")
 enem = NodePath("../..")
 
-[node name="col_body" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.218416, 0)
-shape = SubResource("CylinderShape3D_ymlrj")
-
 [node name="spin_root" type="Node3D" parent="."]
 
 [node name="CSGTorus3D" type="CSGTorus3D" parent="spin_root"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.208302, 0)
+transform = Transform3D(1, 0, 0, 0, 0.999194, -0.0401318, 0, 0.0401318, 0.999194, 0, 0.681713, 0)
 inner_radius = 0.279
-outer_radius = 2.0
+outer_radius = 1.89106
 material = SubResource("StandardMaterial3D_cogx4")
+
+[node name="weapon" parent="spin_root" instance=ExtResource("6_tm7t4")]
+transform = Transform3D(15, 0, 0, 0, 14.9879, -0.601977, 0, 0.601977, 14.9879, 0, 1.02202, 0)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="spin_root"]
+transform = Transform3D(1, 0, 0, 0, 0.999211, -0.0397132, 0, 0.0397132, 0.999211, 0, 1.52171, 0.0355355)
+radius = 0.110892
+height = 0.729345
+material = SubResource("StandardMaterial3D_1k38f")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="spin_root"]
+transform = Transform3D(1, 0, 0, 0, 0.999211, -0.0397132, 0, 0.0397132, 0.999211, 0, 0.688982, -0.0170895)
+radius = 1.24611
+height = 1.61994
+material = SubResource("StandardMaterial3D_1k38f")
 
 [node name="hurt_ball" type="Area3D" parent="."]
 visible = false
@@ -64,3 +86,11 @@ shape = SubResource("SphereShape3D_og54v")
 volume_db = 1.2
 pitch_scale = 0.41
 max_polyphony = 3
+
+[node name="killbox" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.894349, 0)
+collision_layer = 8
+collision_mask = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="killbox"]
+shape = SubResource("SphereShape3D_tr0d1")

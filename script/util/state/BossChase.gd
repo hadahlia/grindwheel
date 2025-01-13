@@ -9,7 +9,7 @@ func enter():
 	player = get_tree().get_first_node_in_group("Player")
 
 func physics_update(_dt: float):
-	#if !player or !enem: return
+	if !player or !enem: return
 	var dir = player.global_position - enem.global_position
 	#print(str(dir))
 	if dir.length() > 5:

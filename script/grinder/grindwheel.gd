@@ -4,14 +4,24 @@ extends CharacterBody3D
 #@export_node_path("Control") var gui_path
 #@onready var gui = $"../gui"
 signal charge_spent
+signal update_spin
+signal update_stability
+signal die
 #@onready var gui_hook : Control = get_
 
+var explosion_scene : PackedScene = preload("res://scenes/vfx/deathsplosion.tscn")
+
 @onready var spin_root = $spin_root
+@onready var blade_root = $spinner_blade
+
 @onready var arrow_g = $arrow_pointer
 @onready var dir_pointer = $dir_pointer
 
+# SOUNDS
 @onready var wheel_sfx = $wheel_sfx
 @onready var lvl_sfx = $lvl_sfx
+@onready var stability_sfx = $stability_sfx
+@onready var damage_sfx = $damage_sfx
 
 # --- timers ---
 @onready var _dash_recharge = $_dash_recharge
@@ -34,6 +44,9 @@ var _dash_lvl : int = 0
 var _dir : Vector3 = Vector3.ZERO
 
 var _stability : int
+var _spin_meter : float = 650
+var _spin_scalar : float = -20
+var _max_spin_meter : float = 1100
 #var _max_stability : int
 
 
@@ -58,10 +71,13 @@ func _ready():
 	wheel_sfx.stream = data.bump_sound
 	#_dash_timer.set_one_shot(true)
 	#add_child(_dash_timer)
+	#charge_spent.emit(_dash_charges)
+	#update_stability.emit(_stability)
 
 func _spinny():
 	
 	spin_root.rotation.y += data.rot_speed * _stability
+	blade_root.rotation.y -= data.rot_speed * data.damage
 	#print("rot: " + str(spin_root.rotation.y) + "deg: " + str(arrow_g.rotation_degrees.y))
 	#if spin_root.get_rotation_degrees() < -90:
 		#spin_root.set_rotation_degrees(360)
@@ -76,9 +92,13 @@ func _spinny():
 	safe_look_at(arrow_g, self.position + velocity)
 
 func _physics_process(delta):
+	if _spin_meter <= 0 or _spin_meter >= _max_spin_meter:
+		_take_damage()
 	if is_on_floor():
 		get_input()
 		apply_friction(delta)
+		_spin_meter += _spin_scalar * delta 
+		update_spin.emit(_spin_meter)
 		#velocity.y -= fall_speed * delta
 	acceleration.y = _grav
 	_spinny()
@@ -91,10 +111,13 @@ func _physics_process(delta):
 		if _dashing:
 			dir_pointer.show()
 			_dashing = false
+			
+			
 	else:
 		var col = move_and_collide(velocity * delta)
 		if col:
-			
+			_take_damage()
+			#_death()
 			wheel_sfx.play()
 			wheel_sfx.pitch_scale += 0.2
 			#data.bump_sound.play()
@@ -116,12 +139,14 @@ func _input(_event):
 	if _dashing or _dir == Vector3.ZERO: return
 	if Input.is_action_just_pressed("Spin Dash"):
 		_dash_lvl = 0
+		_spin_scalar = 25
 		lvl_sfx.pitch_scale = randf_range(1, 1.2)
 		if _spin_charge.is_stopped():
 			_spin_charge.start()
 	if Input.is_action_pressed("Spin Dash"):
 		#if _spin_charge.is_stopped():
-			
+		
+		#_spin_meter += _spin_scalar
 			#_spin_charge.start()
 		_move_speed = 4
 			#friction = -32
@@ -129,17 +154,18 @@ func _input(_event):
 	if Input.is_action_just_released("Spin Dash"):#&& _can_dash:
 		#if _dash_charges == 0:
 			#_dash_lvl = 0
+		_spin_scalar = -20
 		_move_speed = data._movespeed
 		#if !_spin_charge.is_stopped():
 		_spin_charge.stop()
 		match _dash_lvl:
 			0:
-				_dash_speed = 10
+				_dash_speed = 8
 			1:
-				_dash_speed = 20
+				_dash_speed = 30
 				_dash_charges -= 1
 			2:
-				_dash_speed = 40
+				_dash_speed = 50
 				_dash_charges -= 1
 			3:
 				_dash_speed = _dash_max_speed
@@ -177,6 +203,21 @@ func get_input():
 	acceleration = _dir * _move_speed
 	#velocity = _dir * t_speed
 
+func _take_damage():
+	stability_sfx.play()
+	_stability -= 1
+	update_stability.emit(_stability)
+	if _stability <= 0: 
+		_death()
+
+func _death():
+	#var exp := explosion_scene.instantiate()
+	#add_child(exp)
+	#exp.explode()
+	die.emit(self.global_position)
+	queue_free()
+
+#util i found online for dealing with annoying error
 func safe_look_at(node : Node3D, target : Vector3) -> void:
 	var origin : Vector3 = node.global_transform.origin
 	var v_z := (origin - target).normalized()
@@ -211,7 +252,7 @@ func _on__spin_charge_timeout():
 		#_spin_charge.stop()
 		return
 	
-	lvl_sfx.pitch_scale += 0.2
+	lvl_sfx.pitch_scale += 0.4
 	lvl_sfx.play()      
 	_dash_lvl += 1
 	print("charge proc: ", _dash_lvl)
