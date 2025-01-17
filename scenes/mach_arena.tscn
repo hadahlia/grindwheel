@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://cau0atwkvl67f"]
+[gd_scene load_steps=37 format=3 uid="uid://cau0atwkvl67f"]
 
 [ext_resource type="Script" path="res://script/arena/mach_arena.gd" id="1_lwp4d"]
 [ext_resource type="PackedScene" uid="uid://x0c0k7wt1t8u" path="res://scenes/grindwheel.tscn" id="1_rhsjv"]
@@ -11,10 +11,11 @@
 [ext_resource type="Shader" path="res://shader/vignette.gdshader" id="5_lnhxr"]
 [ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="5_m32wb"]
 [ext_resource type="Shader" path="res://shader/high_quality_outline.gdshader" id="5_oxb0f"]
+[ext_resource type="Texture2D" uid="uid://cxju4yfhsi3q6" path="res://sprite/env/Horror_Floor_07-128x128.png" id="6_dyd7g"]
 [ext_resource type="Shader" path="res://shader/blur_sharpen.gdshader" id="6_sikrn"]
 [ext_resource type="Shader" path="res://shader/downscale.gdshader" id="7_wtnmt"]
 [ext_resource type="PackedScene" uid="uid://dnp37a43gamo6" path="res://scenes/opponent_wheel.tscn" id="13_5uvjd"]
-[ext_resource type="FontFile" uid="uid://bke4sk4opv7w4" path="res://sprite/font/QuinqueFive.ttf" id="13_cba6u"]
+[ext_resource type="Theme" uid="uid://ckg1xrpun5mdw" path="res://sprite/font/label_theme.tres" id="13_28tee"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fcpmf"]
 shader = ExtResource("6_sikrn")
@@ -33,7 +34,7 @@ shader_parameter/level1 = Color(0.105882, 0.0117647, 0.14902, 1)
 shader_parameter/level2 = Color(0.478431, 0.109804, 0.294118, 1)
 shader_parameter/level3 = Color(0.729412, 0.313726, 0.266667, 1)
 shader_parameter/level4 = Color(0.937255, 0.976471, 0.839216, 1)
-shader_parameter/num_colors = 24.0
+shader_parameter/num_colors = 8.0
 shader_parameter/luminance_threshold = 0.394
 shader_parameter/threshold2 = 0.139
 shader_parameter/threshold3 = 0.243
@@ -48,10 +49,12 @@ shader_parameter/dither_strength = 0.03
 shader_parameter/vignette_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u3s1c"]
-albedo_color = Color(0.43, 0.275917, 0.215, 1)
+albedo_color = Color(0.585744, 0.531103, 0.240324, 1)
+albedo_texture = ExtResource("6_dyd7g")
 metallic = 0.77
 metallic_specular = 0.29
 roughness = 0.81
+uv1_scale = Vector3(5, 5, 5)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_k002f"]
 material = SubResource("StandardMaterial3D_u3s1c")
@@ -141,32 +144,51 @@ size = Vector2(2, 2)
 resource_local_to_scene = true
 script = ExtResource("5_m32wb")
 dash_cooldown = 8
-_movespeed = 15.0
-damage = 5
-spin = 50
-rot_speed = 10.0
+_movespeed = 16.0
+damage = 40.0
+rot_speed = 8.0
 stability = 10
 dash_max_charge = 4
+health = 2000.0
 bump_sound = ExtResource("4_qqrgs")
 
 [sub_resource type="Resource" id="Resource_bgu1x"]
 resource_local_to_scene = true
 script = ExtResource("5_m32wb")
 dash_cooldown = 8
-_movespeed = 5.0
-damage = 5
-spin = 20
+_movespeed = 12.0
+damage = 10.0
 rot_speed = 10.0
 stability = 20
 dash_max_charge = 4
+health = 2000.0
 bump_sound = ExtResource("4_qqrgs")
 
-[sub_resource type="Theme" id="Theme_0xnvr"]
-default_font = ExtResource("13_cba6u")
-default_font_size = 10
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lj0ri"]
+bg_color = Color(0.231373, 0, 0.137255, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.87451, 0.321569, 0, 1)
+corner_radius_top_left = 16
+corner_radius_bottom_right = 16
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hmy5f"]
+bg_color = Color(0.662745, 0.0470588, 0.0313726, 1)
+corner_radius_top_left = 16
+corner_radius_bottom_right = 16
+expand_margin_left = 1.0
+expand_margin_right = 1.0
 
 [node name="mach_arena" type="Node3D"]
 script = ExtResource("1_lwp4d")
+player_ref_path = NodePath("SubViewportContainer/SubViewport/grindwheel")
+boss_ref_path = NodePath("SubViewportContainer/SubViewport/opponent_wheel")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 visible = false
@@ -239,6 +261,30 @@ quality = 2
 use_collision = true
 mesh = SubResource("PlaneMesh_k002f")
 
+[node name="corner1" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -25.1569, 1.5, -13.8787)
+use_collision = true
+size = Vector3(7, 4, 10)
+material = SubResource("StandardMaterial3D_a0xm6")
+
+[node name="corner2" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -25.1569, 1.5, 13.1213)
+use_collision = true
+size = Vector3(7, 4, 10)
+material = SubResource("StandardMaterial3D_a0xm6")
+
+[node name="corner3" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 24.8431, 1.5, 13.1213)
+use_collision = true
+size = Vector3(7, 4, 10)
+material = SubResource("StandardMaterial3D_a0xm6")
+
+[node name="corner4" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 24.8431, 1.5, -13.8787)
+use_collision = true
+size = Vector3(7, 4, 10)
+material = SubResource("StandardMaterial3D_a0xm6")
+
 [node name="wall1" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.5, 1, 0)
 use_collision = true
@@ -288,27 +334,27 @@ spot_attenuation = 1.51
 spot_angle = 51.7466
 
 [node name="SpotLight3D2" type="SpotLight3D" parent="SubViewportContainer/SubViewport/visual_"]
-transform = Transform3D(0.882882, -2.05266e-08, 0.469595, -0.469595, -3.8592e-08, 0.882882, 0, -1, -4.37114e-08, 30, 22.6588, 0)
+transform = Transform3D(0.974339, -9.83887e-09, 0.225087, -0.225087, -4.25897e-08, 0.974339, 7.68129e-16, -1, -4.37114e-08, 26, 22.6588, 0)
 light_color = Color(10.76, 10.761, 8.421, 1)
 light_energy = 1.462
 light_indirect_energy = 2.518
 light_bake_mode = 1
-spot_range = 36.0027
+spot_range = 30.0
 spot_attenuation = 1.51
-spot_angle = 17.4622
+spot_angle = 29.1541
 
 [node name="SpotLight3D3" type="SpotLight3D" parent="SubViewportContainer/SubViewport/visual_"]
-transform = Transform3D(-0.882882, 1.07949e-07, -0.469595, -0.469595, -3.8592e-08, 0.882882, 7.7184e-08, 1, 8.47647e-08, -30, 22.6588, 0)
+transform = Transform3D(-0.974339, 9.42827e-08, -0.225087, -0.225087, -6.52161e-08, 0.974339, 7.7184e-08, 1, 8.47644e-08, -26, 22.6588, 0)
 light_color = Color(10.76, 10.761, 8.421, 1)
 light_energy = 1.462
 light_indirect_energy = 2.518
 light_bake_mode = 1
-spot_range = 36.0027
+spot_range = 30.0
 spot_attenuation = 1.51
-spot_angle = 17.772
+spot_angle = 27.1214
 
 [node name="cammie" type="Camera3D" parent="SubViewportContainer/SubViewport/visual_"]
-transform = Transform3D(1, 0, 0, 0, 0.0871557, 0.996195, 0, -0.996195, 0.0871557, 0, 43.5001, 7.7996)
+transform = Transform3D(1, 0, 0, 0, 0.0871557, 0.996195, 0, -0.996195, 0.0871557, 0, 46.5001, 5.7996)
 current = true
 fov = 55.0
 size = 40.0
@@ -320,12 +366,17 @@ mesh = SubResource("QuadMesh_fknp4")
 
 [node name="LightmapGI" type="LightmapGI" parent="SubViewportContainer/SubViewport/visual_"]
 
-[node name="grindwheel" parent="SubViewportContainer/SubViewport" groups=["Player"] instance=ExtResource("1_rhsjv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 10)
+[node name="Node3D" type="Node3D" parent="SubViewportContainer/SubViewport/visual_"]
+
+[node name="cam_location_game" type="Node3D" parent="SubViewportContainer/SubViewport/visual_"]
+transform = Transform3D(1, 0, 0, 0, 0.0871557, 0.996195, 0, -0.996195, 0.0871557, 0, 46.5001, 5.7996)
+
+[node name="grindwheel" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_rhsjv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 10)
 data = SubResource("Resource_enpb8")
 
 [node name="opponent_wheel" parent="SubViewportContainer/SubViewport" instance=ExtResource("13_5uvjd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -11)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 47, -7)
 stats = SubResource("Resource_bgu1x")
 
 [node name="gui" type="Control" parent="."]
@@ -337,23 +388,86 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_chc5c")
 
-[node name="Label" type="Label" parent="gui"]
+[node name="death" type="Control" parent="gui"]
+visible = false
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 248.0
-offset_top = -72.0
-offset_right = 288.0
-offset_bottom = -49.0
 grow_horizontal = 2
-grow_vertical = 0
-text = "test
-"
+grow_vertical = 2
 
-[node name="Stability Gauge" type="Label" parent="gui"]
+[node name="ColorRect" type="ColorRect" parent="gui/death"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0509804, 0.0705882, 0.00784314, 0.6)
+
+[node name="flavortext" type="Label" parent="gui/death"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = -39.0
+offset_right = 420.0
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("13_28tee")
+theme_override_colors/font_color = Color(0.776471, 0, 0.376471, 1)
+theme_override_font_sizes/font_size = 20
+text = ":: YOU HAVE DIED ::
+
+the mists of god will take you away"
+horizontal_alignment = 1
+
+[node name="flash timer" type="Timer" parent="gui/death"]
+
+[node name="arena_gui" type="Control" parent="gui"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="round_counter" type="Label" parent="gui/arena_gui"]
+visible = false
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 40.0
+offset_top = -12.0
+offset_right = 108.0
+offset_bottom = 11.0
+grow_vertical = 2
+text = "ROUND: "
+
+[node name="boss_health" type="ProgressBar" parent="gui/arena_gui"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -232.0
+offset_top = 16.0
+offset_right = 232.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_lj0ri")
+theme_override_styles/fill = SubResource("StyleBoxFlat_hmy5f")
+max_value = 1000.0
+step = 1.0
+value = 500.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="gui/arena_gui"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -361,17 +475,37 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = -17.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("13_28tee")
+theme_override_colors/font_color = Color(0.0705882, 0.65098, 0.490196, 1)
+text = "test
+"
+horizontal_alignment = 3
+vertical_alignment = 1
+
+[node name="Stability Gauge" type="Label" parent="gui/arena_gui"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -62.0
 offset_top = -72.0
-offset_right = 36.0
+offset_right = 58.0
 offset_bottom = -49.0
 grow_horizontal = 2
 grow_vertical = 0
-theme = SubResource("Theme_0xnvr")
+theme = ExtResource("13_28tee")
 theme_override_colors/font_color = Color(1, 0.847059, 0, 1)
 text = "STABILITY:
 "
 
-[node name="spin_meter" type="TextureProgressBar" parent="gui"]
+[node name="spin_meter" type="TextureProgressBar" parent="gui/arena_gui"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -385,13 +519,13 @@ offset_bottom = -80.0
 grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(1.83675, 1.83675)
-max_value = 1100.0
-value = 650.0
+max_value = 800.0
+value = 460.0
 rounded = true
 texture_under = ExtResource("2_7qsjr")
 texture_progress = ExtResource("3_bmkgg")
 
-[node name="Panel" type="Panel" parent="gui"]
+[node name="Panel" type="Panel" parent="gui/arena_gui"]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -406,7 +540,7 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="boss_health" type="ProgressBar" parent="gui/Panel"]
+[node name="boss_health" type="ProgressBar" parent="gui/arena_gui/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -415,7 +549,31 @@ grow_horizontal = 2
 grow_vertical = 2
 value = 100.0
 
+[node name="title_screen" type="Control" parent="gui"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="gui/title_screen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.237347, 1.96133e-06, 0.160834, 0.384314)
+
+[connection signal="call_death_screen" from="." to="gui" method="_on_grindwheel_die"]
+[connection signal="bumped" from="SubViewportContainer/SubViewport/grindwheel" to="." method="_on_player_bumped"]
 [connection signal="charge_spent" from="SubViewportContainer/SubViewport/grindwheel" to="gui" method="_on_grindwheel_charge_spent"]
 [connection signal="die" from="SubViewportContainer/SubViewport/grindwheel" to="." method="_on_grindwheel_die"]
+[connection signal="saw_damage" from="SubViewportContainer/SubViewport/grindwheel" to="SubViewportContainer/SubViewport/opponent_wheel" method="_on_grindwheel_saw_damage"]
 [connection signal="update_spin" from="SubViewportContainer/SubViewport/grindwheel" to="gui" method="_on_grindwheel_update_spin"]
 [connection signal="update_stability" from="SubViewportContainer/SubViewport/grindwheel" to="gui" method="_on_wheel_update_stability"]
+[connection signal="boss_death" from="SubViewportContainer/SubViewport/opponent_wheel" to="." method="_on_opponent_wheel_boss_death"]
+[connection signal="update_health" from="SubViewportContainer/SubViewport/opponent_wheel" to="gui" method="_on_bossl_update_health"]
+[connection signal="timeout" from="gui/death/flash timer" to="gui" method="_on_flash_timer_timeout"]

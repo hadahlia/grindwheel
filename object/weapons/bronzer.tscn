@@ -1,14 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://bjkmyvklh5di"]
+[gd_scene load_steps=5 format=3 uid="uid://bjkmyvklh5di"]
 
 [ext_resource type="PackedScene" uid="uid://blxvmgjpkmdsj" path="res://object/weapons/saw_blade.glb" id="1_ia6s5"]
+[ext_resource type="Texture2D" uid="uid://eg8ttngy7wrg" path="res://sprite/env/Metal_01_Grey_1.png" id="2_o5ra5"]
+[ext_resource type="Texture2D" uid="uid://d2bfrp475pf5g" path="res://sprite/env/test_slice.png" id="3_iace7"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i4jne"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_biwst"]
 albedo_color = Color(0.4, 0.22, 0.1, 1)
-metallic = 0.75
-metallic_specular = 0.26
-roughness = 0.89
+albedo_texture = ExtResource("2_o5ra5")
+metallic = 1.0
+metallic_specular = 0.7
+metallic_texture = ExtResource("3_iace7")
+roughness = 0.38
 
 [node name="saw_blade2" instance=ExtResource("1_ia6s5")]
 
 [node name="saw_blade" parent="." index="0"]
-material_override = SubResource("StandardMaterial3D_i4jne")
+material_override = SubResource("StandardMaterial3D_biwst")

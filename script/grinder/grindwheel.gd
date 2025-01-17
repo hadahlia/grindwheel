@@ -7,6 +7,9 @@ signal charge_spent
 signal update_spin
 signal update_stability
 signal die
+
+signal saw_damage
+signal bumped
 #@onready var gui_hook : Control = get_
 
 var explosion_scene : PackedScene = preload("res://scenes/vfx/deathsplosion.tscn")
@@ -26,6 +29,8 @@ var explosion_scene : PackedScene = preload("res://scenes/vfx/deathsplosion.tscn
 # --- timers ---
 @onready var _dash_recharge = $_dash_recharge
 @onready var _spin_charge = $_spin_charge
+@onready var _invuln_timer = $_invuln_timer
+@onready var _stun_timer = $_stun_timer
 
 
 @export var data : WheelStats
@@ -44,11 +49,13 @@ var _dash_lvl : int = 0
 var _dir : Vector3 = Vector3.ZERO
 
 var _stability : int
-var _spin_meter : float = 650
-var _spin_scalar : float = -20
-var _max_spin_meter : float = 1100
+var _spin_meter : float = 460
+var _spin_decay : float = 0
+var _spin_scalar : float = -12
+var _max_spin_meter : float = 800
 #var _max_stability : int
-
+var _saw_dmg : float
+var _invuln : bool = false
 
 #var fall_speed : float = 75
 var friction : float = -16
@@ -62,48 +69,34 @@ func _ready():
 		_dash_charges = data.dash_max_charge
 		_dash_recharge.wait_time = data.dash_cooldown
 		_stability = data.stability
-		#charge_spent.emit(_dash_charges)
-	#charge_spent.emit(_dash_charges)
-	#if gui:
-		#gui.
-		#gui_hook = get_node(gui_path)
+		_saw_dmg = data.damage
 		
 	wheel_sfx.stream = data.bump_sound
-	#_dash_timer.set_one_shot(true)
-	#add_child(_dash_timer)
-	#charge_spent.emit(_dash_charges)
-	#update_stability.emit(_stability)
 
 func _spinny():
-	
-	spin_root.rotation.y += data.rot_speed * _stability
-	blade_root.rotation.y -= data.rot_speed * data.damage
-	#print("rot: " + str(spin_root.rotation.y) + "deg: " + str(arrow_g.rotation_degrees.y))
-	#if spin_root.get_rotation_degrees() < -90:
-		#spin_root.set_rotation_degrees(360)
-	#arrow_g.rotation.y = atan2(velocity.x,velocity.z)
-	#if arrow_g. != self.position + Vector3(_input.x, 0, _input.y):
-	#if _dir > 0.1:
-	#if _dir.length() > 0:
-	#arrow_g.look_at(self.position + _dir, Vector3.UP)
-	#arrow_g.rotation.y = velocity.
+	spin_root.rotation.y += (data.rot_speed * _stability)
+	blade_root.rotation.y += _stability * 0.5 #+ data.damage)
+
 	if velocity == Vector3.ZERO: return
 	safe_look_at(dir_pointer, self.position + _dir)
 	safe_look_at(arrow_g, self.position + velocity)
 
 func _physics_process(delta):
-	if _spin_meter <= 0 or _spin_meter >= _max_spin_meter:
+	if _spin_meter <= 40 or _spin_meter >= 780:
 		_take_damage()
-	if is_on_floor():
+		_spin_meter = 460
+	
+	if is_on_floor() and Globals.can_move:
 		get_input()
 		apply_friction(delta)
-		_spin_meter += _spin_scalar * delta 
+		_spin_meter += _spin_scalar * delta
+		#_spin_meter -= _spin_decay * delta
 		update_spin.emit(_spin_meter)
-		#velocity.y -= fall_speed * delta
+	
 	acceleration.y = _grav
 	_spinny()
-	#if !_dashing:
-	if velocity.length() < 21:
+	
+	if velocity.length() < 26:
 		wheel_sfx.pitch_scale = 1 + randf_range(-0.35, 0.35)
 		velocity += acceleration * delta
 		#move_and_collide(velocity * delta)
@@ -112,51 +105,43 @@ func _physics_process(delta):
 			dir_pointer.show()
 			_dashing = false
 			
-			
 	else:
 		var col = move_and_collide(velocity * delta)
 		if col:
-			_take_damage()
+			#_take_damage()
 			#_death()
 			wheel_sfx.play()
 			wheel_sfx.pitch_scale += 0.2
-			#data.bump_sound.play()
 			velocity *= 0.68
 			velocity = velocity.bounce(col.get_normal()) #* randf_range(0.85, 1.15)
 			
 			_dash_speed -= 10
+			
 			if _dash_speed <= 40:
-				#_dash_speed = _dash_max_speed
 				dir_pointer.show()
 				_dashing = false
 				
-			
 			print("dash speed " + str(_dash_speed))
-	#print("accel: " + str(acceleration))
-	#move_and_collide(velocity * delta)
 
 func _input(_event):
 	if _dashing or _dir == Vector3.ZERO: return
+	
 	if Input.is_action_just_pressed("Spin Dash"):
 		_dash_lvl = 0
-		_spin_scalar = 25
+		_spin_scalar = 60
 		lvl_sfx.pitch_scale = randf_range(1, 1.2)
+		
+		_move_speed = 4
+		
+	
+	if Input.is_action_pressed("Spin Dash"):
 		if _spin_charge.is_stopped():
 			_spin_charge.start()
-	if Input.is_action_pressed("Spin Dash"):
-		#if _spin_charge.is_stopped():
 		
-		#_spin_meter += _spin_scalar
-			#_spin_charge.start()
-		_move_speed = 4
-			#friction = -32
-		#_dash_lvl += 1
-	if Input.is_action_just_released("Spin Dash"):#&& _can_dash:
-		#if _dash_charges == 0:
-			#_dash_lvl = 0
-		_spin_scalar = -20
+	
+	if Input.is_action_just_released("Spin Dash"):
+		_spin_scalar = -12
 		_move_speed = data._movespeed
-		#if !_spin_charge.is_stopped():
 		_spin_charge.stop()
 		match _dash_lvl:
 			0:
@@ -177,11 +162,10 @@ func _input(_event):
 		
 		if _dash_recharge.is_stopped():
 			_dash_recharge.start()
+		
 		charge_spent.emit(_dash_charges)
 		velocity = _dir * _dash_speed
-		#await(get_tree().create_timer())
-		#acceleration.x = _input_vector.x * _dash_speed
-		#acceleration.z = _input_vector.y * _dash_speed
+		
 
 func apply_friction(delta):
 	if velocity.length() < 0.1 and acceleration.length() < 0.1:
@@ -203,12 +187,26 @@ func get_input():
 	acceleration = _dir * _move_speed
 	#velocity = _dir * t_speed
 
+# this is take spin damage
+func _set_spin_damage(dmg_val: float) -> void:
+	#_spin_decay = dmg_val
+	#_spin_scalar
+	if _invuln: return
+	_spin_meter -= dmg_val
+	_start_invuln()
+
+# take stability damage
 func _take_damage():
 	stability_sfx.play()
 	_stability -= 1
 	update_stability.emit(_stability)
+	_start_invuln()
 	if _stability <= 0: 
 		_death()
+
+func _start_invuln():
+	_invuln = true
+	_invuln_timer.start()
 
 func _death():
 	#var exp := explosion_scene.instantiate()
@@ -256,3 +254,50 @@ func _on__spin_charge_timeout():
 	lvl_sfx.play()      
 	_dash_lvl += 1
 	print("charge proc: ", _dash_lvl)
+
+
+#func _on_hitbox_area_entered(area):
+	#if area is BossWheel:
+	#_take_damage()
+	#area.get_parent()
+	#if area == get_tree().get_first_node_in_group("BossEnem"):
+		#pass
+	#_take_spin_damage()
+
+
+func _on_opponent_wheel_output_damage(dmg_val: float, in_vel: Vector3) -> void:
+	#velocity *= -1
+	var vel_calc : float = abs(in_vel.x) + abs(in_vel.z)
+	if velocity < in_vel:
+		vel_calc *= 1.8
+	#var compare_vel := velocity 
+		#* 0.5
+	dmg_val += vel_calc
+	#var vel_cz : float = in_vel.z
+	#dmg_val *= 
+	_set_spin_damage(dmg_val)
+
+
+func _on_killsaw_area_entered(area):
+	saw_damage.emit(_saw_dmg)
+
+
+func _on_killsaw_area_exited(area):
+	saw_damage.emit(0)
+
+
+func _on_bump_radius_body_entered(body):
+	if body is BossWheel:
+		#print("body is bosswheel")
+		bumped.emit(self.velocity, body.velocity, body._dmg)
+	#else:
+		#print("body not bosswheel :c")
+
+
+func _on__invuln_timer_timeout():
+	_invuln = false
+
+
+func _on__stun_timer_timeout():
+	Globals.can_move = true
+	#velocity = Vector3.ZERO

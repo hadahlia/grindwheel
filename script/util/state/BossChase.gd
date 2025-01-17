@@ -12,7 +12,7 @@ func physics_update(_dt: float):
 	if !player or !enem: return
 	var dir = player.global_position - enem.global_position
 	#print(str(dir))
-	if dir.length() > 5:
+	if dir.length() > 8 and enem.is_on_floor():
 		enem.set_direction(dir)
 		#enem.velocity = dir.normalized() * move_speed
 	else:
