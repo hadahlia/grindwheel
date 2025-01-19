@@ -59,6 +59,7 @@ folder_colors={
 BossEnem="entities belonging to boss enemy group"
 Player="belonging to global Player group"
 SparkleCursor=""
+Portal=""
 
 [importer_defaults]
 

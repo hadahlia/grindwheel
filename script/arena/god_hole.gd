@@ -5,7 +5,7 @@ signal trans_level
 
 func teleport():
 	trans_level.emit()
-	queue_free()
+	#queue_free()
 	#Globals.RoundCount += 1
 
 

@@ -1,0 +1,14 @@
+[gd_resource type="VisualShader" load_steps=2 format=3 uid="uid://dwxtvwdctiyrm"]
+
+[sub_resource type="VisualShaderNodeBooleanConstant" id="VisualShaderNodeBooleanConstant_74ke3"]
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+
+"
+graph_offset = Vector2(-498.295, 20.8661)
+nodes/fragment/2/node = SubResource("VisualShaderNodeBooleanConstant_74ke3")
+nodes/fragment/2/position = Vector2(-300, 360)

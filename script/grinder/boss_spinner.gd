@@ -21,7 +21,7 @@ signal boss_death
 @onready var boss_slice_sfx = $weapon/boss_slice_sfx
 
 var _grav : float = -20
-var friction : float = -9
+var friction : float = -24
 var _dmg : float
 
 var wish_dir : Vector3 = Vector3.ZERO
@@ -72,7 +72,7 @@ func _physics_process(delta):
 			wheel_sfx.play()
 			wheel_sfx.pitch_scale += 0.2
 			#data.bump_sound.play()
-			velocity *= 0.68
+			velocity *= 0.48
 			velocity = velocity.bounce(col.get_normal()) #* randf_range(0.85, 1.15)
 
 func apply_friction(delta):

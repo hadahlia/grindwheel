@@ -14,11 +14,13 @@ signal bumped
 
 var explosion_scene : PackedScene = preload("res://scenes/vfx/deathsplosion.tscn")
 
-@onready var spin_root = $spin_root
-@onready var blade_root = $spinner_blade
+@onready var mesh_body = $mesh_body
 
-@onready var arrow_g = $arrow_pointer
-@onready var dir_pointer = $dir_pointer
+@onready var spin_root = $mesh_body/spin_root
+@onready var blade_root = $mesh_body/spinner_blade
+
+#@onready var arrow_g = $arrow_pointer
+#@onready var dir_pointer = $dir_pointer
 
 # SOUNDS
 @onready var wheel_sfx = $wheel_sfx
@@ -59,7 +61,7 @@ var _saw_dmg : float
 var _invuln : bool = false
 
 #var fall_speed : float = 75
-var friction : float = -16
+var friction : float = -24
 
 var acceleration : Vector3 = Vector3.ZERO
 #var deceleration : float = 10
@@ -77,10 +79,11 @@ func _ready():
 func _spinny():
 	spin_root.rotation.y += (data.rot_speed * _stability)
 	blade_root.rotation.y += _stability * 0.5 #+ data.damage)
-
+	
 	if velocity == Vector3.ZERO: return
-	safe_look_at(dir_pointer, self.position + _dir)
-	safe_look_at(arrow_g, self.position + velocity)
+	safe_look_at(mesh_body, self.position + _dir.normalized())
+	#safe_look_at(dir_pointer, self.position + _dir)
+	#safe_look_at(arrow_g, self.position + velocity)
 
 func _physics_process(delta):
 	if _spin_meter <= 40 or _spin_meter >= 780:
@@ -103,7 +106,7 @@ func _physics_process(delta):
 		#move_and_collide(velocity * delta)
 		move_and_slide()
 		if _dashing:
-			dir_pointer.show()
+			#dir_pointer.show()
 			_dashing = false
 			
 	else:
@@ -113,13 +116,13 @@ func _physics_process(delta):
 			#_death()
 			wheel_sfx.play()
 			wheel_sfx.pitch_scale += 0.2
-			velocity *= 0.68
+			velocity *= 0.48
 			velocity = velocity.bounce(col.get_normal()) #* randf_range(0.85, 1.15)
 			
 			_dash_speed -= 10
 			
 			if _dash_speed <= 40:
-				dir_pointer.show()
+				#dir_pointer.show()
 				_dashing = false
 				
 			print("dash speed " + str(_dash_speed))
@@ -158,7 +161,7 @@ func _input(_event):
 		_dash_lvl = 0
 		
 		_dashing = true
-		dir_pointer.hide()
+		#dir_pointer.hide()
 		
 		if _dash_recharge.is_stopped():
 			_dash_recharge.start()

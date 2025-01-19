@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://x0c0k7wt1t8u"]
+[gd_scene load_steps=22 format=3 uid="uid://x0c0k7wt1t8u"]
 
 [ext_resource type="Script" path="res://script/grinder/grindwheel.gd" id="1_uw4wv"]
 [ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="2_gd5nx"]
@@ -8,13 +8,14 @@
 [ext_resource type="AudioStream" uid="uid://o25xxxjad6xe" path="res://audio/sfx/lvlup.mp3" id="5_8q7xo"]
 [ext_resource type="PackedScene" uid="uid://bjkmyvklh5di" path="res://object/weapons/bronzer.tscn" id="5_im651"]
 [ext_resource type="AudioStream" uid="uid://be7a3kjxdenkm" path="res://audio/sfx/twirler.wav" id="5_qcflb"]
+[ext_resource type="Texture2D" uid="uid://cl5ihqprbu6kr" path="res://sprite/env/Horror_Wall_09-128x128.png" id="6_qewsk"]
 [ext_resource type="AudioStream" uid="uid://dsc4lj3vbtiwd" path="res://audio/sfx/newer/hit_danger.mp3" id="7_5yyiu"]
 [ext_resource type="AudioStream" uid="uid://1gny76thsd0v" path="res://audio/sfx/stable_down.mp3" id="9_511sw"]
 
 [sub_resource type="Resource" id="Resource_e6243"]
 script = ExtResource("2_gd5nx")
 dash_cooldown = 8
-_movespeed = 12.0
+_movespeed = 16.0
 damage = 40.0
 rot_speed = 10.0
 stability = 10
@@ -26,6 +27,14 @@ hit_sound = ExtResource("7_5yyiu")
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_yti04"]
 height = 1.17485
 radius = 1.46038
+
+[sub_resource type="PrismMesh" id="PrismMesh_cpkab"]
+size = Vector3(2, 3, 0.75)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m7x28"]
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+albedo_texture = ExtResource("6_qewsk")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_88tdg"]
 albedo_color = Color(0.192675, 0.1869, 0.21, 1)
@@ -62,36 +71,45 @@ data = SubResource("Resource_e6243")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.576487, 0)
 shape = SubResource("CylinderShape3D_yti04")
 
-[node name="spin_root" type="Node3D" parent="."]
+[node name="mesh_body" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 0, 0)
 
-[node name="CSGTorus3D" type="CSGTorus3D" parent="spin_root"]
+[node name="Thorn" type="CSGMesh3D" parent="mesh_body"]
+transform = Transform3D(1, 0, 0, 0, 0.573576, 0.819152, 0, -0.819152, 0.573576, 0, 1.2, -1.7)
+mesh = SubResource("PrismMesh_cpkab")
+material = SubResource("StandardMaterial3D_m7x28")
+
+[node name="spin_root" type="Node3D" parent="mesh_body"]
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="mesh_body/spin_root"]
 transform = Transform3D(1, 0, 0, 0, 0.999211, -0.0397132, 0, 0.0397132, 0.999211, 0, 0.72968, -0.0184461)
 inner_radius = 0.27
 outer_radius = 1.64
 smooth_faces = false
 material = SubResource("StandardMaterial3D_88tdg")
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="spin_root"]
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="mesh_body/spin_root"]
 transform = Transform3D(1, 0, 0, 0, 0.999211, -0.0397132, 0, 0.0397132, 0.999211, 0, 2.01306, 0.0355355)
 radius = 0.110892
 height = 2.46236
 material = SubResource("StandardMaterial3D_6eyht")
 
-[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="spin_root"]
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="mesh_body/spin_root"]
 transform = Transform3D(1, 0, 0, 0, 0.999211, -0.0397132, 0, 0.0397132, 0.999211, 0, 0.688982, -0.0170895)
 radius = 1.0
 height = 1.61994
 material = SubResource("StandardMaterial3D_ciyip")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="spin_root"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="mesh_body/spin_root"]
 
-[node name="spinner_blade" type="Node3D" parent="."]
+[node name="spinner_blade" type="Node3D" parent="mesh_body"]
 
-[node name="saw_blade3" parent="spinner_blade" instance=ExtResource("5_im651")]
+[node name="saw_blade3" parent="mesh_body/spinner_blade" instance=ExtResource("5_im651")]
 transform = Transform3D(18, 0, 0, 0, 17.9855, -0.722373, 0, 0.722373, 17.9855, 0, 0.935507, 0)
 
 [node name="arrow_pointer" type="Node3D" parent="."]
 rotation_edit_mode = 2
+visible = false
 
 [node name="Sprite3D" type="Sprite3D" parent="arrow_pointer"]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 0.250431, -3.07736)
@@ -103,6 +121,7 @@ texture = ExtResource("3_ncc8r")
 
 [node name="dir_pointer" type="Node3D" parent="."]
 rotation_edit_mode = 2
+visible = false
 
 [node name="Sprite3D" type="Sprite3D" parent="dir_pointer"]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 0.636051, -3.07736)

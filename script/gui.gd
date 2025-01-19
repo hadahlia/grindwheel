@@ -1,5 +1,7 @@
 extends Control
 
+signal cleanup
+
 @onready var arena_gui = $arena_gui
 @onready var round_counter = $arena_gui/round_counter
 @onready var boss_health = $arena_gui/boss_health
@@ -75,8 +77,14 @@ func _on_flash_timer_timeout():
 
 func _on_mach_arena_call_fade():
 	fade_anim.play("fade_in")
+	
 
 
 func _on_mach_arena_fade_out():
 	fade_anim.play("fade_trans")
 	post_ready()
+
+
+func _on_animation_player_animation_finished(anim_name):
+	if anim_name == "fade_in":
+		cleanup.emit()

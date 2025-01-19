@@ -43,7 +43,7 @@ func _ready():
 	_get_spinner_reference()
 
 func _physics_process(_delta):
-	if !cursor_ref: return
+	if !cursor_ref : return
 	#var mousepos = get_viewport().get_mouse_position()
 	Globals.MousePos = get_viewport().get_mouse_position()
 	
@@ -52,8 +52,8 @@ func _physics_process(_delta):
 	if raycast:
 		Globals.RayPos = raycast.position
 		cursor_ref.global_position = raycast.position
-		if player_ref:
-			player_ref.look_at(Vector3(raycast.position.x, -1, raycast.position.z), Vector3.UP)
+		#if abs(raycast.position.length() - player_ref.global_position.length()) > 2:
+			#player_ref.look_at(Vector3(raycast.position.x, -0.8, raycast.position.z), Vector3.UP)
 	else:
 		Globals.RayPos = Vector3.ZERO
 		cursor_ref.global_position = Globals.OOB_POSITION
@@ -119,6 +119,7 @@ func _on_trans_level():
 func _get_spinner_reference():
 	#player_ref = get_node(player_ref_path)
 	#boss_ref = get_node(boss_ref_path)
+	
 	player_ref = get_tree().get_first_node_in_group("Player")
 	boss_ref = get_tree().get_first_node_in_group("BossEnem")
 	#gui.post_ready()
@@ -182,4 +183,21 @@ func _on_player_bumped(player_vel: Vector3, boss_vel: Vector3, _boss_dmg: float)
 	#boss_vel *= vel_diff.normalized()
 	#player_ref._take_damage()
 	player_ref.velocity = boss_vel * 1.2#* vel_diff * 0.5
-	boss_ref.velocity = player_vel * 0.8 #* vel_diff * 0.5
+	boss_ref.velocity = player_vel #* 0.8 #* vel_diff * 0.5
+
+func destroy_actors():
+	var pp = get_tree().get_first_node_in_group("Player")
+	#var bp = get_tree().get_first_node_in_group("BossEnem")
+	var hole = get_tree().get_first_node_in_group("Portal")
+	
+	if pp and hole:
+		pp.queue_free()
+		hole.queue_free()
+
+func _on_gui_cleanup():
+	destroy_actors()
+	await get_tree().create_timer(1.0).timeout
+	
+	#await get_tree().create_timer(2.0).timeout
+	_start_round()
+	_get_spinner_reference()
