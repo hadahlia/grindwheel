@@ -40,17 +40,25 @@ const BASEDMG : float = 4
 func _ready():
 	_start_round()
 	cursor_ref = get_tree().get_first_node_in_group("SparkleCursor")
-	#_get_spinner_reference()
+	_get_spinner_reference()
 
 func _physics_process(_delta):
 	if !cursor_ref: return
-	var mousepos = get_viewport().get_mouse_position()
+	#var mousepos = get_viewport().get_mouse_position()
+	Globals.MousePos = get_viewport().get_mouse_position()
 	
-	var raycast = raycast_from_mouse(mousepos, 1)
+	var raycast = raycast_from_mouse(Globals.MousePos, 1)
+	
 	if raycast:
+		Globals.RayPos = raycast.position
 		cursor_ref.global_position = raycast.position
+		if player_ref:
+			player_ref.look_at(Vector3(raycast.position.x, -1, raycast.position.z), Vector3.UP)
 	else:
+		Globals.RayPos = Vector3.ZERO
 		cursor_ref.global_position = Globals.OOB_POSITION
+	
+	
 
 func raycast_from_mouse(m_pos, collision_mask):
 	var ray_start = cammie.project_ray_origin(m_pos)
@@ -84,6 +92,7 @@ func spawn_player():
 	var p := player_scene.instantiate()
 	p.bumped.connect(_on_player_bumped)
 	p.die.connect(_on_grindwheel_die)
+	#p.charge_spent()
 	true_arena.add_child(p)
 	p.global_position = player_pos_start.global_position
 
@@ -115,6 +124,7 @@ func _get_spinner_reference():
 	#gui.post_ready()
 
 func _on_grindwheel_die(pos: Vector3) -> void:
+	cursor_ref.queue_free()
 	spawn_explosion(pos)
 	call_death_screen.emit()
 

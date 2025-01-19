@@ -132,13 +132,12 @@ func _input(_event):
 		_spin_scalar = 60
 		lvl_sfx.pitch_scale = randf_range(1, 1.2)
 		
-		_move_speed = 4
+		_move_speed = 0
 		
 	
 	if Input.is_action_pressed("Spin Dash"):
 		if _spin_charge.is_stopped():
 			_spin_charge.start()
-		
 	
 	if Input.is_action_just_released("Spin Dash"):
 		_spin_scalar = -12
@@ -165,7 +164,7 @@ func _input(_event):
 			_dash_recharge.start()
 		
 		charge_spent.emit(_dash_charges)
-		velocity = _dir * _dash_speed
+		velocity = _dir.normalized() * _dash_speed
 		
 
 func apply_friction(delta):
@@ -181,11 +180,17 @@ func get_input():
 	
 	#var t_speed = _move_speed * delta
 	acceleration = Vector3.ZERO
-	_input_vector = Input.get_vector("Left", "Right", "Up", "Down")
+	#_input_vector = Input.get_vector("Left", "Right", "Up", "Down")
+	#_input_vector = Input.get_vector(Globals.RayPos.x, Globals.RayPos.z)
+	var _fuck_name : Vector3 = Globals.RayPos - self.global_position
 	
-	_dir = Vector3(_input_vector.x, 0, _input_vector.y)#.rotated(Vector3.UP, cam.rotation.z)
+	_dir = Vector3(_fuck_name.x, 0, _fuck_name.z)#.rotated(Vector3.UP, cam.rotation.z)
+	#if Globals.RayPos > Vector3.ZERO:
+		#_dir = Globals.RayPos - self.global_position
+	#else:
+		#_dir = self.global_position
 	
-	acceleration = _dir * _move_speed
+	acceleration = _dir.normalized() * _move_speed
 	#velocity = _dir * t_speed
 
 # this is take spin damage

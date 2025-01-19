@@ -16,7 +16,7 @@ config/description="gamey game game. mode 7 target snes like
 config/version="0.1a"
 run/main_scene="res://scenes/mach_arena.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
-run/max_fps=120
+run/max_fps=300
 config/icon="res://icon.svg"
 
 [autoload]

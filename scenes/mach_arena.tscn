@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://cau0atwkvl67f"]
+[gd_scene load_steps=39 format=3 uid="uid://cau0atwkvl67f"]
 
 [ext_resource type="Script" path="res://script/arena/mach_arena.gd" id="1_lwp4d"]
 [ext_resource type="Texture2D" uid="uid://cvbxjk0rh5p8k" path="res://sprite/gui/frame1.png" id="2_7qsjr"]
@@ -56,6 +56,18 @@ uv1_scale = Vector3(5, 5, 5)
 [sub_resource type="PlaneMesh" id="PlaneMesh_k002f"]
 material = SubResource("StandardMaterial3D_u3s1c")
 size = Vector2(50, 28)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wu6up"]
+transparency = 4
+albedo_color = Color(0.586, 0.531, 0.24, 0)
+metallic = 0.77
+metallic_specular = 0.29
+roughness = 0.81
+uv1_scale = Vector3(5, 5, 5)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_cetr6"]
+material = SubResource("StandardMaterial3D_wu6up")
+size = Vector2(100, 100)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a0xm6"]
 albedo_color = Color(0.0538333, 0.17, 0.0306, 1)
@@ -294,6 +306,11 @@ quality = 2
 [node name="floor" type="CSGMesh3D" parent="SubViewportContainer/SubViewport/true_arena/map_geo/pool_table"]
 use_collision = true
 mesh = SubResource("PlaneMesh_k002f")
+
+[node name="mega_floor" type="CSGMesh3D" parent="SubViewportContainer/SubViewport/true_arena/map_geo/pool_table"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+use_collision = true
+mesh = SubResource("PlaneMesh_cetr6")
 
 [node name="corner1" type="CSGBox3D" parent="SubViewportContainer/SubViewport/true_arena/map_geo/pool_table"]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -25.1569, 1.5, -13.8787)
