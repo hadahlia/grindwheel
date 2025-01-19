@@ -10,6 +10,7 @@ extends Control
 @onready var death = $death
 @onready var flash_timer = $"death/flash timer"
 
+@onready var fade_anim = $fade/AnimationPlayer
 
 #@onready var label = $Label
 #@onready var spin_meter = $spin_meter
@@ -25,11 +26,16 @@ var bossy : BossWheel
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	pass
+
+func post_ready():
 	player = get_tree().get_first_node_in_group("Player")
+	player.charge_spent.connect(_on_grindwheel_charge_spent)
+	player.update_spin.connect(_on_grindwheel_update_spin)
+	player.update_stability.connect(_on_wheel_update_stability)
 	bossy = get_tree().get_first_node_in_group("BossEnem")
+	bossy.update_health.connect(_on_bossl_update_health)
 	boss_health.max_value = bossy._health
-	#plyr.
-	#label.text = "charges: " + str(player._dash_charges) #+ "\n STABILITY: " + str(player._stability) + "\n dash lvl: " + str(player._dash_lvl)#"charges: 3"
 	_on_grindwheel_charge_spent(player._dash_charges)
 	_on_wheel_update_stability(player._stability)
 	_on_bossl_update_health(bossy._health)
@@ -65,3 +71,12 @@ func _on_grindwheel_die():
 
 func _on_flash_timer_timeout():
 	death.visible = !death.visible
+
+
+func _on_mach_arena_call_fade():
+	fade_anim.play("fade_in")
+
+
+func _on_mach_arena_fade_out():
+	fade_anim.play("fade_trans")
+	post_ready()

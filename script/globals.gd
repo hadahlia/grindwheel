@@ -6,3 +6,5 @@ var can_move : bool = true
 
 enum GameState { FIGHT, MENU1, MENU2, WORLDPEACE }
 var superstate = GameState.MENU1
+
+var RoundCount : int = 1

@@ -5,12 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://d2bfrp475pf5g" path="res://sprite/env/test_slice.png" id="3_iace7"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_biwst"]
-albedo_color = Color(0.4, 0.22, 0.1, 1)
+albedo_color = Color(0.158592, 0.0737072, 0.020539, 1)
 albedo_texture = ExtResource("2_o5ra5")
-metallic = 1.0
-metallic_specular = 0.7
+metallic = 0.61
+metallic_specular = 0.62
 metallic_texture = ExtResource("3_iace7")
-roughness = 0.38
+roughness = 0.58
 
 [node name="saw_blade2" instance=ExtResource("1_ia6s5")]
 

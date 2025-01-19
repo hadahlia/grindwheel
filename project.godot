@@ -13,9 +13,10 @@ config_version=5
 config/name="Dianthus"
 config/description="gamey game game. mode 7 target snes like
 "
+config/version="0.1a"
 run/main_scene="res://scenes/mach_arena.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
-run/max_fps=300
+run/max_fps=120
 config/icon="res://icon.svg"
 
 [autoload]
@@ -33,6 +34,8 @@ settings/max_fps=300
 window/size/always_on_top=true
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
+window/physics_ticks_per_second=60
+window/physics_engine="jolt"
 
 [dotnet]
 
@@ -42,6 +45,7 @@ project/assembly_name="spin_jam"
 
 folder_colors={
 "res://audio/": "orange",
+"res://godot-jolt/": "gray",
 "res://object/": "blue",
 "res://resource/": "red",
 "res://scenes/": "green",
@@ -54,6 +58,7 @@ folder_colors={
 
 BossEnem="entities belonging to boss enemy group"
 Player="belonging to global Player group"
+SparkleCursor=""
 
 [importer_defaults]
 
@@ -130,14 +135,16 @@ RotRight={
 
 [physics]
 
-3d/run_on_separate_thread=true
+3d/physics_engine="JoltPhysics3D"
 
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
 global_illumination/gi/use_half_resolution=true
-global_illumination/voxel_gi/quality=1
+shading/overrides/force_vertex_shading=true
+shading/overrides/force_lambert_over_burley=true
+textures/default_filters/use_nearest_mipmap_filter=true
 textures/default_filters/anisotropic_filtering_level=0
 anti_aliasing/screen_space_roughness_limiter/enabled=false
-scaling_3d/mode=2
+scaling_3d/fsr_sharpness=0.0
 textures/mode=2

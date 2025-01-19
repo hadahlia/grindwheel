@@ -16,4 +16,5 @@ extends Resource
 
 @export_group("SFX")
 @export var bump_sound : AudioStream
+@export var hit_sound : AudioStream
 #@export var max_pierce

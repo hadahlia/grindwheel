@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://x0c0k7wt1t8u"]
+[gd_scene load_steps=19 format=3 uid="uid://x0c0k7wt1t8u"]
 
 [ext_resource type="Script" path="res://script/grinder/grindwheel.gd" id="1_uw4wv"]
 [ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="2_gd5nx"]
@@ -8,19 +8,20 @@
 [ext_resource type="AudioStream" uid="uid://o25xxxjad6xe" path="res://audio/sfx/lvlup.mp3" id="5_8q7xo"]
 [ext_resource type="PackedScene" uid="uid://bjkmyvklh5di" path="res://object/weapons/bronzer.tscn" id="5_im651"]
 [ext_resource type="AudioStream" uid="uid://be7a3kjxdenkm" path="res://audio/sfx/twirler.wav" id="5_qcflb"]
+[ext_resource type="AudioStream" uid="uid://dsc4lj3vbtiwd" path="res://audio/sfx/newer/hit_danger.mp3" id="7_5yyiu"]
 [ext_resource type="AudioStream" uid="uid://1gny76thsd0v" path="res://audio/sfx/stable_down.mp3" id="9_511sw"]
 
 [sub_resource type="Resource" id="Resource_e6243"]
-resource_local_to_scene = true
 script = ExtResource("2_gd5nx")
 dash_cooldown = 8
 _movespeed = 12.0
-damage = 5.0
+damage = 40.0
 rot_speed = 10.0
 stability = 10
-dash_max_charge = 4
+dash_max_charge = 6
 health = 2000.0
 bump_sound = ExtResource("2_i25ww")
+hit_sound = ExtResource("7_5yyiu")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_yti04"]
 height = 1.17485
@@ -51,7 +52,7 @@ radius = 2.69406
 radius = 1.5
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_tawae"]
-radius = 1.67418
+radius = 1.89336
 
 [node name="grindwheel" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_uw4wv")
@@ -87,7 +88,7 @@ material = SubResource("StandardMaterial3D_ciyip")
 [node name="spinner_blade" type="Node3D" parent="."]
 
 [node name="saw_blade3" parent="spinner_blade" instance=ExtResource("5_im651")]
-transform = Transform3D(20, 0, 0, 0, 19.9839, -0.802637, 0, 0.802637, 19.9839, 0, 0.935507, 0)
+transform = Transform3D(18, 0, 0, 0, 17.9855, -0.722373, 0, 0.722373, 17.9855, 0, 0.935507, 0)
 
 [node name="arrow_pointer" type="Node3D" parent="."]
 rotation_edit_mode = 2
@@ -134,6 +135,12 @@ shape = SubResource("SphereShape3D_0mvcy")
 volume_db = 2.0
 max_polyphony = 3
 
+[node name="attack_sfx" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("7_5yyiu")
+volume_db = 4.0
+max_distance = 423.72
+max_polyphony = 3
+
 [node name="lvl_sfx" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("5_8q7xo")
 max_polyphony = 3
@@ -143,7 +150,7 @@ stream = ExtResource("5_qcflb")
 volume_db = -5.052
 unit_size = 15.0
 max_db = -1.105
-pitch_scale = 0.37
+pitch_scale = 0.85
 autoplay = true
 max_distance = 80.0
 panning_strength = 1.48

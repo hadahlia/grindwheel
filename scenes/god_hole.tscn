@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://cm403phw2vr7o"]
+
+[ext_resource type="Script" path="res://script/arena/god_hole.gd" id="1_27l7l"]
+[ext_resource type="Texture2D" uid="uid://cxju4yfhsi3q6" path="res://sprite/env/Horror_Floor_07-128x128.png" id="1_ceyct"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hlh73"]
+shading_mode = 0
+albedo_color = Color(0, 0, 0.027451, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c2f75"]
+diffuse_mode = 1
+specular_mode = 1
+albedo_texture = ExtResource("1_ceyct")
+uv1_scale = Vector3(0.135, 0.135, 0.135)
+uv1_triplanar = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x5ouo"]
+size = Vector3(3, 4, 3)
+
+[node name="god_hole" type="Node3D"]
+script = ExtResource("1_27l7l")
+
+[node name="hole" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.051335, 0)
+gi_mode = 0
+radius = 1.31617
+height = 0.270972
+sides = 12
+material = SubResource("StandardMaterial3D_hlh73")
+
+[node name="around" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.175465, 0)
+radius = 2.0
+height = 0.591382
+sides = 12
+material = SubResource("StandardMaterial3D_c2f75")
+
+[node name="hole2" type="CSGCylinder3D" parent="around"]
+gi_mode = 0
+operation = 2
+radius = 1.31617
+height = 4.0
+sides = 12
+material = SubResource("StandardMaterial3D_hlh73")
+
+[node name="trigger" type="Area3D" parent="."]
+monitorable = false
+
+[node name="trig_body" type="CollisionShape3D" parent="trigger"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_x5ouo")
+
+[connection signal="body_shape_entered" from="trigger" to="." method="_on_trigger_body_shape_entered"]

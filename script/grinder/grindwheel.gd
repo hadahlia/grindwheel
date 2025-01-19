@@ -22,6 +22,7 @@ var explosion_scene : PackedScene = preload("res://scenes/vfx/deathsplosion.tscn
 
 # SOUNDS
 @onready var wheel_sfx = $wheel_sfx
+@onready var attack_sfx = $attack_sfx
 @onready var lvl_sfx = $lvl_sfx
 @onready var stability_sfx = $stability_sfx
 @onready var damage_sfx = $damage_sfx
@@ -192,8 +193,10 @@ func _set_spin_damage(dmg_val: float) -> void:
 	#_spin_decay = dmg_val
 	#_spin_scalar
 	if _invuln: return
+	
 	_spin_meter -= dmg_val
 	_start_invuln()
+	#wheel_sfx.stream = data.bump_sound
 
 # take stability damage
 func _take_damage():
@@ -288,6 +291,10 @@ func _on_killsaw_area_exited(area):
 
 func _on_bump_radius_body_entered(body):
 	if body is BossWheel:
+		attack_sfx.play()
+		#wheel_sfx.stream = data.hit_sound
+		#wheel_sfx.play()
+		#wheel_sfx.stream = data.bump_sound
 		#print("body is bosswheel")
 		bumped.emit(self.velocity, body.velocity, body._dmg)
 	#else:

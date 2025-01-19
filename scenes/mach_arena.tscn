@@ -1,21 +1,18 @@
 [gd_scene load_steps=37 format=3 uid="uid://cau0atwkvl67f"]
 
 [ext_resource type="Script" path="res://script/arena/mach_arena.gd" id="1_lwp4d"]
-[ext_resource type="PackedScene" uid="uid://x0c0k7wt1t8u" path="res://scenes/grindwheel.tscn" id="1_rhsjv"]
 [ext_resource type="Texture2D" uid="uid://cvbxjk0rh5p8k" path="res://sprite/gui/frame1.png" id="2_7qsjr"]
 [ext_resource type="Script" path="res://script/gui.gd" id="2_chc5c"]
 [ext_resource type="Shader" path="res://shader/posterize.gdshader" id="2_sm6va"]
 [ext_resource type="Texture2D" uid="uid://dg541j7g66tnq" path="res://sprite/gui/frame2.png" id="3_bmkgg"]
-[ext_resource type="AudioStream" uid="uid://w4jg2q3un5o3" path="res://audio/sfx/bounce.wav" id="4_qqrgs"]
 [ext_resource type="Shader" path="res://shader/aerosky.gdshader" id="5_h8hid"]
 [ext_resource type="Shader" path="res://shader/vignette.gdshader" id="5_lnhxr"]
-[ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="5_m32wb"]
 [ext_resource type="Shader" path="res://shader/high_quality_outline.gdshader" id="5_oxb0f"]
 [ext_resource type="Texture2D" uid="uid://cxju4yfhsi3q6" path="res://sprite/env/Horror_Floor_07-128x128.png" id="6_dyd7g"]
 [ext_resource type="Shader" path="res://shader/blur_sharpen.gdshader" id="6_sikrn"]
 [ext_resource type="Shader" path="res://shader/downscale.gdshader" id="7_wtnmt"]
-[ext_resource type="PackedScene" uid="uid://dnp37a43gamo6" path="res://scenes/opponent_wheel.tscn" id="13_5uvjd"]
 [ext_resource type="Theme" uid="uid://ckg1xrpun5mdw" path="res://sprite/font/label_theme.tres" id="13_28tee"]
+[ext_resource type="Texture2D" uid="uid://d0kqiqdo7t2iy" path="res://sprite/gui/title/dianthus_title.png" id="19_aeia2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fcpmf"]
 shader = ExtResource("6_sikrn")
@@ -26,7 +23,7 @@ shader_parameter/pixel = 1.0
 shader = ExtResource("7_wtnmt")
 shader_parameter/fog_color = Color(0.84, 0.84, 0.84, 1)
 shader_parameter/resolution_downsampling = 1.0
-shader_parameter/bit_depth = 32.0
+shader_parameter/bit_depth = 16.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_10u5f"]
 shader = ExtResource("2_sm6va")
@@ -106,10 +103,6 @@ sky = SubResource("Sky_en7ca")
 ambient_light_sky_contribution = 0.79
 tonemap_exposure = 1.1
 tonemap_white = 1.38
-ssao_enabled = true
-ssil_enabled = true
-sdfgi_enabled = true
-sdfgi_use_occlusion = true
 glow_enabled = true
 glow_strength = 0.7
 glow_blend_mode = 0
@@ -122,47 +115,23 @@ adjustment_saturation = 0.9
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("5_oxb0f")
-shader_parameter/outlineColor = Color(0.07, 0.02639, 0.0077, 1)
+shader_parameter/outlineColor = Color(0, 0, 0, 0.78)
 shader_parameter/depth_threshold = 0.025
 shader_parameter/normal_threshold = 0.5
 shader_parameter/normal_smoothing = 0.25
-shader_parameter/max_thickness = 1.8
+shader_parameter/max_thickness = 1.3
 shader_parameter/min_thickness = 0.5
 shader_parameter/max_distance = 75.0
 shader_parameter/min_distance = 2.0
 shader_parameter/grazing_fresnel_power = 5.0
 shader_parameter/grazing_angle_mask_power = 1.0
-shader_parameter/grazing_angle_modulation_factor = 55.0
+shader_parameter/grazing_angle_modulation_factor = 50.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_fknp4"]
 resource_local_to_scene = true
 material = SubResource("ShaderMaterial_bra64")
 flip_faces = true
 size = Vector2(2, 2)
-
-[sub_resource type="Resource" id="Resource_enpb8"]
-resource_local_to_scene = true
-script = ExtResource("5_m32wb")
-dash_cooldown = 8
-_movespeed = 16.0
-damage = 40.0
-rot_speed = 8.0
-stability = 10
-dash_max_charge = 4
-health = 2000.0
-bump_sound = ExtResource("4_qqrgs")
-
-[sub_resource type="Resource" id="Resource_bgu1x"]
-resource_local_to_scene = true
-script = ExtResource("5_m32wb")
-dash_cooldown = 8
-_movespeed = 12.0
-damage = 10.0
-rot_speed = 10.0
-stability = 20
-dash_max_charge = 4
-health = 2000.0
-bump_sound = ExtResource("4_qqrgs")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lj0ri"]
 bg_color = Color(0.231373, 0, 0.137255, 1)
@@ -185,10 +154,71 @@ corner_radius_bottom_right = 16
 expand_margin_left = 1.0
 expand_margin_right = 1.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gtbt0"]
+bg_color = Color(0.126477, 0.049271, 0.152188, 0.611765)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="Animation" id="Animation_le153"]
+resource_name = "fade_trans"
+length = 2.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.3, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.054902, 0.0392157, 0.0470588, 1), Color(0.054902, 0.0392157, 0.0470588, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_0qyq8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.054902, 0.0392157, 0.0470588, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_qodmh"]
+resource_name = "fade_in"
+length = 2.0
+step = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.3, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.054902, 0.0392157, 0.0470588, 0), Color(0.054902, 0.0392157, 0.0470588, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2hlll"]
+_data = {
+"RESET": SubResource("Animation_0qyq8"),
+"fade_in": SubResource("Animation_qodmh"),
+"fade_trans": SubResource("Animation_le153")
+}
+
 [node name="mach_arena" type="Node3D"]
 script = ExtResource("1_lwp4d")
-player_ref_path = NodePath("SubViewportContainer/SubViewport/grindwheel")
-boss_ref_path = NodePath("SubViewportContainer/SubViewport/opponent_wheel")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 visible = false
@@ -203,6 +233,7 @@ stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = false
+fsr_sharpness = 0.2
 canvas_item_default_texture_filter = 0
 audio_listener_enable_3d = true
 size = Vector2i(1152, 648)
@@ -250,82 +281,85 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="map_geo" type="Node3D" parent="SubViewportContainer/SubViewport"]
+[node name="true_arena" type="Node3D" parent="SubViewportContainer/SubViewport"]
 
-[node name="pool_table" type="Node3D" parent="SubViewportContainer/SubViewport/map_geo"]
+[node name="map_geo" type="Node3D" parent="SubViewportContainer/SubViewport/true_arena"]
 
-[node name="LightmapGI" type="LightmapGI" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+[node name="pool_table" type="Node3D" parent="SubViewportContainer/SubViewport/true_arena/map_geo"]
+
+[node name="LightmapGI" type="LightmapGI" parent="SubViewportContainer/SubViewport/true_arena/map_geo/pool_table"]
+visible = false
 quality = 2
 
-[node name="floor" type="CSGMesh3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+[node name="floor" type="CSGMesh3D" parent="SubViewportContainer/SubViewport/true_arena/map_geo/pool_table"]
 use_collision = true
 mesh = SubResource("PlaneMesh_k002f")
 
-[node name="corner1" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+[node name="corner1" type="CSGBox3D" parent="SubViewportContainer/SubViewport/true_arena/map_geo/pool_table"]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -25.1569, 1.5, -13.8787)
 use_collision = true
 size = Vector3(7, 4, 10)
 material = SubResource("StandardMaterial3D_a0xm6")
 
-[node name="corner2" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+[node name="corner2" type="CSGBox3D" parent="SubViewportContainer/SubViewport/true_arena/map_geo/pool_table"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -25.1569, 1.5, 13.1213)
 use_collision = true
 size = Vector3(7, 4, 10)
 material = SubResource("StandardMaterial3D_a0xm6")
 
-[node name="corner3" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+[node name="corner3" type="CSGBox3D" parent="SubViewportContainer/SubViewport/true_arena/map_geo/pool_table"]
 transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 24.8431, 1.5, 13.1213)
 use_collision = true
 size = Vector3(7, 4, 10)
 material = SubResource("StandardMaterial3D_a0xm6")
 
-[node name="corner4" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+[node name="corner4" type="CSGBox3D" parent="SubViewportContainer/SubViewport/true_arena/map_geo/pool_table"]
 transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 24.8431, 1.5, -13.8787)
 use_collision = true
 size = Vector3(7, 4, 10)
 material = SubResource("StandardMaterial3D_a0xm6")
 
-[node name="wall1" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+[node name="wall1" type="CSGBox3D" parent="SubViewportContainer/SubViewport/true_arena/map_geo/pool_table"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.5, 1, 0)
 use_collision = true
 size = Vector3(2, 3, 31)
 material = SubResource("StandardMaterial3D_a0xm6")
 
-[node name="wall2" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+[node name="wall2" type="CSGBox3D" parent="SubViewportContainer/SubViewport/true_arena/map_geo/pool_table"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.5, 1, 0)
 use_collision = true
 size = Vector3(2, 3, 31)
 material = SubResource("StandardMaterial3D_a0xm6")
 
-[node name="wall3" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+[node name="wall3" type="CSGBox3D" parent="SubViewportContainer/SubViewport/true_arena/map_geo/pool_table"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.43051e-06, 1, -14.5)
 use_collision = true
 size = Vector3(2, 3, 53)
 material = SubResource("StandardMaterial3D_a0xm6")
 
-[node name="wall4" type="CSGBox3D" parent="SubViewportContainer/SubViewport/map_geo/pool_table"]
+[node name="wall4" type="CSGBox3D" parent="SubViewportContainer/SubViewport/true_arena/map_geo/pool_table"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.43051e-06, 1, 14.5)
 use_collision = true
 size = Vector3(2, 3, 53)
 material = SubResource("StandardMaterial3D_a0xm6")
 
-[node name="visual_" type="Node3D" parent="SubViewportContainer/SubViewport"]
+[node name="visual_" type="Node3D" parent="SubViewportContainer/SubViewport/true_arena"]
 
-[node name="clouds" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/visual_"]
+[node name="clouds" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -41, 0)
 mesh = SubResource("QuadMesh_tnb8p")
-skeleton = NodePath("../../../..")
+skeleton = NodePath("../../../../..")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport/visual_"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
 environment = SubResource("Environment_co0df")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/visual_"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
 transform = Transform3D(2.96116e-14, 1, -2.08616e-07, 4.37114e-08, 2.08616e-07, 1, 1, -1.89535e-14, -4.37114e-08, -32, 0, 0)
 shadow_enabled = true
 shadow_opacity = 0.92
 shadow_blur = 5.0
 
-[node name="SpotLight3D" type="SpotLight3D" parent="SubViewportContainer/SubViewport/visual_"]
+[node name="SpotLight3D" type="SpotLight3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 22.6588, 0)
 light_color = Color(11.93, 6.082, 6.667, 1)
 light_energy = 2.899
@@ -333,7 +367,7 @@ spot_range = 43.1259
 spot_attenuation = 1.51
 spot_angle = 51.7466
 
-[node name="SpotLight3D2" type="SpotLight3D" parent="SubViewportContainer/SubViewport/visual_"]
+[node name="SpotLight3D2" type="SpotLight3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
 transform = Transform3D(0.974339, -9.83887e-09, 0.225087, -0.225087, -4.25897e-08, 0.974339, 7.68129e-16, -1, -4.37114e-08, 26, 22.6588, 0)
 light_color = Color(10.76, 10.761, 8.421, 1)
 light_energy = 1.462
@@ -343,7 +377,7 @@ spot_range = 30.0
 spot_attenuation = 1.51
 spot_angle = 29.1541
 
-[node name="SpotLight3D3" type="SpotLight3D" parent="SubViewportContainer/SubViewport/visual_"]
+[node name="SpotLight3D3" type="SpotLight3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
 transform = Transform3D(-0.974339, 9.42827e-08, -0.225087, -0.225087, -6.52161e-08, 0.974339, 7.7184e-08, 1, 8.47644e-08, -26, 22.6588, 0)
 light_color = Color(10.76, 10.761, 8.421, 1)
 light_energy = 1.462
@@ -353,31 +387,33 @@ spot_range = 30.0
 spot_attenuation = 1.51
 spot_angle = 27.1214
 
-[node name="cammie" type="Camera3D" parent="SubViewportContainer/SubViewport/visual_"]
+[node name="cammie" type="Camera3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
 transform = Transform3D(1, 0, 0, 0, 0.0871557, 0.996195, 0, -0.996195, 0.0871557, 0, 46.5001, 5.7996)
 current = true
 fov = 55.0
 size = 40.0
 
-[node name="edge_detection" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/visual_/cammie"]
+[node name="edge_detection" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/true_arena/visual_/cammie"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0210409, -0.18462)
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_fknp4")
 
-[node name="LightmapGI" type="LightmapGI" parent="SubViewportContainer/SubViewport/visual_"]
+[node name="LightmapGI" type="LightmapGI" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
+visible = false
 
-[node name="Node3D" type="Node3D" parent="SubViewportContainer/SubViewport/visual_"]
+[node name="Node3D" type="Node3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
 
-[node name="cam_location_game" type="Node3D" parent="SubViewportContainer/SubViewport/visual_"]
+[node name="cam_location_game" type="Node3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
 transform = Transform3D(1, 0, 0, 0, 0.0871557, 0.996195, 0, -0.996195, 0.0871557, 0, 46.5001, 5.7996)
 
-[node name="grindwheel" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_rhsjv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 10)
-data = SubResource("Resource_enpb8")
-
-[node name="opponent_wheel" parent="SubViewportContainer/SubViewport" instance=ExtResource("13_5uvjd")]
+[node name="boss_pos_start" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 47, -7)
-stats = SubResource("Resource_bgu1x")
+
+[node name="player_pos_start" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21, 10)
+
+[node name="hole_spot" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
 
 [node name="gui" type="Control" parent="."]
 layout_mode = 3
@@ -386,6 +422,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("2_chc5c")
 
 [node name="death" type="Control" parent="gui"]
@@ -436,6 +473,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="round_counter" type="Label" parent="gui/arena_gui"]
 visible = false
@@ -567,13 +605,78 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.237347, 1.96133e-06, 0.160834, 0.384314)
 
+[node name="TitleCardFG" type="TextureRect" parent="gui/title_screen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -252.0
+offset_right = 256.0
+offset_bottom = -52.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("19_aeia2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="click_begin" type="Panel" parent="gui/title_screen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -176.0
+offset_top = 236.0
+offset_right = 176.0
+offset_bottom = 276.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gtbt0")
+
+[node name="MarginContainer" type="MarginContainer" parent="gui/title_screen/click_begin"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -153.0
+offset_top = -20.0
+offset_right = 153.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 4
+
+[node name="Label" type="Label" parent="gui/title_screen/click_begin/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("13_28tee")
+theme_override_colors/font_color = Color(1, 1, 1, 0.639216)
+text = "Click to Begin..."
+horizontal_alignment = 3
+
+[node name="fade" type="ColorRect" parent="gui"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.054902, 0.0392157, 0.0470588, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="gui/fade"]
+libraries = {
+"": SubResource("AnimationLibrary_2hlll")
+}
+
 [connection signal="call_death_screen" from="." to="gui" method="_on_grindwheel_die"]
-[connection signal="bumped" from="SubViewportContainer/SubViewport/grindwheel" to="." method="_on_player_bumped"]
-[connection signal="charge_spent" from="SubViewportContainer/SubViewport/grindwheel" to="gui" method="_on_grindwheel_charge_spent"]
-[connection signal="die" from="SubViewportContainer/SubViewport/grindwheel" to="." method="_on_grindwheel_die"]
-[connection signal="saw_damage" from="SubViewportContainer/SubViewport/grindwheel" to="SubViewportContainer/SubViewport/opponent_wheel" method="_on_grindwheel_saw_damage"]
-[connection signal="update_spin" from="SubViewportContainer/SubViewport/grindwheel" to="gui" method="_on_grindwheel_update_spin"]
-[connection signal="update_stability" from="SubViewportContainer/SubViewport/grindwheel" to="gui" method="_on_wheel_update_stability"]
-[connection signal="boss_death" from="SubViewportContainer/SubViewport/opponent_wheel" to="." method="_on_opponent_wheel_boss_death"]
-[connection signal="update_health" from="SubViewportContainer/SubViewport/opponent_wheel" to="gui" method="_on_bossl_update_health"]
+[connection signal="call_fade" from="." to="gui" method="_on_mach_arena_call_fade"]
+[connection signal="fade_out" from="." to="gui" method="_on_mach_arena_fade_out"]
 [connection signal="timeout" from="gui/death/flash timer" to="gui" method="_on_flash_timer_timeout"]

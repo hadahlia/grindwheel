@@ -1,6 +1,8 @@
 class_name BossWheel
 extends CharacterBody3D
 
+signal boss_spawned
+
 signal update_health
 signal output_damage
 signal boss_death
@@ -38,6 +40,7 @@ func _ready():
 	wheel_sfx.stream = stats.bump_sound
 	_dmg = stats.damage
 	_health = stats.health
+	#boss_spawned.emit()
 #const SPEED = 5.0
 #const JUMP_VELOCITY = 4.5
 func visual_spin():
@@ -97,6 +100,7 @@ func set_direction(_dir: Vector3) -> void:
 
 func _take_damage_once(val: float) -> void:
 	if _invuln: return
+	
 	_health -= val
 	update_health.emit(_health)
 	if _health <= 0:

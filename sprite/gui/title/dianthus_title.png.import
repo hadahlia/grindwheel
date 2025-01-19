@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b7ciqwsttyf1i"
-path="res://.godot/imported/CRT Frame.png-d8481f81357431c881449b8a81d5f6bd.ctex"
+uid="uid://d0kqiqdo7t2iy"
+path="res://.godot/imported/dianthus_title.png-a9e438ffe9ab718fb05425ee0c4ab66d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://shader/GodotRetro/Other/Images/CRT Frame.png"
-dest_files=["res://.godot/imported/CRT Frame.png-d8481f81357431c881449b8a81d5f6bd.ctex"]
+source_file="res://sprite/gui/title/dianthus_title.png"
+dest_files=["res://.godot/imported/dianthus_title.png-a9e438ffe9ab718fb05425ee0c4ab66d.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0
