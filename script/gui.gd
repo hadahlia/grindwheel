@@ -3,13 +3,23 @@ extends Control
 signal cleanup
 
 @onready var arena_gui = $arena_gui
-@onready var round_counter = $arena_gui/round_counter
-@onready var boss_health = $arena_gui/boss_health
-@onready var label = $arena_gui/Label
 @onready var stability_ui = $"arena_gui/Stability Gauge"
-@onready var spin_meter = $arena_gui/spin_meter
-
 @onready var death = $death
+
+@onready var round_counter = $arena_gui/round_counter
+
+@onready var boss_health = $arena_gui/boss_health
+@onready var boss_name = $arena_gui/boss_name
+@onready var boss_state_debug_label = $"arena_gui/boss state debug label"
+
+
+@onready var label = $arena_gui/Label
+
+@onready var spin_meter = $arena_gui/spin_meter
+@onready var dash_charge_= $arena_gui/dash_charge_met
+
+
+
 @onready var flash_timer = $"death/flash timer"
 
 @onready var fade_anim = $fade/AnimationPlayer
@@ -31,6 +41,7 @@ func _ready():
 	pass
 
 func post_ready():
+	stability_ui.add_theme_color_override("font_color", Color(255,255,0,255))
 	player = get_tree().get_first_node_in_group("Player")
 	player.charge_spent.connect(_on_grindwheel_charge_spent)
 	player.update_spin.connect(_on_grindwheel_update_spin)
@@ -38,6 +49,7 @@ func post_ready():
 	bossy = get_tree().get_first_node_in_group("BossEnem")
 	bossy.update_health.connect(_on_bossl_update_health)
 	boss_health.max_value = bossy._health
+	dash_charge_.value = 0
 	_on_grindwheel_charge_spent(player._dash_charges)
 	_on_wheel_update_stability(player._stability)
 	_on_bossl_update_health(bossy._health)
@@ -45,7 +57,11 @@ func post_ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 	#pass
+func _update_state_label(state: String) -> void:
+	boss_state_debug_label.text = state
 
+func _set_boss_name(new_name: String) -> void:
+	boss_name.text = new_name
 
 func _on_grindwheel_charge_spent(val: int)->void:
 	label.text = "charges: " + str(val)
@@ -64,6 +80,7 @@ func _on_wheel_update_stability(new_val: int):
 func _on_bossl_update_health(_new_health: float) -> void:
 	boss_health.value = _new_health
 
+#@TODO update dash meter func
 
 func _on_grindwheel_die():
 	arena_gui.hide()

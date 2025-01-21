@@ -1,11 +1,14 @@
 class_name BossWheel
 extends CharacterBody3D
 
+
 signal boss_spawned
 
 signal update_health
 signal output_damage
 signal boss_death
+
+#@onready var state_machine = $state_machine
 
 @export var stats : WheelStats
 @onready var spin_root = $spin_root
@@ -30,6 +33,8 @@ var acceleration : Vector3 = Vector3.ZERO
 var _stability : int
 var _health : float = 1000
 
+var _state_transmit : String = ""
+
 var stunned : bool = false
 var saw_col : bool = false
 var _invuln : bool = false
@@ -40,6 +45,7 @@ func _ready():
 	wheel_sfx.stream = stats.bump_sound
 	_dmg = stats.damage
 	_health = stats.health
+	#cur_state.emit(str(state_machine.current_state))
 	#boss_spawned.emit()
 #const SPEED = 5.0
 #const JUMP_VELOCITY = 4.5
@@ -153,3 +159,7 @@ func _on__invuln_timer_timeout():
 
 func _on__invuln_saw_time_timeout():
 	_invuln_saw = false
+
+
+func _on_state_machine_cur_state(state: String):
+	_state_transmit = state

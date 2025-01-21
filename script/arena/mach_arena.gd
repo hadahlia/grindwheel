@@ -104,6 +104,8 @@ func spawn_boss():
 			true_arena.add_child(bc)
 			bc.boss_death.connect(_on_opponent_wheel_boss_death)
 			bc.global_position = boss_pos_start.global_position
+			gui._update_state_label(bc._state_transmit)
+			gui._set_boss_name(" DREAD WHEEL ")
 			#bc.boss_spawned.connect(_get_spinner_reference)
 
 func spawn_hole():
@@ -152,7 +154,7 @@ func _on_player_bumped(player_vel: Vector3, boss_vel: Vector3, _boss_dmg: float)
 	if player_vel.length() >= boss_vel.length():
 		#bvdmg *= 0.5
 		#bvdmg = boss_vel * 0.5
-		player_ref._set_spin_damage(bvdmg - vel_diff.length())
+		player_ref._set_spin_damage(bvdmg + vel_diff.length())
 		#pvdmg = player_vel * 2
 		boss_ref._take_damage_once(vel_diff.length() + pvdmg)
 		#boss_ref._invuln = true
@@ -169,7 +171,7 @@ func _on_player_bumped(player_vel: Vector3, boss_vel: Vector3, _boss_dmg: float)
 		player_ref._set_spin_damage(vel_diff.length() * bvdmg + _boss_dmg)
 		#player_ref._invuln = true
 		#pvdmg = player_vel #* 0.2
-		boss_ref._take_damage_once(pvdmg - vel_diff.length() )
+		boss_ref._take_damage_once(pvdmg * 0.5 + vel_diff.length() )
 		print("boss wins collision!!!")
 		Globals.can_move = false
 		player_ref._stun_timer.start()

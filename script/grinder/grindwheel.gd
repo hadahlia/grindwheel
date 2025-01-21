@@ -127,48 +127,121 @@ func _physics_process(delta):
 				
 			print("dash speed " + str(_dash_speed))
 
-func _input(_event):
+func _input(event):
 	if _dashing or _dir == Vector3.ZERO: return
 	
-	if Input.is_action_just_pressed("Spin Dash"):
-		_dash_lvl = 0
-		_spin_scalar = 60
-		lvl_sfx.pitch_scale = randf_range(1, 1.2)
+	#if event.is_action_pressed("Spin Dash"):
+		#print("yayyy")[
+	#print("input is running")
+	if event is InputEventMouseButton:
+		#print("event is InputEventMouseButton")
 		
-		_move_speed = 0
+		# Press Dash
+		if event.button_index == 1:
+			if event.pressed:
+				print("m1 ^^")
+				_dash_lvl = 0
+				_spin_scalar = 60
+				lvl_sfx.pitch_scale = randf_range(1, 1.2)
+				_move_speed = 0
+				#if _spin_charge.is_stopped():
+				_spin_charge.start()
+				
+			# Release Dash
+			else:
+				print("m1 released")
+				_spin_scalar = -12
+				_move_speed = data._movespeed
+				_spin_charge.stop()
+				match _dash_lvl:
+					0:
+						_dash_speed = 8
+					1:
+						_dash_speed = 30
+						_dash_charges -= 1
+					2:
+						_dash_speed = 50
+						_dash_charges -= 1
+					3:
+						_dash_speed = _dash_max_speed
+						_dash_charges -= 1
+				_dash_lvl = 0
+				
+				_dashing = true
+				#dir_pointer.hide()
+				
+				if _dash_recharge.is_stopped():
+					_dash_recharge.start()
+				
+				charge_spent.emit(_dash_charges)
+				velocity = _dir.normalized() * _dash_speed
 		
+		# Press M2
+		if event.button_index == 2:
+			if event.pressed:
+				print("m2 ^^")
+			
+			# Release M2
+			else:
+				print("m2 released")
 	
-	if Input.is_action_pressed("Spin Dash"):
-		if _spin_charge.is_stopped():
-			_spin_charge.start()
+	#if Input.is_action_just_pressed("Spin Dash"):
+		#print("spin just pressed")
+		#_dash_lvl = 0
+		#_spin_scalar = 60
+		#lvl_sfx.pitch_scale = randf_range(1, 1.2)
+		#
+		#_move_speed = 0
+		#
+	#
+	#if Input.is_action_pressed("Spin Dash"):
+		#print("spin pressed")
+		#if _spin_charge.is_stopped():
+			#_spin_charge.start()
+	#
+	#if Input.is_action_just_released("Spin Dash"):
+		#print("this one will never be found")
+		#_spin_scalar = -12
+		#_move_speed = data._movespeed
+		#_spin_charge.stop()
+		#match _dash_lvl:
+			#0:
+				#_dash_speed = 8
+			#1:
+				#_dash_speed = 30
+				#_dash_charges -= 1
+			#2:
+				#_dash_speed = 50
+				#_dash_charges -= 1
+			#3:
+				#_dash_speed = _dash_max_speed
+				#_dash_charges -= 1
+		#_dash_lvl = 0
+		#
+		#_dashing = true
+		##dir_pointer.hide()
+		#
+		#if _dash_recharge.is_stopped():
+			#_dash_recharge.start()
+		#
+		#charge_spent.emit(_dash_charges)
+		#velocity = _dir.normalized() * _dash_speed
+
+#func _unhandled_input(event):
+	#if _dashing or _dir == Vector3.ZERO: return
+	#
+	#if event is InputEventMouseButton:
+		#if event.button_index == 1:
+			#if event.pressed:
+				#print("m1 ^^")
+			#else:
+				#print("m1 released")
+		#if event.button_index == 2:
+			#if event.pressed:
+				#print("m2 ^^")
+			#else:
+				#print("m2 released")
 	
-	if Input.is_action_just_released("Spin Dash"):
-		_spin_scalar = -12
-		_move_speed = data._movespeed
-		_spin_charge.stop()
-		match _dash_lvl:
-			0:
-				_dash_speed = 8
-			1:
-				_dash_speed = 30
-				_dash_charges -= 1
-			2:
-				_dash_speed = 50
-				_dash_charges -= 1
-			3:
-				_dash_speed = _dash_max_speed
-				_dash_charges -= 1
-		_dash_lvl = 0
-		
-		_dashing = true
-		#dir_pointer.hide()
-		
-		if _dash_recharge.is_stopped():
-			_dash_recharge.start()
-		
-		charge_spent.emit(_dash_charges)
-		velocity = _dir.normalized() * _dash_speed
-		
 
 func apply_friction(delta):
 	if velocity.length() < 0.1 and acceleration.length() < 0.1:

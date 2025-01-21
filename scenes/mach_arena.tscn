@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://cau0atwkvl67f"]
+[gd_scene load_steps=42 format=3 uid="uid://cau0atwkvl67f"]
 
 [ext_resource type="Script" path="res://script/arena/mach_arena.gd" id="1_lwp4d"]
 [ext_resource type="Texture2D" uid="uid://cvbxjk0rh5p8k" path="res://sprite/gui/frame1.png" id="2_7qsjr"]
@@ -12,6 +12,8 @@
 [ext_resource type="Shader" path="res://shader/blur_sharpen.gdshader" id="6_sikrn"]
 [ext_resource type="Shader" path="res://shader/downscale.gdshader" id="7_wtnmt"]
 [ext_resource type="Theme" uid="uid://ckg1xrpun5mdw" path="res://sprite/font/label_theme.tres" id="13_28tee"]
+[ext_resource type="Texture2D" uid="uid://cllq0gulo6nap" path="res://sprite/gui/empty_gray_bar.png" id="13_sybxv"]
+[ext_resource type="Texture2D" uid="uid://bi4c3ev3bnbef" path="res://sprite/gui/full_gray_bar.png" id="14_x54gm"]
 [ext_resource type="Texture2D" uid="uid://d0kqiqdo7t2iy" path="res://sprite/gui/title/dianthus_title.png" id="19_aeia2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fcpmf"]
@@ -112,16 +114,22 @@ process_mode = 1
 [sub_resource type="Environment" id="Environment_co0df"]
 background_mode = 2
 sky = SubResource("Sky_en7ca")
+ambient_light_source = 3
+ambient_light_color = Color(6.082, 0, 0, 1)
 ambient_light_sky_contribution = 0.79
 tonemap_exposure = 1.1
 tonemap_white = 1.38
+ssao_enabled = true
+sdfgi_enabled = true
 glow_enabled = true
 glow_strength = 0.7
 glow_blend_mode = 0
+fog_enabled = true
+fog_light_color = Color(0.0269248, 0.0325813, 0.0426964, 1)
 adjustment_enabled = true
 adjustment_brightness = 0.98
 adjustment_contrast = 1.1
-adjustment_saturation = 0.9
+adjustment_saturation = 1.2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bra64"]
 resource_local_to_scene = true
@@ -165,6 +173,9 @@ corner_radius_top_left = 16
 corner_radius_bottom_right = 16
 expand_margin_left = 1.0
 expand_margin_right = 1.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_jfsck"]
+blend_mode = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gtbt0"]
 bg_color = Color(0.126477, 0.049271, 0.152188, 0.611765)
@@ -405,7 +416,7 @@ spot_attenuation = 1.51
 spot_angle = 27.1214
 
 [node name="cammie" type="Camera3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
-transform = Transform3D(1, 0, 0, 0, 0.0871557, 0.996195, 0, -0.996195, 0.0871557, 0, 46.5001, 5.7996)
+transform = Transform3D(1, 0, 0, 0, 0.0871557, 0.996195, 0, -0.996195, 0.0871557, 0, 42.5001, 5.7996)
 current = true
 fov = 55.0
 size = 40.0
@@ -490,7 +501,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="round_counter" type="Label" parent="gui/arena_gui"]
 visible = false
@@ -521,6 +532,49 @@ max_value = 1000.0
 step = 1.0
 value = 500.0
 show_percentage = false
+
+[node name="boss_name" type="Label" parent="gui/arena_gui"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -128.0
+offset_top = 48.0
+offset_right = 128.0
+offset_bottom = 71.0
+grow_horizontal = 2
+theme = ExtResource("13_28tee")
+text = "TESTNAME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="state" type="Label" parent="gui/arena_gui"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 48.0
+offset_top = -36.0
+offset_right = 121.0
+offset_bottom = -13.0
+grow_vertical = 2
+theme = ExtResource("13_28tee")
+theme_override_font_sizes/font_size = 12
+text = "state"
+
+[node name="boss state debug label" type="Label" parent="gui/arena_gui"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 48.0
+offset_top = -12.0
+offset_right = 88.0
+offset_bottom = 11.0
+grow_vertical = 2
+theme = ExtResource("13_28tee")
+theme_override_font_sizes/font_size = 12
+text = "unused"
 
 [node name="Label" type="Label" parent="gui/arena_gui"]
 layout_mode = 1
@@ -561,6 +615,7 @@ text = "STABILITY:
 "
 
 [node name="spin_meter" type="TextureProgressBar" parent="gui/arena_gui"]
+material = SubResource("CanvasItemMaterial_jfsck")
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -603,6 +658,27 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 value = 100.0
+
+[node name="dash_charge_met" type="TextureProgressBar" parent="gui/arena_gui"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -136.0
+offset_bottom = -96.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(2, 2)
+mouse_filter = 2
+max_value = 3.0
+value = 1.0
+rounded = true
+texture_under = ExtResource("13_sybxv")
+texture_progress = ExtResource("14_x54gm")
 
 [node name="title_screen" type="Control" parent="gui"]
 visible = false
@@ -686,6 +762,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.054902, 0.0392157, 0.0470588, 1)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="gui/fade"]

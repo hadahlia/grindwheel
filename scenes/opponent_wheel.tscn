@@ -38,7 +38,7 @@ albedo_texture = ExtResource("6_hjqlx")
 uv1_triplanar = true
 
 [sub_resource type="PrismMesh" id="PrismMesh_fhp5m"]
-size = Vector3(1, 2, 0.5)
+size = Vector3(1.2, 1.8, 0.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_js0t3"]
 albedo_color = Color(0.541176, 1, 0.862745, 1)
@@ -75,12 +75,12 @@ enem = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 0.999194, -0.0401318, 0, 0.0401318, 0.999194, 0, 0.681713, 0)
 inner_radius = 0.279
 outer_radius = 2.08154
-sides = 6
+sides = 9
 ring_sides = 8
 material = SubResource("StandardMaterial3D_cogx4")
 
 [node name="weapon" parent="spin_root" instance=ExtResource("6_tm7t4")]
-transform = Transform3D(16, 0, 0, 0, 15.9871, -0.64211, 0, 0.64211, 15.9871, 0, 1.02202, 0)
+transform = Transform3D(18, 0, 0, 0, 17.9855, -0.722374, 0, 0.722374, 17.9855, 0, 1.02202, 0)
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="spin_root"]
 transform = Transform3D(1, 0, 0, 0, 0.999211, -0.0397132, 0, 0.0397132, 0.999211, 0, 1.92171, -0.0274796)
@@ -91,36 +91,36 @@ material = SubResource("StandardMaterial3D_1k38f")
 transform = Transform3D(0.34202, -0.0373182, -0.938951, 1.6131e-09, 0.999211, -0.0397132, 0.939693, 0.0135827, 0.34175, 0, 0.688982, -0.0170895)
 radius = 1.00586
 height = 1.98095
-sides = 5
+sides = 9
 material = SubResource("StandardMaterial3D_1k38f")
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="spin_root"]
-transform = Transform3D(-2.98023e-08, 1, -1.13133e-08, 4.2222e-08, 1.13133e-08, 1, 1, -1.49012e-08, -4.2222e-08, 1.89493, 1.2, 0)
+transform = Transform3D(-2.98023e-08, 1, -1.13133e-08, 4.2222e-08, 1.13133e-08, 1, 1, -1.49012e-08, -4.2222e-08, 1.89493, 1, 0)
 mesh = SubResource("PrismMesh_fhp5m")
 material = SubResource("StandardMaterial3D_js0t3")
 
 [node name="CSGMesh3D2" type="CSGMesh3D" parent="spin_root"]
-transform = Transform3D(-5.76204e-08, -1, 1.13133e-08, 4.2222e-08, 1.13133e-08, 1, -1, 1.02324e-07, 4.2222e-08, -1.90507, 1.2, 0)
+transform = Transform3D(-5.76204e-08, -1, 1.13133e-08, 4.2222e-08, 1.13133e-08, 1, -1, 1.02324e-07, 4.2222e-08, -1.90507, 1, 0)
 mesh = SubResource("PrismMesh_fhp5m")
 material = SubResource("StandardMaterial3D_js0t3")
 
 [node name="CSGMesh3D3" type="CSGMesh3D" parent="spin_root"]
-transform = Transform3D(-0.866025, 0.5, 3.09086e-08, 4.2222e-08, 1.13133e-08, 1, 0.5, 0.866025, -3.09086e-08, 1.09493, 1.2, 1.9)
+transform = Transform3D(-0.866025, 0.5, 3.09086e-08, 4.2222e-08, 1.13133e-08, 1, 0.5, 0.866025, -3.09086e-08, 1.09493, 1, 1.9)
 mesh = SubResource("PrismMesh_fhp5m")
 material = SubResource("StandardMaterial3D_js0t3")
 
 [node name="CSGMesh3D4" type="CSGMesh3D" parent="spin_root"]
-transform = Transform3D(0.866025, 0.5, -4.2222e-08, 4.2222e-08, 1.13133e-08, 1, 0.5, -0.866026, -1.13133e-08, 1.09493, 1.2, -1.9)
+transform = Transform3D(0.866025, 0.5, -4.2222e-08, 4.2222e-08, 1.13133e-08, 1, 0.5, -0.866026, -1.13133e-08, 1.09493, 1, -1.9)
 mesh = SubResource("PrismMesh_fhp5m")
 material = SubResource("StandardMaterial3D_js0t3")
 
 [node name="CSGMesh3D5" type="CSGMesh3D" parent="spin_root"]
-transform = Transform3D(-0.866025, -0.5, 4.2222e-08, 4.2222e-08, 1.13133e-08, 1, -0.5, 0.866025, 1.13133e-08, -1.10507, 1.2, 1.9)
+transform = Transform3D(-0.866025, -0.5, 4.2222e-08, 4.2222e-08, 1.13133e-08, 1, -0.5, 0.866025, 1.13133e-08, -1.10507, 1, 1.9)
 mesh = SubResource("PrismMesh_fhp5m")
 material = SubResource("StandardMaterial3D_js0t3")
 
 [node name="CSGMesh3D6" type="CSGMesh3D" parent="spin_root"]
-transform = Transform3D(0.866025, -0.5, -3.09086e-08, 4.2222e-08, 1.13133e-08, 1, -0.5, -0.866025, 3.09086e-08, -1.10507, 1.2, -1.9)
+transform = Transform3D(0.866025, -0.5, -3.09086e-08, 4.2222e-08, 1.13133e-08, 1, -0.5, -0.866025, 3.09086e-08, -1.10507, 1, -1.9)
 mesh = SubResource("PrismMesh_fhp5m")
 material = SubResource("StandardMaterial3D_js0t3")
 
@@ -168,6 +168,7 @@ wait_time = 0.05
 one_shot = true
 autostart = true
 
+[connection signal="cur_state" from="state_machine" to="." method="_on_state_machine_cur_state"]
 [connection signal="area_entered" from="weapon" to="." method="_on_weapon_area_entered"]
 [connection signal="timeout" from="_invuln_timer" to="." method="_on__invuln_timer_timeout"]
 [connection signal="timeout" from="_stun_timer" to="." method="_on__stun_timer_timeout"]

@@ -1,5 +1,7 @@
 extends Node
 
+signal cur_state
+
 @export var init_state : State
 
 var current_state: State
@@ -14,6 +16,7 @@ func _ready():
 	if init_state:
 		init_state.enter()
 		current_state = init_state
+		cur_state.emit(str(current_state))
 
 func _process(delta):
 	if current_state:
@@ -37,4 +40,5 @@ func on_child_transition(state, new_state_name):
 	
 	new_state.enter()
 	current_state = new_state
+	cur_state.emit(str(current_state))
 	print("state chaged yay")

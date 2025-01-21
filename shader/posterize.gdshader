@@ -23,7 +23,7 @@ void fragment() {
 	c = floor(c);
 	c = c / num_colors;
 	c = pow(c, vec3(1.0/gamma));
-	
+
 	//vec4 alpha_col = vec4(c.rgb, COLOR.a);
 	//COLOR.rgb = c;
 	COLOR.rgb = mix(COLOR.rgb, c, step(luminance_threshold, luminance));
@@ -39,7 +39,7 @@ void fragment() {
 	//}
 	//vec4 orig_color = COLOR;
 	//COLOR *= luminance;
-	
+
 	//COLOR = mix(COLOR, COLOR + level1, step(threshold1, luminance));
 	//COLOR = mix(COLOR, COLOR + level2, step(threshold2, luminance));
 	//COLOR = mix(COLOR, level3.rgba, step(threshold3, luminance));
