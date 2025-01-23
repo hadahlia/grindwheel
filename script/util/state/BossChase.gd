@@ -6,7 +6,7 @@ class_name Pursuit
 var player: CharacterBody3D
 
 func enter():
-	player = get_tree().get_first_node_in_group("Player")
+	player = get_tree().get_first_node_in_group("Angel Gem")
 
 func physics_update(_dt: float):
 	if !player or !enem: return

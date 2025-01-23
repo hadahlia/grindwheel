@@ -7,13 +7,15 @@ signal cleanup
 @onready var death = $death
 
 @onready var round_counter = $arena_gui/round_counter
+@onready var boss_name = $arena_gui/boss_health/boss_name
 
 @onready var boss_health = $arena_gui/boss_health
-@onready var boss_name = $arena_gui/boss_name
-@onready var boss_state_debug_label = $"arena_gui/boss state debug label"
 
+#@onready var boss_state_debug_label = $"arena_gui/boss state debug label"
+@onready var boss_state_debug_label = $"arena_gui/state/boss state debug label"
 
-@onready var label = $arena_gui/Label
+#@onready var gem_health = $arena_gui/gem_health
+
 
 @onready var spin_meter = $arena_gui/spin_meter
 @onready var dash_charge_= $arena_gui/dash_charge_met
@@ -31,7 +33,7 @@ signal cleanup
 #@onready var round_counter = $round_counter
 #@onready var boss_health = $boss_health
 
-
+var soul : GemSoul
 var player : GrindWheel
 var bossy : BossWheel
 #@onready var plyr = get_tree().get_first_node_in_group("Player")
@@ -42,39 +44,49 @@ func _ready():
 
 func post_ready():
 	stability_ui.add_theme_color_override("font_color", Color(255,255,0,255))
-	player = get_tree().get_first_node_in_group("Player")
-	player.charge_spent.connect(_on_grindwheel_charge_spent)
-	player.update_spin.connect(_on_grindwheel_update_spin)
-	player.update_stability.connect(_on_wheel_update_stability)
+	soul = get_tree().get_first_node_in_group("Angel Gem")
+	if soul:
+		soul.soul_health.connect(_update_gem_health)
+		_update_gem_health(soul.health, soul.max_health)
+	#player = get_tree().get_first_node_in_group("Player")
+	#if player:
+		#player.charge_spent.connect(_on_grindwheel_charge_spent)
+		#player.update_spin.connect(_on_grindwheel_update_spin)
+		#player.update_stability.connect(_on_wheel_update_stability)
+		#_on_grindwheel_charge_spent(player._dash_charges)
+		
 	bossy = get_tree().get_first_node_in_group("BossEnem")
-	bossy.update_health.connect(_on_bossl_update_health)
-	boss_health.max_value = bossy._health
-	dash_charge_.value = 0
-	_on_grindwheel_charge_spent(player._dash_charges)
-	_on_wheel_update_stability(player._stability)
-	_on_bossl_update_health(bossy._health)
+	if bossy:
+		bossy.update_health.connect(_on_bossl_update_health)
+		boss_health.max_value = bossy._health
+		dash_charge_.value = 0
+	
+		_on_bossl_update_health(bossy._health)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 	#pass
+func _update_gem_health(hp: int, max_hp: int) -> void:
+	if hp < 2:
+		stability_ui.add_theme_color_override("font_color", Color(255,0,0,255))
+	stability_ui.text = "HP:" + str(hp) + "/" + str(max_hp)
+
 func _update_state_label(state: String) -> void:
 	boss_state_debug_label.text = state
 
 func _set_boss_name(new_name: String) -> void:
 	boss_name.text = new_name
 
-func _on_grindwheel_charge_spent(val: int)->void:
-	label.text = "charges: " + str(val)
+#func _on_grindwheel_charge_spent(val: int)->void:
+	#label.text = "charges: " + str(val)
 
 
 func _on_grindwheel_update_spin(new_spin: float) -> void:
 	spin_meter.value = new_spin
 
 
-func _on_wheel_update_stability(new_val: int):
-	if new_val < 4:
-		stability_ui.add_theme_color_override("font_color", Color(255,0,0,255))
-	stability_ui.text = "STABILITY:" + str(new_val)
+#func _on_wheel_update_stability(new_val: int, max_val:int) -> void:
+	
 
 
 func _on_bossl_update_health(_new_health: float) -> void:

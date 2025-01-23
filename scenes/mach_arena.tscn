@@ -1,9 +1,8 @@
-[gd_scene load_steps=42 format=3 uid="uid://cau0atwkvl67f"]
+[gd_scene load_steps=43 format=3 uid="uid://cau0atwkvl67f"]
 
 [ext_resource type="Script" path="res://script/arena/mach_arena.gd" id="1_lwp4d"]
 [ext_resource type="Texture2D" uid="uid://cvbxjk0rh5p8k" path="res://sprite/gui/frame1.png" id="2_7qsjr"]
 [ext_resource type="Script" path="res://script/gui.gd" id="2_chc5c"]
-[ext_resource type="Shader" path="res://shader/posterize.gdshader" id="2_sm6va"]
 [ext_resource type="Texture2D" uid="uid://dg541j7g66tnq" path="res://sprite/gui/frame2.png" id="3_bmkgg"]
 [ext_resource type="Shader" path="res://shader/aerosky.gdshader" id="5_h8hid"]
 [ext_resource type="Shader" path="res://shader/vignette.gdshader" id="5_lnhxr"]
@@ -14,6 +13,7 @@
 [ext_resource type="Theme" uid="uid://ckg1xrpun5mdw" path="res://sprite/font/label_theme.tres" id="13_28tee"]
 [ext_resource type="Texture2D" uid="uid://cllq0gulo6nap" path="res://sprite/gui/empty_gray_bar.png" id="13_sybxv"]
 [ext_resource type="Texture2D" uid="uid://bi4c3ev3bnbef" path="res://sprite/gui/full_gray_bar.png" id="14_x54gm"]
+[ext_resource type="PackedScene" uid="uid://dhs8pmg1iceku" path="res://scenes/dianthus_floor.tscn" id="16_y2ukj"]
 [ext_resource type="Texture2D" uid="uid://d0kqiqdo7t2iy" path="res://sprite/gui/title/dianthus_title.png" id="19_aeia2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fcpmf"]
@@ -25,25 +25,13 @@ shader_parameter/pixel = 1.0
 shader = ExtResource("7_wtnmt")
 shader_parameter/fog_color = Color(0.84, 0.84, 0.84, 1)
 shader_parameter/resolution_downsampling = 1.0
-shader_parameter/bit_depth = 16.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_10u5f"]
-shader = ExtResource("2_sm6va")
-shader_parameter/level1 = Color(0.105882, 0.0117647, 0.14902, 1)
-shader_parameter/level2 = Color(0.478431, 0.109804, 0.294118, 1)
-shader_parameter/level3 = Color(0.729412, 0.313726, 0.266667, 1)
-shader_parameter/level4 = Color(0.937255, 0.976471, 0.839216, 1)
-shader_parameter/num_colors = 8.0
-shader_parameter/luminance_threshold = 0.394
-shader_parameter/threshold2 = 0.139
-shader_parameter/threshold3 = 0.243
-shader_parameter/threshold4 = 0.8
+shader_parameter/bit_depth = 14.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7lm5r"]
 shader = ExtResource("5_lnhxr")
-shader_parameter/inner_radius = 0.33
-shader_parameter/outer_radius = 1.075
-shader_parameter/vignette_strength = 1.22
+shader_parameter/inner_radius = 0.305
+shader_parameter/outer_radius = 0.935
+shader_parameter/vignette_strength = 1.2
 shader_parameter/dither_strength = 0.03
 shader_parameter/vignette_color = Color(0, 0, 0, 1)
 
@@ -114,9 +102,8 @@ process_mode = 1
 [sub_resource type="Environment" id="Environment_co0df"]
 background_mode = 2
 sky = SubResource("Sky_en7ca")
-ambient_light_source = 3
-ambient_light_color = Color(6.082, 0, 0, 1)
-ambient_light_sky_contribution = 0.79
+ambient_light_color = Color(0.87451, 0, 0.282353, 1)
+ambient_light_sky_contribution = 0.58
 tonemap_exposure = 1.1
 tonemap_white = 1.38
 ssao_enabled = true
@@ -125,7 +112,17 @@ glow_enabled = true
 glow_strength = 0.7
 glow_blend_mode = 0
 fog_enabled = true
-fog_light_color = Color(0.0269248, 0.0325813, 0.0426964, 1)
+fog_mode = 1
+fog_light_color = Color(0.004, 0, 0.12, 1)
+fog_density = 1.0
+fog_sky_affect = 0.934
+fog_height_density = 0.05
+fog_depth_curve = 0.870553
+fog_depth_end = 150.0
+volumetric_fog_density = 0.0123
+volumetric_fog_albedo = Color(0, 0, 0, 1)
+volumetric_fog_emission = Color(0.259465, 2.16588e-07, 9.62615e-08, 1)
+volumetric_fog_temporal_reprojection_amount = 0.831
 adjustment_enabled = true
 adjustment_brightness = 0.98
 adjustment_contrast = 1.1
@@ -152,6 +149,12 @@ resource_local_to_scene = true
 material = SubResource("ShaderMaterial_bra64")
 flip_faces = true
 size = Vector2(2, 2)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_7omef"]
+height = 3.6
+radius = 62.0
+
+[sub_resource type="Curve3D" id="Curve3D_q5i62"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lj0ri"]
 bg_color = Color(0.231373, 0, 0.137255, 1)
@@ -281,18 +284,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BackBufferCopy2" type="BackBufferCopy" parent="SubViewportContainer/SubViewport"]
-copy_mode = 2
-
-[node name="posterize" type="ColorRect" parent="SubViewportContainer/SubViewport"]
-texture_filter = 1
-material = SubResource("ShaderMaterial_10u5f")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="BackBufferCopy3" type="BackBufferCopy" parent="SubViewportContainer/SubViewport"]
 copy_mode = 2
 
@@ -309,6 +300,8 @@ grow_vertical = 2
 [node name="map_geo" type="Node3D" parent="SubViewportContainer/SubViewport/true_arena"]
 
 [node name="pool_table" type="Node3D" parent="SubViewportContainer/SubViewport/true_arena/map_geo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -120)
+visible = false
 
 [node name="LightmapGI" type="LightmapGI" parent="SubViewportContainer/SubViewport/true_arena/map_geo/pool_table"]
 visible = false
@@ -371,54 +364,95 @@ use_collision = true
 size = Vector3(2, 3, 53)
 material = SubResource("StandardMaterial3D_a0xm6")
 
+[node name="dianthus_floor" parent="SubViewportContainer/SubViewport/true_arena/map_geo" instance=ExtResource("16_y2ukj")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -4, -2)
+
 [node name="visual_" type="Node3D" parent="SubViewportContainer/SubViewport/true_arena"]
 
 [node name="clouds" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -41, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -34, 0)
 mesh = SubResource("QuadMesh_tnb8p")
 skeleton = NodePath("../../../../..")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
 environment = SubResource("Environment_co0df")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
-transform = Transform3D(2.96116e-14, 1, -2.08616e-07, 4.37114e-08, 2.08616e-07, 1, 1, -1.89535e-14, -4.37114e-08, -32, 0, 0)
+[node name="the sun" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
+transform = Transform3D(0.965926, -0.25, -0.0669871, 0.129409, 0.242363, 0.961516, -0.224144, -0.937422, 0.266457, -32, 8, 0)
+light_color = Color(1.994, 1.698, 1.494, 1)
+light_energy = 2.2
+light_bake_mode = 1
 shadow_enabled = true
 shadow_opacity = 0.92
 shadow_blur = 5.0
 
 [node name="SpotLight3D" type="SpotLight3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 22.6588, 0)
-light_color = Color(11.93, 6.082, 6.667, 1)
-light_energy = 2.899
-spot_range = 43.1259
+transform = Transform3D(1, 0, 0, 0, -0.258819, 0.965926, 0, -0.965926, -0.258819, 0, 31.6588, -11)
+light_color = Color(10.176, 2.573, 0.819, 1)
+light_energy = 6.0
+spot_range = 73.0
 spot_attenuation = 1.51
-spot_angle = 51.7466
+spot_angle = 43.7669
 
 [node name="SpotLight3D2" type="SpotLight3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
-transform = Transform3D(0.974339, -9.83887e-09, 0.225087, -0.225087, -4.25897e-08, 0.974339, 7.68129e-16, -1, -4.37114e-08, 26, 22.6588, 0)
-light_color = Color(10.76, 10.761, 8.421, 1)
-light_energy = 1.462
+transform = Transform3D(0.882882, -2.05266e-08, 0.469595, -0.469595, -3.8592e-08, 0.882882, 8.33846e-16, -1, -4.37114e-08, 26, 22.6588, 0)
+light_color = Color(14.269, 8.421, 8.421, 1)
+light_energy = 2.0
 light_indirect_energy = 2.518
 light_bake_mode = 1
-spot_range = 30.0
+spot_range = 33.3067
 spot_attenuation = 1.51
 spot_angle = 29.1541
 
 [node name="SpotLight3D3" type="SpotLight3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
-transform = Transform3D(-0.974339, 9.42827e-08, -0.225087, -0.225087, -6.52161e-08, 0.974339, 7.7184e-08, 1, 8.47644e-08, -26, 22.6588, 0)
-light_color = Color(10.76, 10.761, 8.421, 1)
-light_energy = 1.462
+transform = Transform3D(-0.882882, 1.07949e-07, -0.469595, -0.469595, -3.85918e-08, 0.882882, 7.7184e-08, 1, 8.47644e-08, -26, 22.6588, 0)
+light_color = Color(14.269, 8.421, 8.421, 1)
+light_energy = 2.0
 light_indirect_energy = 2.518
 light_bake_mode = 1
-spot_range = 30.0
+spot_range = 35.4635
 spot_attenuation = 1.51
 spot_angle = 27.1214
 
+[node name="SpotLight3D4" type="SpotLight3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
+transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 16, -38)
+light_color = Color(8, 1, 1, 1)
+light_energy = 3.0
+spot_range = 36.0
+spot_angle = 26.8438
+
+[node name="SpotLight3D5" type="SpotLight3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
+transform = Transform3D(0.866025, 0.433013, -0.25, 0, 0.5, 0.866025, 0.5, -0.75, 0.433013, 43, 16, -30)
+light_color = Color(8, 1, 1, 1)
+light_energy = 3.0
+spot_range = 32.0
+spot_angle = 26.8438
+
+[node name="SpotLight3D6" type="SpotLight3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
+transform = Transform3D(-5.96046e-08, 0.866025, -0.5, -1.99638e-09, 0.5, 0.866025, 1, 5.26173e-08, -2.80734e-08, 53, 16, 10)
+light_color = Color(8, 1, 1, 1)
+light_energy = 3.0
+spot_range = 32.0
+spot_angle = 26.8438
+
+[node name="SpotLight3D7" type="SpotLight3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
+transform = Transform3D(0.866025, -0.433013, 0.25, -1.99638e-09, 0.5, 0.866025, -0.5, -0.75, 0.433013, -44, 16, -27)
+light_color = Color(8, 1, 1, 1)
+light_energy = 3.0
+spot_range = 32.0
+spot_angle = 26.8438
+
+[node name="SpotLight3D8" type="SpotLight3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
+transform = Transform3D(-2.78181e-08, -0.866025, 0.5, -1.99638e-09, 0.5, 0.866025, -1, 2.3093e-08, -1.5638e-08, -52, 16, 10)
+light_color = Color(8, 1, 1, 1)
+light_energy = 3.0
+spot_range = 32.0
+spot_angle = 26.8438
+
 [node name="cammie" type="Camera3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
-transform = Transform3D(1, 0, 0, 0, 0.0871557, 0.996195, 0, -0.996195, 0.0871557, 0, 42.5001, 5.7996)
+transform = Transform3D(1, 0, 0, 0, 2.98023e-08, 1, 0, -1, 2.98023e-08, 0, 55.5001, 2.7996)
 current = true
-fov = 55.0
+fov = 80.0
 size = 40.0
 
 [node name="edge_detection" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/true_arena/visual_/cammie"]
@@ -427,21 +461,44 @@ extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_fknp4")
 
 [node name="LightmapGI" type="LightmapGI" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
-visible = false
 
 [node name="Node3D" type="Node3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
 
 [node name="cam_location_game" type="Node3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
 transform = Transform3D(1, 0, 0, 0, 0.0871557, 0.996195, 0, -0.996195, 0.0871557, 0, 46.5001, 5.7996)
 
+[node name="cursefloor" type="StaticBody3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.1, 0)
+collision_layer = 128
+collision_mask = 128
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/true_arena/visual_/cursefloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, -1.9)
+shape = SubResource("CylinderShape3D_7omef")
+
 [node name="boss_pos_start" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 40.3, -7)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 17.3, -7)
 
 [node name="player_pos_start" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.3, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.8, 10)
 
 [node name="hole_spot" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, -20)
+
+[node name="sun-blocker" type="CSGBox3D" parent="SubViewportContainer/SubViewport/true_arena"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -91.5, 22, 5.5)
+cast_shadow = 3
+visibility_range_begin = 1.0
+size = Vector3(1, 48, 50)
+
+[node name="sun-blocker2" type="CSGBox3D" parent="SubViewportContainer/SubViewport/true_arena"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 89, 22, 10.5)
+cast_shadow = 3
+visibility_range_begin = 1.0
+size = Vector3(1, 49, 60)
+
+[node name="Path3D" type="Path3D" parent="SubViewportContainer/SubViewport/true_arena"]
+curve = SubResource("Curve3D_q5i62")
 
 [node name="gui" type="Control" parent="."]
 layout_mode = 3
@@ -518,14 +575,15 @@ text = "ROUND: "
 
 [node name="boss_health" type="ProgressBar" parent="gui/arena_gui"]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -232.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -432.0
 offset_top = 16.0
-offset_right = 232.0
-offset_bottom = 40.0
-grow_horizontal = 2
+offset_right = -88.0
+offset_bottom = 32.0
+grow_horizontal = 0
+mouse_filter = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_lj0ri")
 theme_override_styles/fill = SubResource("StyleBoxFlat_hmy5f")
 max_value = 1000.0
@@ -533,15 +591,15 @@ step = 1.0
 value = 500.0
 show_percentage = false
 
-[node name="boss_name" type="Label" parent="gui/arena_gui"]
+[node name="boss_name" type="Label" parent="gui/arena_gui/boss_health"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -128.0
-offset_top = 48.0
-offset_right = 128.0
-offset_bottom = 71.0
+offset_left = -132.0
+offset_top = 24.0
+offset_right = 124.0
+offset_bottom = 47.0
 grow_horizontal = 2
 theme = ExtResource("13_28tee")
 text = "TESTNAME"
@@ -562,35 +620,32 @@ theme = ExtResource("13_28tee")
 theme_override_font_sizes/font_size = 12
 text = "state"
 
-[node name="boss state debug label" type="Label" parent="gui/arena_gui"]
+[node name="boss state debug label" type="Label" parent="gui/arena_gui/state"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 48.0
-offset_top = -12.0
-offset_right = 88.0
-offset_bottom = 11.0
+offset_top = 12.5
+offset_right = 87.0
+offset_bottom = 35.5
 grow_vertical = 2
 theme = ExtResource("13_28tee")
 theme_override_font_sizes/font_size = 12
 text = "unused"
 
-[node name="Label" type="Label" parent="gui/arena_gui"]
+[node name="gem_health" type="Label" parent="gui/arena_gui"]
+visible = false
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 2
 anchor_top = 1.0
-anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -40.0
-offset_right = 40.0
-offset_bottom = -17.0
-grow_horizontal = 2
+offset_left = 40.0
+offset_top = -56.0
+offset_right = 120.0
+offset_bottom = -33.0
 grow_vertical = 0
 theme = ExtResource("13_28tee")
-theme_override_colors/font_color = Color(0.0705882, 0.65098, 0.490196, 1)
+theme_override_colors/font_color = Color(0.662745, 0.0470588, 0.0313726, 1)
 text = "test
 "
 horizontal_alignment = 3
@@ -611,10 +666,11 @@ grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("13_28tee")
 theme_override_colors/font_color = Color(1, 0.847059, 0, 1)
-text = "STABILITY:
+text = "HP:
 "
 
 [node name="spin_meter" type="TextureProgressBar" parent="gui/arena_gui"]
+visible = false
 material = SubResource("CanvasItemMaterial_jfsck")
 layout_mode = 1
 anchors_preset = 3
@@ -763,9 +819,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.054902, 0.0392157, 0.0470588, 1)
+color = Color(0.054902, 0.0392157, 0.0470588, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="gui/fade"]
+reset_on_save = false
 libraries = {
 "": SubResource("AnimationLibrary_2hlll")
 }

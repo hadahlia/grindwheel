@@ -18,8 +18,8 @@
 [sub_resource type="Resource" id="Resource_e6243"]
 script = ExtResource("2_gd5nx")
 dash_cooldown = 8
-_movespeed = 16.0
-damage = 40.0
+_movespeed = 70.0
+damage = 50
 rot_speed = 10.0
 stability = 10
 dash_max_charge = 6
@@ -61,19 +61,12 @@ albedo_texture = ExtResource("7_45ayb")
 uv1_scale = Vector3(0.5, 0.5, 0.5)
 uv1_triplanar = true
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wqc0s"]
-albedo_color = Color(0.756863, 0.0745098, 0.0196078, 1)
-albedo_texture = ExtResource("8_6v8km")
-metallic = 0.81
-metallic_specular = 0.56
-metallic_texture = ExtResource("9_srw73")
-roughness = 0.56
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2msh3"]
 resource_local_to_scene = true
 resource_name = "shimmer"
 cull_mode = 2
 albedo_color = Color(1, 0, 0, 1)
+albedo_texture = ExtResource("8_6v8km")
 metallic = 0.68
 metallic_specular = 0.55
 roughness = 0.56
@@ -113,21 +106,30 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_42agv")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wqc0s"]
+albedo_color = Color(0.756863, 0.0745098, 0.0196078, 1)
+albedo_texture = ExtResource("8_6v8km")
+metallic = 0.81
+metallic_specular = 0.56
+metallic_texture = ExtResource("9_srw73")
+roughness = 0.56
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_vt5kx"]
 radius = 2.2
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_0mvcy"]
-radius = 1.5
+radius = 1.7
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_tawae"]
 radius = 1.89336
 
 [node name="grindwheel" type="CharacterBody3D" groups=["Player"]]
+collision_layer = 17
 script = ExtResource("1_uw4wv")
 data = SubResource("Resource_e6243")
 
 [node name="col" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.576487, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.676487, 0)
 shape = SubResource("CylinderShape3D_yti04")
 
 [node name="mesh_body" type="Node3D" parent="."]
@@ -135,7 +137,6 @@ transform = Transform3D(1, 0, 0, 0, 1, -2.08616e-07, 0, 2.08616e-07, 1, 0, 0, 0)
 
 [node name="Thorn" type="CSGMesh3D" parent="mesh_body"]
 transform = Transform3D(1, 0, 0, 0, 0.573576, 0.819152, 0, -0.819152, 0.573576, 0, 1.2, -1.6)
-visible = false
 mesh = SubResource("PrismMesh_cpkab")
 material = SubResource("StandardMaterial3D_m7x28")
 
@@ -169,8 +170,9 @@ material = SubResource("StandardMaterial3D_ciyip")
 transform = Transform3D(15, 0, 0, 0, 14.9879, -0.601977, 0, 0.601977, 14.9879, 0, 1.13551, -4.17232e-08)
 
 [node name="saw_blade" parent="mesh_body/spinner_blade/saw_blade3" index="0"]
-material_override = SubResource("StandardMaterial3D_wqc0s")
+material_override = null
 mesh = SubResource("ArrayMesh_us7us")
+surface_material_override/0 = SubResource("StandardMaterial3D_wqc0s")
 
 [node name="arrow_pointer" type="Node3D" parent="."]
 rotation_edit_mode = 2
@@ -199,8 +201,10 @@ texture = ExtResource("3_ncc8r")
 
 [node name="killsaw" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.894349, 0)
+visible = false
 collision_layer = 4
 collision_mask = 2
+monitoring = false
 monitorable = false
 
 [node name="saw_rad" type="CollisionShape3D" parent="killsaw"]
@@ -209,20 +213,16 @@ shape = SubResource("SphereShape3D_vt5kx")
 [node name="hitbox" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.208302, 0)
 collision_layer = 16
-collision_mask = 8
+collision_mask = 2
 monitoring = false
+monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("SphereShape3D_0mvcy")
 
 [node name="wheel_sfx" type="AudioStreamPlayer3D" parent="."]
 volume_db = 2.0
-max_polyphony = 3
-
-[node name="attack_sfx" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("7_5yyiu")
-volume_db = 4.0
-max_distance = 423.72
 max_polyphony = 3
 
 [node name="lvl_sfx" type="AudioStreamPlayer3D" parent="."]
@@ -252,30 +252,23 @@ wait_time = 6.0
 [node name="_spin_charge" type="Timer" parent="."]
 wait_time = 0.6
 
-[node name="_invuln_timer" type="Timer" parent="."]
-wait_time = 3.0
-one_shot = true
-autostart = true
-
 [node name="_stun_timer" type="Timer" parent="."]
 wait_time = 1.2
 one_shot = true
 
 [node name="bump_radius" type="Area3D" parent="."]
+visible = false
 collision_layer = 16
 collision_mask = 32
+monitoring = false
 monitorable = false
 
 [node name="colie" type="CollisionShape3D" parent="bump_radius"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("SphereShape3D_tawae")
 
-[connection signal="area_entered" from="killsaw" to="." method="_on_killsaw_area_entered"]
-[connection signal="area_exited" from="killsaw" to="." method="_on_killsaw_area_exited"]
 [connection signal="timeout" from="_dash_recharge" to="." method="_on__dash_recharge_timeout"]
 [connection signal="timeout" from="_spin_charge" to="." method="_on__spin_charge_timeout"]
-[connection signal="timeout" from="_invuln_timer" to="." method="_on__invuln_timer_timeout"]
 [connection signal="timeout" from="_stun_timer" to="." method="_on__stun_timer_timeout"]
-[connection signal="body_entered" from="bump_radius" to="." method="_on_bump_radius_body_entered"]
 
 [editable path="mesh_body/spinner_blade/saw_blade3"]

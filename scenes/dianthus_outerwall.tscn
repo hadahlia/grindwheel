@@ -1,0 +1,31 @@
+[gd_scene load_steps=7 format=3 uid="uid://dh26vxdofl3yr"]
+
+[ext_resource type="PackedScene" uid="uid://bxpdu6cp58naf" path="res://object/dianthus_outerwall.glb" id="1_db8jg"]
+[ext_resource type="Texture2D" uid="uid://bya6i2vvwb14x" path="res://sprite/env/stone/Horror_Brick_07-128x128.png" id="2_m4dw6"]
+[ext_resource type="Texture2D" uid="uid://hgmldo0ha1qf" path="res://sprite/env/roof/Roof_Tiles_01_Grey_1.png" id="3_766id"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dv04d"]
+albedo_color = Color(0.435294, 0.286275, 0.294118, 1)
+albedo_texture = ExtResource("2_m4dw6")
+metallic = 0.19
+metallic_specular = 0.22
+roughness = 0.92
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qmmat"]
+albedo_color = Color(1, 0.333333, 0.227451, 1)
+albedo_texture = ExtResource("3_766id")
+metallic = 0.03
+metallic_specular = 0.14
+uv1_scale = Vector3(2, 2, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qtgwq"]
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="dianthus_outerwall" instance=ExtResource("1_db8jg")]
+
+[node name="Cylinder" parent="." index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_dv04d")
+surface_material_override/1 = SubResource("StandardMaterial3D_qmmat")
+surface_material_override/2 = SubResource("StandardMaterial3D_qtgwq")

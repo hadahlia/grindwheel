@@ -5,7 +5,7 @@ extends Resource
 
 @export_group("Spinner Data")
 @export var _movespeed : float = 10
-@export var damage : float = 5
+@export var damage : int = 5
 #@export var spin : int = 100
 @export var rot_speed : float = 10
 @export var stability : int = 10

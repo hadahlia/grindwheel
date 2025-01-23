@@ -1,0 +1,91 @@
+[gd_scene load_steps=10 format=3 uid="uid://cxtt5r3pqnsjx"]
+
+[ext_resource type="Script" path="res://script/grinder/angel_gem.gd" id="1_jxsa4"]
+[ext_resource type="Script" path="res://script/grinder/pivot.gd" id="2_bj4nl"]
+[ext_resource type="AudioStream" uid="uid://1gny76thsd0v" path="res://audio/sfx/stable_down.mp3" id="3_25a1f"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_m75kd"]
+radius = 1.1
+height = 5.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bwm7x"]
+transparency = 1
+cull_mode = 2
+albedo_color = Color(0.258824, 0.733333, 1, 0.556863)
+metallic_specular = 0.52
+metallic_texture_channel = 2
+roughness = 0.62
+emission_enabled = true
+emission = Color(0.234, 0.234, 2, 1)
+rim_enabled = true
+rim = 0.33
+rim_tint = 0.47
+clearcoat_enabled = true
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_xmnxv"]
+material = SubResource("StandardMaterial3D_bwm7x")
+radial_segments = 4
+rings = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g8nqw"]
+albedo_color = Color(0.258824, 0.733333, 1, 1)
+metallic = 0.21
+metallic_specular = 0.93
+roughness = 0.61
+emission_enabled = true
+emission = Color(0, 1, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_fkotl"]
+material = SubResource("StandardMaterial3D_g8nqw")
+radius = 0.25
+height = 1.0
+radial_segments = 4
+rings = 0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_v1tqc"]
+radius = 0.6
+
+[node name="AngelGem" type="CharacterBody3D" groups=["Angel Gem"]]
+script = ExtResource("1_jxsa4")
+base_speed = 30.0
+max_health = 10
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 4, 0)
+shape = SubResource("CapsuleShape3D_m75kd")
+
+[node name="to_pos" type="Marker3D" parent="."]
+visible = false
+
+[node name="outer_gem" type="MeshInstance3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 1.99999, 3.4641, 0, -3.4641, 1.99999, 0, 3.83333, -0.288675)
+mesh = SubResource("CapsuleMesh_xmnxv")
+
+[node name="inner_gem" type="MeshInstance3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 1.99999, 3.4641, 0, -3.4641, 1.99999, 0, 3.83333, -0.288675)
+mesh = SubResource("CapsuleMesh_fkotl")
+
+[node name="hitbox" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_layer = 16
+collision_mask = 32
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="hitbox"]
+shape = SubResource("SphereShape3D_v1tqc")
+
+[node name="pivot" type="Node3D" parent="."]
+script = ExtResource("2_bj4nl")
+
+[node name="_invuln_timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[node name="_angel_damage" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_25a1f")
+volume_db = 2.0
+pitch_scale = 2.0
+
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="timeout" from="_invuln_timer" to="." method="_on__invuln_timer_timeout"]

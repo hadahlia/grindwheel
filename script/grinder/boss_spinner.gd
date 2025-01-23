@@ -5,7 +5,7 @@ extends CharacterBody3D
 signal boss_spawned
 
 signal update_health
-signal output_damage
+#signal output_damage
 signal boss_death
 
 #@onready var state_machine = $state_machine
@@ -21,11 +21,13 @@ signal boss_death
 
 # SOUNDS
 @onready var wheel_sfx = $wheel_sfx
-@onready var boss_slice_sfx = $weapon/boss_slice_sfx
+#@onready var boss_slice_sfx = $weapon/boss_slice_sfx
+@onready var attacked_sfx = $attacked_sfx
+
 
 var _grav : float = -20
 var friction : float = -24
-var _dmg : float
+var _dmg : int
 
 var wish_dir : Vector3 = Vector3.ZERO
 var acceleration : Vector3 = Vector3.ZERO
@@ -106,7 +108,7 @@ func set_direction(_dir: Vector3) -> void:
 
 func _take_damage_once(val: float) -> void:
 	if _invuln: return
-	
+	attacked_sfx.play()
 	_health -= val
 	update_health.emit(_health)
 	if _health <= 0:
@@ -130,10 +132,10 @@ func _death():
 	boss_death.emit(self.global_position)
 	queue_free()
 
-func _on_weapon_area_entered(area):
-	#boss_slice_sfx.play()
-	#velocity *= -1
-	output_damage.emit(_dmg, velocity)
+#func _on_weapon_area_entered(area):
+	##boss_slice_sfx.play()
+	##velocity *= -1
+	#output_damage.emit(_dmg, velocity)
 
 
 #func _on_weapon_area_exited(area):
@@ -163,3 +165,11 @@ func _on__invuln_saw_time_timeout():
 
 func _on_state_machine_cur_state(state: String):
 	_state_transmit = state
+
+
+func _on_hurt_ball_area_entered(area):
+	if area is GrindWheel:
+		print("hit!")
+		_take_damage_once(area._saw_dmg)
+		if area.velocity == Vector3.ZERO:
+			area.velocity = self.velocity

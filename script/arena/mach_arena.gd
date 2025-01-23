@@ -10,13 +10,15 @@ signal call_fade
 @onready var boss_pos_start = $SubViewportContainer/SubViewport/true_arena/boss_pos_start
 @onready var player_pos_start = $SubViewportContainer/SubViewport/true_arena/player_pos_start
 @onready var hole_spot = $SubViewportContainer/SubViewport/true_arena/hole_spot
+#@onready var hole_spot = $SubViewportContainer/SubViewport/true_arena/hole_spot
 
 @onready var gui = $gui
 @onready var cammie = $SubViewportContainer/SubViewport/true_arena/visual_/cammie
 
 
 #player scene
-const player_scene = preload("res://scenes/grindwheel.tscn")
+const gem_scene = preload("res://scenes/angel_gem.tscn")
+const dianthus_scene = preload("res://scenes/grindwheel.tscn")
 const warp_hole = preload("res://scenes/god_hole.tscn")
 const _3d_cursor = preload("res://scenes/3d_cursor.tscn")
 
@@ -28,6 +30,7 @@ const dread_wheel : PackedScene = preload("res://scenes/opponent_wheel.tscn")
 
 # refs to existing boss and player
 #@export_node_path("GrindWheel") var player_ref_path
+var gem_ref : GemSoul
 var player_ref : GrindWheel
 #@export_node_path("BossWheel") var boss_ref_path
 var boss_ref: BossWheel
@@ -46,17 +49,19 @@ func _physics_process(_delta):
 	if !cursor_ref : return
 	#var mousepos = get_viewport().get_mouse_position()
 	Globals.MousePos = get_viewport().get_mouse_position()
-	
-	var raycast = raycast_from_mouse(Globals.MousePos, 1)
+	var raycast = raycast_from_mouse(Globals.MousePos, 128)
 	
 	if raycast:
 		Globals.RayPos = raycast.position
 		cursor_ref.global_position = raycast.position
 		#if abs(raycast.position.length() - player_ref.global_position.length()) > 2:
 			#player_ref.look_at(Vector3(raycast.position.x, -0.8, raycast.position.z), Vector3.UP)
-	else:
-		Globals.RayPos = Vector3.ZERO
-		cursor_ref.global_position = Globals.OOB_POSITION
+	#else:
+		#Globals.RayPos = Vector3.ZERO
+		#cursor_ref.global_position = Globals.OOB_POSITION
+
+#func _input(event):
+	
 	
 	
 
@@ -70,12 +75,15 @@ func raycast_from_mouse(m_pos, collision_mask):
 		return
 	
 	var query = PhysicsRayQueryParameters3D.create(ray_start, ray_end, collision_mask)
-	query.collide_with_areas = true
+	#query.collide_with_areas = true
+	#query.hit_from_inside = true
+	#query.hit_back_faces = true
 	
 	return space_state.intersect_ray(query)
 
 func _start_round():
 	spawn_cursor()
+	spawn_gem()
 	spawn_player()
 	spawn_boss()
 	
@@ -88,13 +96,23 @@ func spawn_cursor():
 	true_arena.add_child(vc)
 	vc.global_position = Globals.OOB_POSITION
 
+func spawn_gem():
+	var g := gem_scene.instantiate()
+	g.shatter.connect(_on_gem_die)
+	true_arena.add_child(g)
+	g.global_position = Vector3(player_pos_start.position.x, -3.8, player_pos_start.position.z)
+
 func spawn_player():
-	var p := player_scene.instantiate()
-	p.bumped.connect(_on_player_bumped)
-	p.die.connect(_on_grindwheel_die)
+	
+	for i in range(Globals.DianthusCount):
+		var p := dianthus_scene.instantiate()
+	
+		#p.bumped.connect(_on_player_bumped)
+	#p.die.connect(_on_grindwheel_die)
 	#p.charge_spent()
-	true_arena.add_child(p)
-	p.global_position = player_pos_start.global_position
+		true_arena.add_child(p)
+		p.global_position = player_pos_start.global_position
+	pass
 
 func spawn_boss():
 	match Globals.RoundCount:
@@ -121,12 +139,14 @@ func _on_trans_level():
 func _get_spinner_reference():
 	#player_ref = get_node(player_ref_path)
 	#boss_ref = get_node(boss_ref_path)
-	
+	gem_ref = get_tree().get_first_node_in_group("Angel Gem")
 	player_ref = get_tree().get_first_node_in_group("Player")
 	boss_ref = get_tree().get_first_node_in_group("BossEnem")
 	#gui.post_ready()
 
-func _on_grindwheel_die(pos: Vector3) -> void:
+
+
+func _on_gem_die(pos: Vector3) -> void:
 	cursor_ref.queue_free()
 	spawn_explosion(pos)
 	call_death_screen.emit()
@@ -154,12 +174,13 @@ func _on_player_bumped(player_vel: Vector3, boss_vel: Vector3, _boss_dmg: float)
 	if player_vel.length() >= boss_vel.length():
 		#bvdmg *= 0.5
 		#bvdmg = boss_vel * 0.5
-		player_ref._set_spin_damage(bvdmg + vel_diff.length())
+		#player_ref._set_spin_damage(bvdmg + vel_diff.length())
 		#pvdmg = player_vel * 2
 		boss_ref._take_damage_once(vel_diff.length() + pvdmg)
 		#boss_ref._invuln = true
 		#boss_ref.timer
 		print("player wins collision!")
+		
 		boss_ref.stunned = true
 		boss_ref._stun_timer.start()
 		#Globals.can_move = false
@@ -177,23 +198,28 @@ func _on_player_bumped(player_vel: Vector3, boss_vel: Vector3, _boss_dmg: float)
 		player_ref._stun_timer.start()
 		boss_ref.stunned = true
 		boss_ref._stun_timer.start()
-	
+	#player_ref.attack_sfx.play()
 	#player_ref._invuln_timer.start()
 	#player_ref._set_spin_damage(vel_diff.length() + bvdmg)
 	#boss_ref._take_damage_once(vel_diff.length() + pvdmg)
 	#player_vel *= vel_diff.normalized()
 	#boss_vel *= vel_diff.normalized()
 	#player_ref._take_damage()
-	player_ref.velocity = boss_vel * 1.2#* vel_diff * 0.5
+	
+	#player_ref.velocity = boss_vel * 1.2#* vel_diff * 0.5
 	boss_ref.velocity = player_vel #* 0.8 #* vel_diff * 0.5
 
 func destroy_actors():
-	var pp = get_tree().get_first_node_in_group("Player")
+	var sg = get_tree().get_nodes_in_group("Angel Gem")
+	
+	var pp = get_tree().get_nodes_in_group("Player")
 	#var bp = get_tree().get_first_node_in_group("BossEnem")
 	var hole = get_tree().get_first_node_in_group("Portal")
-	
-	if pp and hole:
+	if sg:
+		sg.queue_free()
+	if pp :
 		pp.queue_free()
+	if hole:
 		hole.queue_free()
 
 func _on_gui_cleanup():

@@ -2,6 +2,10 @@ i cant guarantee ive used all of these in the project or that ive been perfect a
 
 - sky / textures
 
+https://jellyfish0.itch.io/textures-for-particles
+
+
+
 https://free-game-assets.itch.io/free-sky-with-clouds-background-pixel-art-set
 
 https://free-game-assets.itch.io/ocean-and-clouds-free-pixel-art-backgrounds
@@ -29,3 +33,4 @@ https://elegantcrow.itch.io/retro-modular-house-pack -- considering
 -- other
 
 https://github.com/ahopness/GodotRetro
+https://github.com/Tshmofen/verlet-rope-4

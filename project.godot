@@ -15,7 +15,7 @@ config/description="gamey game game. mode 7 target snes like
 "
 config/version="0.1a"
 run/main_scene="res://scenes/mach_arena.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 run/max_fps=300
 config/icon="res://icon.svg"
 
@@ -60,6 +60,7 @@ BossEnem="entities belonging to boss enemy group"
 Player="belonging to global Player group"
 SparkleCursor=""
 Portal=""
+"Angel Gem"="testing out a hitbox thing"
 
 [importer_defaults]
 
@@ -90,6 +91,11 @@ texture={
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"canceled":false,"pressed":false,"double_click":false,"script":null)
 ]
 }
+"switch dir"={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":88,"key_label":0,"unicode":120,"location":0,"echo":false,"script":null)
+]
+}
 
 [layer_names]
 
@@ -98,6 +104,7 @@ texture={
 3d_physics/layer_4="enemy weapon"
 3d_physics/layer_5="player"
 3d_physics/layer_6="boss_body"
+3d_physics/layer_8="cursor detectable"
 
 [physics]
 

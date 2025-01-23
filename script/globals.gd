@@ -9,5 +9,7 @@ var superstate = GameState.MENU1
 
 var RoundCount : int = 1
 
+var DianthusCount : int = 1
+
 var MousePos : Vector2
 var RayPos : Vector3

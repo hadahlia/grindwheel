@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bm41ggaaee4pw"]
+
+[ext_resource type="PackedScene" uid="uid://c8jq1fev0ovuk" path="res://object/dianthus_wall.glb" id="1_tft2q"]
+
+[node name="dianthus_wall" instance=ExtResource("1_tft2q")]
+
+[node name="thewall" parent="." index="0"]
+visible = false
