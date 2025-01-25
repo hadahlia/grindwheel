@@ -20,6 +20,7 @@ signal cleanup
 
 #@onready var gem_health = $arena_gui/gem_health
 
+@onready var round_0 = $round_0
 
 @onready var spin_meter = $arena_gui/spin_meter
 @onready var dash_charge_= $arena_gui/dash_charge_met
@@ -90,10 +91,12 @@ func _set_boss_name(new_name: String) -> void:
 func _on_grindwheel_update_spin(new_spin: float) -> void:
 	spin_meter.value = new_spin
 
-
+#func _hide_healthbar():
+	#
 #func _on_wheel_update_stability(new_val: int, max_val:int) -> void:
 	
-
+func _update_round() -> void:
+	round_counter.text = "ROUND " + str(Globals.RoundCount)
 
 func _on_bossl_update_health(_new_health: float) -> void:
 	boss_health.value = _new_health
@@ -125,8 +128,8 @@ func _on_mach_arena_call_fade():
 
 func _on_mach_arena_fade_out():
 	fade_anim.play("fade_trans")
+	
 	post_ready()
-	arena_gui.show()
 
 
 func _on_animation_player_animation_finished(anim_name):
@@ -140,8 +143,18 @@ func _on_title_screen_gui_input(event):
 		title_anim.play("fade_title")
 		start_game.emit()
 		
+func show_gui():
+	arena_gui.show()
+	if Globals.RoundCount == 0:
+		round_0.show()
+	else:
+		round_0.hide()
 
+func hide_text():
+	round_0.hide()
 
 func _on_title_animation_finished(anim_name):
 	if anim_name == "fade_title":
 		title_screen.queue_free()
+		
+		

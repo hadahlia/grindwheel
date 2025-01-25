@@ -29,8 +29,9 @@ var _invuln : bool = false
 var _orbit_right : bool = false
 
 func _ready():
+	max_health = Globals.GemMaxHP
 	health = max_health
-	soul_health.emit(health)
+	soul_health.emit(health, max_health)
 	Globals.OrbitMode = _leash_toggle
 
 func _angel_spin(delta: float):
@@ -168,7 +169,7 @@ func _unleash():
 	if !dt: return
 	#var coord = pivot.getCoordinates()
 	for i in dt:
-		var nd : Vector3 = Vector3( i.orbit_pos.x - self.global_position.x,0,i.orbit_pos.z - self.global_position.z)
+		var nd : Vector3 = Vector3( i.global_position.x - self.global_position.x,0,i.global_position.z - self.global_position.z)
 		i.col.disabled = false
 		i.reparent(get_parent())
 		

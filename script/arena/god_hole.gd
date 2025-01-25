@@ -4,11 +4,12 @@ class_name WarpHole
 signal trans_level
 
 func teleport():
+	Globals.RoundCount += 1
 	trans_level.emit()
 	#queue_free()
 	#Globals.RoundCount += 1
 
 
-func _on_trigger_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
+func _on_trigger_body_shape_entered(body):
 	if body is GemSoul:
 		teleport()

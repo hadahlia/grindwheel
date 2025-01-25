@@ -11,7 +11,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kuwg1"]
 render_priority = 0
 shader = ExtResource("1_ehsve")
-shader_parameter/Scroll_Speed = Vector2(2, 1)
+shader_parameter/Scroll_Speed = Vector2(1, 0.5)
 shader_parameter/TexturePow = 4.0
 shader_parameter/Gradient_Power = 2.0
 shader_parameter/Texture_Energy = ExtResource("2_1kuws")
@@ -26,7 +26,7 @@ point_count = 2
 
 [sub_resource type="Curve" id="Curve_3yst6"]
 max_value = 200.0
-_data = [Vector2(0, 0.351648), 0.0, 0.0, 0, 0, Vector2(1, 112.088), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 35.1648), 0.0, -102.277, 0, 0, Vector2(1, 112.088), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveXYZTexture" id="CurveXYZTexture_ahi1q"]
@@ -36,14 +36,16 @@ curve_z = SubResource("Curve_3yst6")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i2rtj"]
 gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 2.0
 scale_curve = SubResource("CurveXYZTexture_ahi1q")
 color = Color(1.2, 0.5, 2, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_phm4g"]
 render_priority = 0
 shader = ExtResource("1_ehsve")
-shader_parameter/Scroll_Speed = Vector2(2, 1)
-shader_parameter/TexturePow = 1.5
+shader_parameter/Scroll_Speed = Vector2(1, 0.5)
+shader_parameter/TexturePow = 3.0
 shader_parameter/Gradient_Power = 3.0
 shader_parameter/Texture_Energy = ExtResource("4_xll7y")
 
@@ -54,8 +56,8 @@ curve_z = SubResource("Curve_3yst6")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qh5x3"]
 gravity = Vector3(0, 0, 0)
-scale_min = 0.3
-scale_max = 0.3
+scale_min = 0.6
+scale_max = 0.6
 scale_curve = SubResource("CurveXYZTexture_j6g3l")
 color = Color(2.82353, 0.831373, 0.831373, 1)
 
@@ -69,6 +71,8 @@ shader_parameter/Texture_Energy = ExtResource("4_xll7y")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_lenvk"]
 gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 2.0
 color = Color(1.64314, 0.501961, 0.976471, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b0vxy"]
@@ -89,16 +93,16 @@ direction = Vector3(0, 0, 1)
 spread = 0.0
 initial_velocity_min = 5.0
 initial_velocity_max = 8.0
-radial_velocity_min = -2.23517e-05
-radial_velocity_max = 1.99998
+radial_velocity_min = 1.99998
+radial_velocity_max = 3.99998
 gravity = Vector3(0, 0, 0)
-scale_min = 2.0
-scale_max = 5.0
+scale_min = 4.0
+scale_max = 10.0
 color = Color(2, 1, 2, 1)
 alpha_curve = SubResource("CurveTexture_q1dmy")
 
 [sub_resource type="QuadMesh" id="QuadMesh_woetg"]
-size = Vector2(0.1, 0.1)
+size = Vector2(0.5, 0.5)
 
 [sub_resource type="Animation" id="Animation_udcov"]
 resource_name = "Beam Effect"
@@ -217,7 +221,8 @@ script = ExtResource("1_rve87")
 [node name="main_energy" type="GPUParticles3D" parent="."]
 material_override = SubResource("ShaderMaterial_kuwg1")
 amount = 1
-lifetime = 0.5
+lifetime = 0.1
+speed_scale = 0.5
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_i2rtj")
 draw_pass_1 = ExtResource("1_f5yrs")
@@ -225,7 +230,8 @@ draw_pass_1 = ExtResource("1_f5yrs")
 [node name="little_energy" type="GPUParticles3D" parent="."]
 material_override = SubResource("ShaderMaterial_phm4g")
 amount = 1
-lifetime = 0.5
+lifetime = 0.1
+speed_scale = 0.5
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_qh5x3")
 draw_pass_1 = ExtResource("1_f5yrs")
@@ -233,15 +239,16 @@ draw_pass_1 = ExtResource("1_f5yrs")
 [node name="laser_crown" type="GPUParticles3D" parent="."]
 material_override = SubResource("ShaderMaterial_04t7r")
 amount = 1
-lifetime = 0.5
+lifetime = 0.1
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_lenvk")
 draw_pass_1 = ExtResource("3_ppa83")
 
 [node name="sparkles" type="GPUParticles3D" parent="."]
 material_override = SubResource("ShaderMaterial_b0vxy")
-amount = 25
-lifetime = 0.5
+amount = 21
+lifetime = 0.1
+speed_scale = 0.8
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_2v4pr")
 draw_pass_1 = SubResource("QuadMesh_woetg")

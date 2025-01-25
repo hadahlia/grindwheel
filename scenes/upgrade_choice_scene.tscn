@@ -1,0 +1,71 @@
+[gd_scene load_steps=7 format=3 uid="uid://tx23a548xnki"]
+
+[ext_resource type="Script" path="res://script/arena/upgrade_choice_scene.gd" id="1_nbf1t"]
+[ext_resource type="PackedScene" uid="uid://brutrpcx1wsjh" path="res://scenes/spinner_mesh_body.tscn" id="2_13nxq"]
+[ext_resource type="FontFile" uid="uid://bke4sk4opv7w4" path="res://sprite/font/QuinqueFive.ttf" id="3_gwm0a"]
+[ext_resource type="Material" uid="uid://ceaokwxy7d2t7" path="res://shader/heart_material.tres" id="3_py6j6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_unbgy"]
+size = Vector3(4, 4, 4)
+
+[sub_resource type="PrismMesh" id="PrismMesh_av6xb"]
+
+[node name="upgrade_choice_scene" type="Node3D"]
+script = ExtResource("1_nbf1t")
+
+[node name="spinner_upgrade_trig" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 5.3, -5)
+collision_layer = 65
+collision_mask = 65
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="spinner_upgrade_trig"]
+shape = SubResource("BoxShape3D_unbgy")
+
+[node name="mesh_body" parent="spinner_upgrade_trig" instance=ExtResource("2_13nxq")]
+transform = Transform3D(0.513165, 0.596008, 0.14641, -0.369677, 0.45252, -0.54641, -0.489898, 0.282843, 0.565685, -0.299999, -1, -0.6)
+
+[node name="Label3D" type="Label3D" parent="spinner_upgrade_trig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -2, 1)
+pixel_size = 0.05
+billboard = 1
+texture_filter = 0
+text = "+1"
+font = ExtResource("3_gwm0a")
+font_size = 20
+outline_size = 6
+
+[node name="health_upgrade_trig" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 5.3, 5)
+collision_layer = 65
+collision_mask = 65
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="health_upgrade_trig"]
+shape = SubResource("BoxShape3D_unbgy")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="health_upgrade_trig"]
+transform = Transform3D(1.17807e-07, -1.89443, -0.7, 1.78427e-07, -1.09375, 1.21244, -2.1875, -1.91237e-07, 6.11959e-08, -0.166025, -1, -0.199946)
+mesh = SubResource("PrismMesh_av6xb")
+material = ExtResource("3_py6j6")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="health_upgrade_trig"]
+transform = Transform3D(-2.56941e-08, 0.703646, -0.70875, 4.45035e-08, 0.40625, 1.22759, 1.17562, 0, -6.19609e-08, 1.13301, -0.25, -0.70811)
+mesh = SubResource("PrismMesh_av6xb")
+material = ExtResource("3_py6j6")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="health_upgrade_trig"]
+transform = Transform3D(-2.56941e-08, 0.703646, -0.70875, 4.45035e-08, 0.40625, 1.22759, 1.17562, 0, -6.19609e-08, 1.13301, -0.25, 0.307419)
+mesh = SubResource("PrismMesh_av6xb")
+material = ExtResource("3_py6j6")
+
+[node name="Label3D2" type="Label3D" parent="health_upgrade_trig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -2, 2)
+pixel_size = 0.05
+billboard = 1
+texture_filter = 0
+text = "+1"
+font = ExtResource("3_gwm0a")
+font_size = 20
+outline_size = 6
+
+[connection signal="body_entered" from="spinner_upgrade_trig" to="." method="_on_spinner_upgrade_trig_body_entered"]
+[connection signal="body_entered" from="health_upgrade_trig" to="." method="_on_health_upgrade_trig_body_entered"]

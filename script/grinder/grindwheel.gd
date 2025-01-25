@@ -85,7 +85,7 @@ func _ready():
 		#_dash_charges = data.dash_max_charge
 		#_dash_recharge.wait_time = data.dash_cooldown
 		_stability = data.stability
-		_saw_dmg = data.damage
+		_saw_dmg = Globals.DianthusDamage
 	
 	wheel_sfx.stream = data.bump_sound
 

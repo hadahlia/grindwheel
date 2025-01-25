@@ -25,6 +25,7 @@ var once : bool = true
 const gem_scene = preload("res://scenes/angel_gem.tscn")
 const dianthus_scene = preload("res://scenes/grindwheel.tscn")
 const warp_hole = preload("res://scenes/god_hole.tscn")
+const upgrade_scene = preload("res://scenes/upgrade_choice_scene.tscn")
 const _3d_cursor = preload("res://scenes/3d_cursor.tscn")
 
 #vfx scenes
@@ -47,9 +48,10 @@ const ray_len : float = 1000
 const BASEDMG : float = 4
 
 func _ready():
+	Globals.RoundCount = 0
 	fade_out.emit()
 	#_start_round()
-	pass
+	#pass
 
 func _physics_process(_delta):
 	if !cursor_ref : return
@@ -92,8 +94,8 @@ func raycast_from_mouse(m_pos, collision_mask):
 	return space_state.intersect_ray(query)
 
 func _start_round():
-	
-	
+	gui.show_gui()
+	gui._update_round()
 	spawn_cursor()
 	spawn_gem()
 	spawn_player()
@@ -118,7 +120,9 @@ func spawn_gem():
 
 func spawn_player():
 	
-	
+	var dia = get_tree().get_nodes_in_group("Dianthus")
+	for k in dia:
+		k.queue_free()
 	var index : float = 1
 	for i in range(Globals.DianthusCount):
 		var p := dianthus_scene.instantiate()
@@ -135,7 +139,15 @@ func spawn_player():
 	pass
 
 func spawn_boss():
-	match Globals.RoundCount:
+	var rc = Globals.RoundCount
+	if rc > 1:
+		rc = (rc % 1) + 1
+	match rc:
+		0:
+			pass
+			gui._set_boss_name("")
+			#spawn_hole()
+			spawn_upgrades()
 		1:
 			var bc := dread_wheel.instantiate()
 			
@@ -146,7 +158,19 @@ func spawn_boss():
 			gui._set_boss_name(" DREAD WHEEL ")
 			#bc.boss_spawned.connect(_get_spinner_reference)
 
+
+func spawn_upgrades():
+	var upg := upgrade_scene.instantiate()
+	upg.upgrade_selected.connect(spawn_hole)
+	upg.spawn_dianthus.connect(spawn_player)
+	var c = get_tree().get_first_node_in_group("CenterPoint")
+	upg.global_position = c.global_position
+	upg.rotation_degrees.y += 90
+	true_arena.add_child(upg)
+
 func spawn_hole():
+	if Globals.RoundCount == 0:
+		gui.hide_text()
 	var hc := warp_hole.instantiate()
 	
 	hc.trans_level.connect(_on_trans_level)
@@ -164,6 +188,10 @@ func _get_spinner_reference():
 	#player_ref = get_tree().get_first_node_in_group("Dianthus")
 	#dianthuses = get_tree().get_nodes_in_group("Dianthus")
 	boss_ref = get_tree().get_first_node_in_group("BossEnem")
+	if !boss_ref:
+		$gui/arena_gui/boss_health.hide()
+	else:
+		$gui/arena_gui/boss_health.show()
 	#gui.post_ready()
 
 
@@ -177,7 +205,8 @@ func _on_gem_die(pos: Vector3) -> void:
 
 func _on_opponent_wheel_boss_death(pos: Vector3) -> void:
 	spawn_explosion(pos)
-	spawn_hole()
+	spawn_upgrades()
+	#spawn_hole()
 	#Globals.superstate = Globals.GameState.WORLDPEACE
 
 func spawn_explosion(pos: Vector3) -> void:
