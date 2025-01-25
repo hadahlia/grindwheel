@@ -69,14 +69,18 @@ normal_enabled = true
 [node name="dianthus_floor" instance=ExtResource("1_bok78")]
 
 [node name="bowlfloor" parent="." index="0"]
+layers = 97
 surface_material_override/0 = SubResource("StandardMaterial3D_xilby")
 surface_material_override/1 = SubResource("StandardMaterial3D_hbl8w")
 surface_material_override/2 = SubResource("StandardMaterial3D_csbmk")
 
 [node name="StaticBody3D" parent="bowlfloor" index="0"]
+collision_layer = 97
+collision_mask = 97
 input_ray_pickable = false
 
 [node name="dianthus_wall" parent="." index="1" instance=ExtResource("5_7gcv7")]
+visible = false
 
 [node name="dianthus_outerwall" parent="." index="2" instance=ExtResource("6_l05kg")]
 transform = Transform3D(-5.24537e-08, 0, 1.2, 0, 1.2, 0, -1.2, 0, -5.24537e-08, 0, 0, 1)

@@ -1,10 +1,14 @@
 extends Control
 
+signal start_game
 signal cleanup
 
 @onready var arena_gui = $arena_gui
 @onready var stability_ui = $"arena_gui/Stability Gauge"
 @onready var death = $death
+@onready var flavortext = $death/flavortext
+@onready var title_screen = $title_screen
+
 
 @onready var round_counter = $arena_gui/round_counter
 @onready var boss_name = $arena_gui/boss_health/boss_name
@@ -25,6 +29,7 @@ signal cleanup
 @onready var flash_timer = $"death/flash timer"
 
 @onready var fade_anim = $fade/AnimationPlayer
+@onready var title_anim = $title_screen/AnimationPlayer
 
 #@onready var label = $Label
 #@onready var spin_meter = $spin_meter
@@ -40,6 +45,7 @@ var bossy : BossWheel
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
 	pass
 
 func post_ready():
@@ -94,6 +100,13 @@ func _on_bossl_update_health(_new_health: float) -> void:
 
 #@TODO update dash meter func
 
+func _on_reset():
+	flash_timer.stop()
+	
+	death.hide()
+	arena_gui.show()
+	
+
 func _on_grindwheel_die():
 	arena_gui.hide()
 	death.show()
@@ -101,7 +114,8 @@ func _on_grindwheel_die():
 
 
 func _on_flash_timer_timeout():
-	death.visible = !death.visible
+	#death.visible = !death.visible
+	flavortext.visible = !flavortext.visible
 
 
 func _on_mach_arena_call_fade():
@@ -112,8 +126,22 @@ func _on_mach_arena_call_fade():
 func _on_mach_arena_fade_out():
 	fade_anim.play("fade_trans")
 	post_ready()
+	arena_gui.show()
 
 
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "fade_in":
 		cleanup.emit()
+
+
+func _on_title_screen_gui_input(event):
+	if event is InputEventMouseButton:
+		print("Started")
+		title_anim.play("fade_title")
+		start_game.emit()
+		
+
+
+func _on_title_animation_finished(anim_name):
+	if anim_name == "fade_title":
+		title_screen.queue_free()

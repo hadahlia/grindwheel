@@ -14,7 +14,7 @@ fire_cooldown = 0.5
 speed = 200.0
 damage = 5
 
-[node name="player" type="CharacterBody3D" groups=["Player"]]
+[node name="player" type="CharacterBody3D" groups=["Dianthus"]]
 script = ExtResource("1_w1ouw")
 
 [node name="spritegirl" type="Sprite3D" parent="."]

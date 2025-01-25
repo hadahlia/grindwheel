@@ -45,6 +45,8 @@ sides = 12
 material = SubResource("StandardMaterial3D_hlh73")
 
 [node name="trigger" type="Area3D" parent="."]
+collision_layer = 65
+collision_mask = 65
 monitorable = false
 
 [node name="trig_body" type="CollisionShape3D" parent="trigger"]

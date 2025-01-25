@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://cau0atwkvl67f"]
+[gd_scene load_steps=47 format=3 uid="uid://cau0atwkvl67f"]
 
 [ext_resource type="Script" path="res://script/arena/mach_arena.gd" id="1_lwp4d"]
 [ext_resource type="Texture2D" uid="uid://cvbxjk0rh5p8k" path="res://sprite/gui/frame1.png" id="2_7qsjr"]
@@ -10,10 +10,12 @@
 [ext_resource type="Texture2D" uid="uid://cxju4yfhsi3q6" path="res://sprite/env/Horror_Floor_07-128x128.png" id="6_dyd7g"]
 [ext_resource type="Shader" path="res://shader/blur_sharpen.gdshader" id="6_sikrn"]
 [ext_resource type="Shader" path="res://shader/downscale.gdshader" id="7_wtnmt"]
+[ext_resource type="Script" path="res://script/util/cammie.gd" id="8_xphx5"]
 [ext_resource type="Theme" uid="uid://ckg1xrpun5mdw" path="res://sprite/font/label_theme.tres" id="13_28tee"]
 [ext_resource type="Texture2D" uid="uid://cllq0gulo6nap" path="res://sprite/gui/empty_gray_bar.png" id="13_sybxv"]
 [ext_resource type="Texture2D" uid="uid://bi4c3ev3bnbef" path="res://sprite/gui/full_gray_bar.png" id="14_x54gm"]
 [ext_resource type="PackedScene" uid="uid://dhs8pmg1iceku" path="res://scenes/dianthus_floor.tscn" id="16_y2ukj"]
+[ext_resource type="Animation" uid="uid://rf2u58tmq6ug" path="res://script/fade_title.res" id="17_6yx7o"]
 [ext_resource type="Texture2D" uid="uid://d0kqiqdo7t2iy" path="res://sprite/gui/title/dianthus_title.png" id="19_aeia2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fcpmf"]
@@ -152,7 +154,7 @@ size = Vector2(2, 2)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_7omef"]
 height = 3.6
-radius = 62.0
+radius = 100.0
 
 [sub_resource type="Curve3D" id="Curve3D_q5i62"]
 
@@ -187,6 +189,15 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
+[sub_resource type="Animation" id="Animation_g8y4u"]
+resource_name = "new_animation"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xq1eg"]
+_data = {
+"fade_title": ExtResource("17_6yx7o"),
+"new_animation": SubResource("Animation_g8y4u")
+}
+
 [sub_resource type="Animation" id="Animation_0qyq8"]
 length = 0.001
 tracks/0/type = "value"
@@ -200,6 +211,42 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(0.054902, 0.0392157, 0.0470588, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../title_screen/ColorRect:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.237347, 1.96133e-06, 0.160834, 0.384314)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../title_screen/TitleCardFG:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../title_screen/click_begin:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_qodmh"]
@@ -240,6 +287,7 @@ tracks/0/keys = {
 _data = {
 "RESET": SubResource("Animation_0qyq8"),
 "fade_in": SubResource("Animation_qodmh"),
+"fade_title": ExtResource("17_6yx7o"),
 "fade_trans": SubResource("Animation_le153")
 }
 
@@ -450,10 +498,11 @@ spot_range = 32.0
 spot_angle = 26.8438
 
 [node name="cammie" type="Camera3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
-transform = Transform3D(1, 0, 0, 0, 2.98023e-08, 1, 0, -1, 2.98023e-08, 0, 55.5001, 2.7996)
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 48.5001, 113.8)
 current = true
 fov = 80.0
 size = 40.0
+script = ExtResource("8_xphx5")
 
 [node name="edge_detection" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/true_arena/visual_/cammie"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0210409, -0.18462)
@@ -462,7 +511,10 @@ mesh = SubResource("QuadMesh_fknp4")
 
 [node name="LightmapGI" type="LightmapGI" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
 
-[node name="Node3D" type="Node3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
+[node name="navpoints" type="Node3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.8, 0)
+
+[node name="center_point" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena/visual_/navpoints" groups=["CenterPoint"]]
 
 [node name="cam_location_game" type="Node3D" parent="SubViewportContainer/SubViewport/true_arena/visual_"]
 transform = Transform3D(1, 0, 0, 0, 0.0871557, 0.996195, 0, -0.996195, 0.0871557, 0, 46.5001, 5.7996)
@@ -480,10 +532,12 @@ shape = SubResource("CylinderShape3D_7omef")
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 17.3, -7)
 
 [node name="player_pos_start" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.8, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.6, 1)
 
 [node name="hole_spot" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, -20)
+
+[node name="pos_container" type="Node3D" parent="SubViewportContainer/SubViewport/true_arena"]
 
 [node name="sun-blocker" type="CSGBox3D" parent="SubViewportContainer/SubViewport/true_arena"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -91.5, 22, 5.5)
@@ -549,9 +603,31 @@ text = ":: YOU HAVE DIED ::
 the mists of god will take you away"
 horizontal_alignment = 1
 
+[node name="flavortext2" type="Label" parent="gui/death"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -416.0
+offset_top = 116.0
+offset_right = 424.0
+offset_bottom = 194.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("13_28tee")
+theme_override_colors/font_color = Color(0.776471, 0, 0.376471, 1)
+theme_override_font_sizes/font_size = 20
+text = ":: YOU HAVE DIED ::
+
+press r to reset"
+horizontal_alignment = 1
+
 [node name="flash timer" type="Timer" parent="gui/death"]
 
 [node name="arena_gui" type="Control" parent="gui"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -737,7 +813,6 @@ texture_under = ExtResource("13_sybxv")
 texture_progress = ExtResource("14_x54gm")
 
 [node name="title_screen" type="Control" parent="gui"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -752,6 +827,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.237347, 1.96133e-06, 0.160834, 0.384314)
 
 [node name="TitleCardFG" type="TextureRect" parent="gui/title_screen"]
@@ -767,6 +843,7 @@ offset_right = 256.0
 offset_bottom = -52.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("19_aeia2")
 expand_mode = 1
 stretch_mode = 5
@@ -784,6 +861,7 @@ offset_right = 176.0
 offset_bottom = 276.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_gtbt0")
 
 [node name="MarginContainer" type="MarginContainer" parent="gui/title_screen/click_begin"]
@@ -811,6 +889,11 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.639216)
 text = "Click to Begin..."
 horizontal_alignment = 3
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="gui/title_screen"]
+libraries = {
+"": SubResource("AnimationLibrary_xq1eg")
+}
+
 [node name="fade" type="ColorRect" parent="gui"]
 layout_mode = 1
 anchors_preset = 15
@@ -819,17 +902,56 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.054902, 0.0392157, 0.0470588, 0)
+color = Color(0.054902, 0.0392157, 0.0470588, 1)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="gui/fade"]
-reset_on_save = false
 libraries = {
 "": SubResource("AnimationLibrary_2hlll")
 }
 
+[node name="round_0" type="Control" parent="gui"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="gui/round_0"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -140.0
+offset_right = 284.0
+offset_bottom = 116.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("13_28tee")
+theme_override_colors/font_color = Color(1, 0.309804, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 10
+text = "dear vestige of god, please accept this device. 
+i hate them. kill them all
+
+
+[PRESS M2 to leash]"
+horizontal_alignment = 1
+vertical_alignment = 3
+
 [connection signal="call_death_screen" from="." to="gui" method="_on_grindwheel_die"]
 [connection signal="call_fade" from="." to="gui" method="_on_mach_arena_call_fade"]
 [connection signal="fade_out" from="." to="gui" method="_on_mach_arena_fade_out"]
+[connection signal="finally_fucking_start" from="." to="." method="_on_finally_fucking_start"]
+[connection signal="uncall_death" from="." to="gui" method="_on_reset"]
 [connection signal="cleanup" from="gui" to="." method="_on_gui_cleanup"]
+[connection signal="start_game" from="gui" to="." method="_on_gui_start_game"]
 [connection signal="timeout" from="gui/death/flash timer" to="gui" method="_on_flash_timer_timeout"]
+[connection signal="gui_input" from="gui/title_screen" to="gui" method="_on_title_screen_gui_input"]
+[connection signal="animation_finished" from="gui/title_screen/AnimationPlayer" to="gui" method="_on_title_animation_finished"]
 [connection signal="animation_finished" from="gui/fade/AnimationPlayer" to="gui" method="_on_animation_player_animation_finished"]

@@ -57,10 +57,12 @@ folder_colors={
 [global_group]
 
 BossEnem="entities belonging to boss enemy group"
-Player="belonging to global Player group"
 SparkleCursor=""
 Portal=""
 "Angel Gem"="testing out a hitbox thing"
+"Orbit Point"=""
+Dianthus="belonging to global Player group"
+CenterPoint=""
 
 [importer_defaults]
 
@@ -96,6 +98,11 @@ texture={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":88,"key_label":0,"unicode":120,"location":0,"echo":false,"script":null)
 ]
 }
+reset={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":82,"key_label":0,"unicode":114,"location":0,"echo":false,"script":null)
+]
+}
 
 [layer_names]
 
@@ -104,6 +111,7 @@ texture={
 3d_physics/layer_4="enemy weapon"
 3d_physics/layer_5="player"
 3d_physics/layer_6="boss_body"
+3d_physics/layer_7="gem_col"
 3d_physics/layer_8="cursor detectable"
 
 [physics]

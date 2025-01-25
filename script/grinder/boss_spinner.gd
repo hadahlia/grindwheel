@@ -6,9 +6,11 @@ signal boss_spawned
 
 signal update_health
 #signal output_damage
+signal enter_phase_two
 signal boss_death
 
 #@onready var state_machine = $state_machine
+@onready var state_machine = $state_machine
 
 @export var stats : WheelStats
 @onready var spin_root = $spin_root
@@ -33,9 +35,12 @@ var wish_dir : Vector3 = Vector3.ZERO
 var acceleration : Vector3 = Vector3.ZERO
 
 var _stability : int
-var _health : float = 1000
+var _health : float
+var _max_health : float = 1000
 
 var _state_transmit : String = ""
+
+var _phase_two : bool = false
 
 var stunned : bool = false
 var saw_col : bool = false
@@ -46,7 +51,8 @@ var saw_damn : float = 0
 func _ready():
 	wheel_sfx.stream = stats.bump_sound
 	_dmg = stats.damage
-	_health = stats.health
+	_max_health = stats.health
+	_health = _max_health
 	#cur_state.emit(str(state_machine.current_state))
 	#boss_spawned.emit()
 #const SPEED = 5.0
@@ -55,6 +61,7 @@ func visual_spin():
 	spin_root.rotation.y += stats.rot_speed * stats.stability
 
 func _physics_process(delta):
+	if _phase_two: return
 	if is_on_floor():
 		#get_input()
 		apply_friction(delta)
@@ -110,6 +117,9 @@ func _take_damage_once(val: float) -> void:
 	if _invuln: return
 	attacked_sfx.play()
 	_health -= val
+	if _health < (_max_health / 2):
+		_phase_two = true
+		enter_phase_two.emit()
 	update_health.emit(_health)
 	if _health <= 0:
 		_death()
@@ -168,8 +178,9 @@ func _on_state_machine_cur_state(state: String):
 
 
 func _on_hurt_ball_area_entered(area):
-	if area is GrindWheel:
+	var p = area.get_parent()
+	if p is GrindWheel:
 		print("hit!")
-		_take_damage_once(area._saw_dmg)
-		if area.velocity == Vector3.ZERO:
-			area.velocity = self.velocity
+		_take_damage_once(p._saw_dmg)
+		if p.velocity == Vector3.ZERO:
+			p.velocity = self.velocity

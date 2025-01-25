@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://cxtt5r3pqnsjx"]
+[gd_scene load_steps=11 format=3 uid="uid://cxtt5r3pqnsjx"]
 
 [ext_resource type="Script" path="res://script/grinder/angel_gem.gd" id="1_jxsa4"]
 [ext_resource type="Script" path="res://script/grinder/pivot.gd" id="2_bj4nl"]
 [ext_resource type="AudioStream" uid="uid://1gny76thsd0v" path="res://audio/sfx/stable_down.mp3" id="3_25a1f"]
+[ext_resource type="AudioStream" uid="uid://dudyqoou67n1q" path="res://audio/sfx/blip.wav" id="4_cry7y"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_m75kd"]
 radius = 1.1
@@ -46,9 +47,13 @@ rings = 0
 radius = 0.6
 
 [node name="AngelGem" type="CharacterBody3D" groups=["Angel Gem"]]
+collision_layer = 64
+collision_mask = 64
 script = ExtResource("1_jxsa4")
+base_rot_speed = 5.0
 base_speed = 30.0
-max_health = 10
+orbit_scale = 10.0
+max_health = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 4, 0)
@@ -58,17 +63,17 @@ shape = SubResource("CapsuleShape3D_m75kd")
 visible = false
 
 [node name="outer_gem" type="MeshInstance3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 1.99999, 3.4641, 0, -3.4641, 1.99999, 0, 3.83333, -0.288675)
+transform = Transform3D(4, 0, 0, 0, 2.2943, 3.27661, 0, -3.27661, 2.2943, 0, 3.83333, 0.211325)
 mesh = SubResource("CapsuleMesh_xmnxv")
 
 [node name="inner_gem" type="MeshInstance3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 1.99999, 3.4641, 0, -3.4641, 1.99999, 0, 3.83333, -0.288675)
+transform = Transform3D(4, 0, 0, 0, 2.2943, 3.27661, 0, -3.27661, 2.2943, 0, 3.83333, 0.211325)
 mesh = SubResource("CapsuleMesh_fkotl")
 
 [node name="hitbox" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 collision_layer = 16
-collision_mask = 32
+collision_mask = 40
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="hitbox"]
@@ -78,7 +83,7 @@ shape = SubResource("SphereShape3D_v1tqc")
 script = ExtResource("2_bj4nl")
 
 [node name="_invuln_timer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 2.0
 one_shot = true
 autostart = true
 
@@ -87,5 +92,10 @@ stream = ExtResource("3_25a1f")
 volume_db = 2.0
 pitch_scale = 2.0
 
+[node name="_angel_blip" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_cry7y")
+volume_db = 20.0
+
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="timeout" from="_invuln_timer" to="." method="_on__invuln_timer_timeout"]

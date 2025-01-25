@@ -1,25 +1,27 @@
-[gd_scene load_steps=19 format=3 uid="uid://dnp37a43gamo6"]
+[gd_scene load_steps=21 format=3 uid="uid://dnp37a43gamo6"]
 
 [ext_resource type="Script" path="res://script/util/state/state_machine.gd" id="1_51oic"]
 [ext_resource type="Script" path="res://script/grinder/boss_spinner.gd" id="1_e7753"]
 [ext_resource type="Script" path="res://script/util/state/BossChase.gd" id="2_a7us7"]
 [ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="2_b31gf"]
 [ext_resource type="AudioStream" uid="uid://w4jg2q3un5o3" path="res://audio/sfx/bounce.wav" id="2_tnwpy"]
+[ext_resource type="Script" path="res://script/util/state/LastStand.gd" id="6_12e1k"]
 [ext_resource type="Texture2D" uid="uid://ge4mu7x3pkk8" path="res://sprite/env/Horror_Metal_03-128x128.png" id="6_hjqlx"]
 [ext_resource type="PackedScene" uid="uid://bjkmyvklh5di" path="res://object/weapons/bronzer.tscn" id="6_tm7t4"]
 [ext_resource type="AudioStream" uid="uid://5qb8oqcyyy3k" path="res://audio/sfx/198985__kolczok__circ_saw-01.wav" id="7_fjmq4"]
 [ext_resource type="Texture2D" uid="uid://fp4vnmefpim8" path="res://sprite/env/metal/Horror_Metal_12-128x128.png" id="8_i1s02"]
 [ext_resource type="AudioStream" uid="uid://dsc4lj3vbtiwd" path="res://audio/sfx/newer/hit_danger.mp3" id="9_uam27"]
+[ext_resource type="PackedScene" uid="uid://m0xwgprndvgl" path="res://scenes/vfx/laser_beam.tscn" id="11_x0ga7"]
 
 [sub_resource type="Resource" id="Resource_0j8l7"]
 script = ExtResource("2_b31gf")
 dash_cooldown = 8
-_movespeed = 12.0
+_movespeed = 24.0
 damage = 5
 rot_speed = 10.0
 stability = 20
 dash_max_charge = 4
-health = 500.0
+health = 5000.0
 bump_sound = ExtResource("2_tnwpy")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ymlrj"]
@@ -55,7 +57,8 @@ radius = 1.72289
 
 [node name="opponent_wheel" type="CharacterBody3D" groups=["BossEnem"]]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.846653, 0)
-collision_layer = 33
+collision_layer = 32
+collision_mask = 32
 input_ray_pickable = false
 script = ExtResource("1_e7753")
 stats = SubResource("Resource_0j8l7")
@@ -64,13 +67,22 @@ stats = SubResource("Resource_0j8l7")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.677951, 0)
 shape = SubResource("CylinderShape3D_ymlrj")
 
-[node name="state_machine" type="Node" parent="." node_paths=PackedStringArray("init_state")]
+[node name="state_machine" type="Node" parent="." node_paths=PackedStringArray("init_state", "phase_2_state")]
 script = ExtResource("1_51oic")
 init_state = NodePath("pursuit")
+phase_2_state = NodePath("last_stand")
+
+[node name="idle" type="Node" parent="state_machine"]
 
 [node name="pursuit" type="Node" parent="state_machine" node_paths=PackedStringArray("enem")]
 script = ExtResource("2_a7us7")
 enem = NodePath("../..")
+
+[node name="last_stand" type="Node" parent="state_machine" node_paths=PackedStringArray("self_reference")]
+script = ExtResource("6_12e1k")
+self_reference = NodePath("../..")
+
+[node name="Node" type="Node" parent="state_machine"]
 
 [node name="spin_root" type="Node3D" parent="."]
 
@@ -129,7 +141,7 @@ material = SubResource("StandardMaterial3D_js0t3")
 
 [node name="hurt_ball" type="Area3D" parent="."]
 collision_layer = 2
-collision_mask = 20
+collision_mask = 4
 input_ray_pickable = false
 monitorable = false
 
@@ -166,7 +178,7 @@ volume_db = -3.404
 pitch_scale = 1.06
 
 [node name="_invuln_timer" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 0.05
 one_shot = true
 autostart = true
 
@@ -179,8 +191,23 @@ wait_time = 0.05
 one_shot = true
 autostart = true
 
+[node name="laser_machine" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, 0)
+visible = false
+
+[node name="laser_beam" parent="laser_machine" instance=ExtResource("11_x0ga7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2.5)
+
+[node name="laser_beam2" parent="laser_machine" instance=ExtResource("11_x0ga7")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 1, -2.5)
+
+[node name="laser_beam3" parent="laser_machine" instance=ExtResource("11_x0ga7")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.5, 1, -1.09278e-07)
+
+[node name="laser_beam4" parent="laser_machine" instance=ExtResource("11_x0ga7")]
+transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 2.5, 1, 1.09278e-07)
+
+[connection signal="enter_phase_two" from="." to="state_machine" method="_enter_phase_two"]
 [connection signal="cur_state" from="state_machine" to="." method="_on_state_machine_cur_state"]
-[connection signal="body_entered" from="hurt_ball" to="." method="_on_hurt_ball_area_entered"]
+[connection signal="area_entered" from="hurt_ball" to="." method="_on_hurt_ball_area_entered"]
 [connection signal="timeout" from="_invuln_timer" to="." method="_on__invuln_timer_timeout"]
-[connection signal="timeout" from="_stun_timer" to="." method="_on__stun_timer_timeout"]
-[connection signal="timeout" from="_invuln_saw_time" to="." method="_on__invuln_saw_time_timeout"]

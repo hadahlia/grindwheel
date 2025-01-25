@@ -5,7 +5,11 @@ signal soul_health
 signal shatter
 
 @onready var to_pos = $to_pos
+@onready var pivot = $pivot
+
+@export var base_rot_speed : float = 10
 @export var base_speed : float = 3
+@export var orbit_scale : float = 8
 
 @export var max_health : int = 3
 @export var health : int
@@ -15,22 +19,33 @@ signal shatter
 
 # Sounds
 @onready var _angel_damage = $_angel_damage
+@onready var _angel_blip = $_angel_blip
 
 var _dir_to_cursor : Vector2
 var _dir_gem : Vector3
 
 var _leash_toggle : bool = false
 var _invuln : bool = false
+var _orbit_right : bool = false
 
 func _ready():
 	health = max_health
 	soul_health.emit(health)
+	Globals.OrbitMode = _leash_toggle
+
+func _angel_spin(delta: float):
+	if !_leash_toggle: return
+	if _orbit_right:
+		pivot.rotation.y -= base_rot_speed * delta
+	else:
+		pivot.rotation.y += base_rot_speed * delta
 
 func _physics_process(delta):
 	if !Globals.can_move: return
 	velocity = Vector3.ZERO
 	_dir_to_cursor = Vector2(Globals.RayPos.x - global_position.x, Globals.RayPos.z - global_position.z)
 	
+	_angel_spin(delta)
 	#if _dir_to_cursor == Vector2.ZERO: return
 	_dir_gem = Vector3(_dir_to_cursor.x, 0, _dir_to_cursor.y)
 	velocity = _dir_gem.normalized() * base_speed
@@ -44,6 +59,7 @@ func _physics_process(delta):
 	#global_position = global_position.lerp(to_pos.global_position, base_speed * delta)
 
 func _input(event):
+	
 	if event is InputEventMouseButton:
 		#print("event is InputEventMouseButton")
 		
@@ -93,21 +109,75 @@ func _input(event):
 		
 		if event.button_index == 2:
 			if event.pressed:
-				print("m2 ^^")
+				#print("m2 ^^")
 				_leash_toggle = !_leash_toggle
+				print(" :3 leash status: ",_leash_toggle)
 				if _leash_toggle:
 					_leash_flower()
 				else:
 					_unleash()
 			## Release M2
 			else:
-				print("m2 released")
+				pass
+				#print("m2 released")
+	
+	if Input.is_action_just_pressed("switch dir"):
+		_orbit_right = !_orbit_right
+
+func _setup_orbit():
+	
+	#var ret_array : PackedVector3Array
+	var coord = pivot.getCoordinates()
+	var n = Node3D.new()
+	for x in coord:
+		pivot.add_child(n)
+		n.position = x
+		#ret_array.append(n.global_position)
+	
 
 func _leash_flower():
-	pass
+	
+
+	#var coordarray : Array = pivot.getCoordinates()
+	var dt := get_tree().get_nodes_in_group("Dianthus")
+	#var nc = pivot.get_children()
+	if !dt: return
+	pivot.setItems(Globals.DianthusCount)
+	pivot.setScale(orbit_scale)
+	pivot.generateXZ()
+	var coord = pivot.getCoordinates()
+	
+	var id : int = 0
+	for i in dt:
+		i.reparent(pivot)
+		i.col.disabled = true
+		#i.position = coord[id]
+		i.orbit_pos = coord[id]
+		i.spin_sfx.stop()
+		i._saw_dmg *= 0.5
+		#pivot.add_child(i)
+		
+		id += 1
+	
+	Globals.OrbitMode = true
+	_angel_blip.play()
 
 func _unleash():
-	pass
+	Globals.OrbitMode = false
+	var dt := get_tree().get_nodes_in_group("Dianthus")
+	if !dt: return
+	#var coord = pivot.getCoordinates()
+	for i in dt:
+		var nd : Vector3 = Vector3( i.orbit_pos.x - self.global_position.x,0,i.orbit_pos.z - self.global_position.z)
+		i.col.disabled = false
+		i.reparent(get_parent())
+		
+		i._is_idle = false
+		i._dir = nd
+		i.spin_sfx.play()
+		i._saw_dmg *= 2
+		
+		
 
 func gem_damage():
 	if _invuln: return
@@ -143,3 +213,7 @@ func _on_hitbox_body_entered(body):
 
 func _on__invuln_timer_timeout():
 	_invuln = false
+
+
+func _on_hitbox_area_entered(area):
+	gem_damage()

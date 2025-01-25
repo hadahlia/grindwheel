@@ -1,11 +1,20 @@
-[gd_scene load_steps=9 format=3 uid="uid://m0xwgprndvgl"]
+[gd_scene load_steps=28 format=3 uid="uid://m0xwgprndvgl"]
 
 [ext_resource type="Shader" uid="uid://w63ay2n1p1nh" path="res://shader/beam_shader.tres" id="1_ehsve"]
 [ext_resource type="ArrayMesh" uid="uid://f58p7lrj5xxj" path="res://object/particle/beam_cyl.res" id="1_f5yrs"]
+[ext_resource type="Script" path="res://scenes/vfx/laser_beam.gd" id="1_rve87"]
+[ext_resource type="Texture2D" uid="uid://ckunpxc5166vb" path="res://sprite/particle/Abstract_Noise_097-256x256.png" id="2_1kuws"]
+[ext_resource type="ArrayMesh" uid="uid://bm6hglgupd80p" path="res://object/particle/beam_crown.res" id="3_ppa83"]
+[ext_resource type="Texture2D" uid="uid://bknd1wcxr08xl" path="res://sprite/particle/Perlin 9 - 256x256.png" id="4_xll7y"]
+[ext_resource type="Shader" uid="uid://bcmyiuj618lt8" path="res://shader/simple_shader.tres" id="6_jhje7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kuwg1"]
 render_priority = 0
 shader = ExtResource("1_ehsve")
+shader_parameter/Scroll_Speed = Vector2(2, 1)
+shader_parameter/TexturePow = 4.0
+shader_parameter/Gradient_Power = 2.0
+shader_parameter/Texture_Energy = ExtResource("2_1kuws")
 
 [sub_resource type="Curve" id="Curve_01oyg"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
@@ -16,8 +25,8 @@ _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_3yst6"]
-max_value = 8.0
-_data = [Vector2(0, 0.351648), 0.0, 0.0, 0, 0, Vector2(1, 8), 0.0, 0.0, 0, 0]
+max_value = 200.0
+_data = [Vector2(0, 0.351648), 0.0, 0.0, 0, 0, Vector2(1, 112.088), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveXYZTexture" id="CurveXYZTexture_ahi1q"]
@@ -28,13 +37,226 @@ curve_z = SubResource("Curve_3yst6")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i2rtj"]
 gravity = Vector3(0, 0, 0)
 scale_curve = SubResource("CurveXYZTexture_ahi1q")
-color = Color(0.933333, 0.145098, 0.215686, 1)
+color = Color(1.2, 0.5, 2, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_phm4g"]
+render_priority = 0
+shader = ExtResource("1_ehsve")
+shader_parameter/Scroll_Speed = Vector2(2, 1)
+shader_parameter/TexturePow = 1.5
+shader_parameter/Gradient_Power = 3.0
+shader_parameter/Texture_Energy = ExtResource("4_xll7y")
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_j6g3l"]
+curve_x = SubResource("Curve_01oyg")
+curve_y = SubResource("Curve_bmoxe")
+curve_z = SubResource("Curve_3yst6")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qh5x3"]
+gravity = Vector3(0, 0, 0)
+scale_min = 0.3
+scale_max = 0.3
+scale_curve = SubResource("CurveXYZTexture_j6g3l")
+color = Color(2.82353, 0.831373, 0.831373, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_04t7r"]
+render_priority = 0
+shader = ExtResource("1_ehsve")
+shader_parameter/Scroll_Speed = Vector2(2, 0)
+shader_parameter/TexturePow = 2.0
+shader_parameter/Gradient_Power = 3.0
+shader_parameter/Texture_Energy = ExtResource("4_xll7y")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_lenvk"]
+gravity = Vector3(0, 0, 0)
+color = Color(1.64314, 0.501961, 0.976471, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b0vxy"]
+render_priority = 0
+shader = ExtResource("6_jhje7")
+
+[sub_resource type="Curve" id="Curve_3mktv"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.745562, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.076923), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_q1dmy"]
+curve = SubResource("Curve_3mktv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2v4pr"]
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 0, 1)
+spread = 0.0
+initial_velocity_min = 5.0
+initial_velocity_max = 8.0
+radial_velocity_min = -2.23517e-05
+radial_velocity_max = 1.99998
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 5.0
+color = Color(2, 1, 2, 1)
+alpha_curve = SubResource("CurveTexture_q1dmy")
+
+[sub_resource type="QuadMesh" id="QuadMesh_woetg"]
+size = Vector2(0.1, 0.1)
+
+[sub_resource type="Animation" id="Animation_udcov"]
+resource_name = "Beam Effect"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("main_energy:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("little_energy:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("laser_crown:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sparkles:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_blwh2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("main_energy:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("little_energy:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("laser_crown:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sparkles:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iiguq"]
+_data = {
+"Beam Effect": SubResource("Animation_udcov"),
+"RESET": SubResource("Animation_blwh2")
+}
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7p12d"]
+height = 20.0
 
 [node name="laser_beam" type="Node3D"]
+script = ExtResource("1_rve87")
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+[node name="main_energy" type="GPUParticles3D" parent="."]
 material_override = SubResource("ShaderMaterial_kuwg1")
 amount = 1
-lifetime = 2.0
+lifetime = 0.5
+explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_i2rtj")
 draw_pass_1 = ExtResource("1_f5yrs")
+
+[node name="little_energy" type="GPUParticles3D" parent="."]
+material_override = SubResource("ShaderMaterial_phm4g")
+amount = 1
+lifetime = 0.5
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_qh5x3")
+draw_pass_1 = ExtResource("1_f5yrs")
+
+[node name="laser_crown" type="GPUParticles3D" parent="."]
+material_override = SubResource("ShaderMaterial_04t7r")
+amount = 1
+lifetime = 0.5
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_lenvk")
+draw_pass_1 = ExtResource("3_ppa83")
+
+[node name="sparkles" type="GPUParticles3D" parent="."]
+material_override = SubResource("ShaderMaterial_b0vxy")
+amount = 25
+lifetime = 0.5
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_2v4pr")
+draw_pass_1 = SubResource("QuadMesh_woetg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_iiguq")
+}
+
+[node name="death_area" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 16
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="death_area"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 9.7)
+shape = SubResource("CapsuleShape3D_7p12d")
+disabled = true

@@ -10,5 +10,5 @@ func teleport():
 
 
 func _on_trigger_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
-	if body is GrindWheel:
+	if body is GemSoul:
 		teleport()

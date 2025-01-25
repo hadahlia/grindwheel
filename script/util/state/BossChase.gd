@@ -1,5 +1,5 @@
 extends State
-class_name Pursuit
+#class_name Pursuit
 
 @export var enem: CharacterBody3D
 @export var move_speed := 20
@@ -7,6 +7,7 @@ var player: CharacterBody3D
 
 func enter():
 	player = get_tree().get_first_node_in_group("Angel Gem")
+	
 
 func physics_update(_dt: float):
 	if !player or !enem: return
@@ -18,3 +19,7 @@ func physics_update(_dt: float):
 	else:
 		enem.set_direction(Vector3.ZERO)
 	#enem.move_and_slide()
+
+
+#func _on_opponent_wheel_enter_phase_two():
+	#Transition.emit(self.name, )

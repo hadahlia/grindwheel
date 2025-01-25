@@ -15,6 +15,7 @@ signal bumped
 var explosion_scene : PackedScene = preload("res://scenes/vfx/deathsplosion.tscn")
 
 @onready var mesh_body = $mesh_body
+@onready var col = $col
 
 #@onready var verlet_rope = $VerletRope
 #@onready var rope_target = $rope_target
@@ -31,6 +32,8 @@ var explosion_scene : PackedScene = preload("res://scenes/vfx/deathsplosion.tscn
 @onready var lvl_sfx = $lvl_sfx
 @onready var stability_sfx = $stability_sfx
 @onready var damage_sfx = $damage_sfx
+@onready var spin_sfx = $spin_sfx
+
 
 # --- timers ---
 @onready var _dash_recharge = $_dash_recharge
@@ -64,12 +67,17 @@ var _saw_dmg : float
 var _invuln : bool = false
 
 var _leash_toggle : bool = false
+var _is_idle : bool = true
 
 #var fall_speed : float = 75
 var friction : float = -9
 
 var acceleration : Vector3 = Vector3.ZERO
 #var deceleration : float = 10
+
+#var orbit_god : CircleGenerator
+var orbit_pos : Vector3
+
 
 func _ready():
 	if data:
@@ -78,15 +86,21 @@ func _ready():
 		#_dash_recharge.wait_time = data.dash_cooldown
 		_stability = data.stability
 		_saw_dmg = data.damage
-		
+	
 	wheel_sfx.stream = data.bump_sound
+
+#func find_god():
+	#orbit_god = get_tree().get_first_node_in_group("Orbit Point")
+	#if orbit_god:
+		#orbit_god.
+
 
 func _spinny():
 	spin_root.rotation.y += (data.rot_speed * _stability)
 	blade_root.rotation.y += _stability * 0.5 #+ data.damage)
 	
 	#if velocity == Vector3.ZERO: return
-	#safe_look_at(mesh_body, self.position + _dir.normalized())
+	safe_look_at(mesh_body, self.position + _dir.normalized())
 	#safe_look_at(dir_pointer, self.position + _dir)
 	#safe_look_at(arrow_g, self.position + velocity)
 
@@ -94,12 +108,16 @@ func _physics_process(delta):
 	#if _spin_meter <= 40 or _spin_meter >= 780:
 		#_take_damage()
 		#_spin_meter = 460
-	
+	if Globals.OrbitMode: 
+		
+		position = lerp(self.position, orbit_pos, 4 * delta)
+		#position = lerp(self.position, get_parent().position, _move_speed * delta)
+		return
 	#if _leash_toggle:
 		#_connect_leash()
 	
-	if is_on_floor() and Globals.can_move:
-		#get_input()
+	if is_on_floor() and !_is_idle:
+		get_direction()
 		apply_friction(delta)
 		#_spin_meter += _spin_scalar * delta
 		#_spin_meter -= _spin_decay * delta
@@ -107,9 +125,9 @@ func _physics_process(delta):
 	
 	acceleration.y = _grav
 	_spinny()
-	
+	wheel_sfx.pitch_scale = 1 + randf_range(-0.35, 0.35)
 	if velocity.length() < 21:
-		wheel_sfx.pitch_scale = 1 + randf_range(-0.35, 0.35)
+		
 		velocity += acceleration * delta
 		#move_and_collide(velocity * delta)
 		move_and_slide()
@@ -125,6 +143,8 @@ func _physics_process(delta):
 			wheel_sfx.play()
 			wheel_sfx.pitch_scale += 0.2
 			velocity *= 0.8
+			_dir = _dir.bounce(col.get_normal())
+			#_dir *=-1
 			velocity = velocity.bounce(col.get_normal()) #* randf_range(0.85, 1.15)
 			
 			#_dash_speed -= 10
@@ -258,7 +278,6 @@ func _physics_process(delta):
 				#print("m2 ^^")
 			#else:
 				#print("m2 released")
-	
 
 #func _connect_leash():
 	#if !Globals.RayPos: return
@@ -284,28 +303,27 @@ func apply_friction(delta):
 	var friction_force = velocity * friction * delta
 	acceleration += friction_force
 
+func get_direction():
+	acceleration = Vector3.ZERO
+	#var _fuck_name : Vector3 = Globals.RayPos - self.global_position
+	if _dir == Vector3.ZERO:
+		_dir = Vector3(0, 0,-1)#.rotated(Vector3.UP, cam.rotation.z)
+	acceleration = _dir.normalized() * _move_speed
+	#look_at(Globals.RayPos, Vector3.UP)
+
 func get_input():
 	if _dashing: return
-	
 	
 	#var t_speed = _move_speed * delta
 	acceleration = Vector3.ZERO
 	
-	
 	#_input_vector = Input.get_vector("Left", "Right", "Up", "Down")
 	#_input_vector = Input.get_vector(Globals.RayPos.x, Globals.RayPos.z)
-	
-	
-	
-	
-	
 	#if Globals.RayPos > Vector3.ZERO:
 		#_dir = Globals.RayPos - self.global_position
 	#else:
 		#_dir = self.global_position
-	
 	acceleration = _dir.normalized() * _move_speed
-	
 	#if _leash_toggle:
 		#_get_input_leashed()
 	#velocity = _dir * t_speed
@@ -313,10 +331,6 @@ func get_input():
 func _get_input_leashed():
 	#var move_orbit
 	#var move_dist
-	var _fuck_name : Vector3 = Globals.RayPos - self.global_position
-	_dir = Vector3(_fuck_name.x, 0, _fuck_name.z)#.rotated(Vector3.UP, cam.rotation.z)
-	look_at(Globals.RayPos, Vector3.UP)
-	
 	#position
 	#acceleration.x += acceleration.z
 	#acceleration.z = 0
