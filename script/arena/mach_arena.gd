@@ -22,6 +22,8 @@ signal finally_fucking_start
 
 @onready var boss_pos_start = $SubViewportContainer/SubViewport/true_arena/boss_pos_start
 @onready var player_pos_start = $SubViewportContainer/SubViewport/true_arena/player_pos_start
+@onready var angel_spawn = $SubViewportContainer/SubViewport/true_arena/angel_spawn
+
 @onready var hole_spot = $SubViewportContainer/SubViewport/true_arena/hole_spot
 @onready var heaven_spot = $SubViewportContainer/SubViewport/true_arena/heaven_spot
 
@@ -64,6 +66,7 @@ const BASEDMG : float = 4
 
 func _ready():
 	Globals.RoundCount = 0
+	Globals.DianthusCount = 0
 	fade_out.emit()
 	#_start_round()
 	#pass
@@ -136,7 +139,7 @@ func spawn_gem():
 	var g := gem_scene.instantiate()
 	g.shatter.connect(_on_gem_die)
 	true_arena.add_child(g)
-	g.global_position = Vector3(player_pos_start.position.x, -3.8, player_pos_start.position.z)
+	g.global_position = Vector3(angel_spawn.position.x, -3.8, angel_spawn.position.z)
 
 # spawns dianthus. reworked code
 func spawn_player():
@@ -353,7 +356,7 @@ func _on_gui_cleanup():
 
 
 func _on_gui_start_game():
-	print("started :3:3:3")
+	#print("started :3:3:3")
 	cammie._is_moving = true
 	
 	await get_tree().create_timer(3.0).timeout
@@ -366,6 +369,6 @@ func _on_gui_start_game():
 
 
 func _on_finally_fucking_start():
-	print("hiiiiiiiiiii")
+	#print("hiiiiiiiiiii")
 	#_on_trans_level()
 	_start_round()

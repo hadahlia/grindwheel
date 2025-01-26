@@ -519,6 +519,9 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 17.3, -7)
 [node name="player_pos_start" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.6, 1)
 
+[node name="angel_spawn" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.6, 22)
+
 [node name="hole_spot" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -4, -20)
 

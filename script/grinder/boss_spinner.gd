@@ -180,7 +180,7 @@ func _on_state_machine_cur_state(state: String):
 func _on_hurt_ball_area_entered(area):
 	var p = area.get_parent()
 	if p is GrindWheel:
-		print("hit!")
+		#print("hit!")
 		_take_damage_once(p._saw_dmg)
 		if p.velocity == Vector3.ZERO:
 			p.velocity = self.velocity

@@ -36,6 +36,8 @@ func _ready():
 	health = max_health
 	soul_health.emit(health, max_health)
 	Globals.OrbitMode = _leash_toggle
+	if Globals.RoundCount == 0:
+		Globals.can_move = false
 
 func _angel_spin(delta: float):
 	if !_leash_toggle: return
@@ -115,7 +117,7 @@ func _input(event):
 			if event.pressed:
 				#print("m2 ^^")
 				_leash_toggle = !_leash_toggle
-				print(" :3 leash status: ",_leash_toggle)
+				#print(" :3 leash status: ",_leash_toggle)
 				if _leash_toggle:
 					_leash_flower()
 				else:
@@ -222,3 +224,7 @@ func _on__invuln_timer_timeout():
 
 func _on_hitbox_area_entered(area):
 	gem_damage()
+
+
+func _on_stuck_spawn_timer_timeout():
+	Globals.can_move = true
