@@ -193,6 +193,8 @@ func spawn_upgrades():
 		upg.global_position = c.global_position
 		upg.rotation_degrees.y += 90
 		true_arena.add_child(upg)
+	else:
+		pass
 
 func spawn_hole(was_health_chosen: bool):
 	if was_health_chosen:

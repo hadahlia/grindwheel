@@ -3,8 +3,12 @@ class_name EndHole
 
 signal end_game
 
+@onready var trigger = $trigger
+
+
 func heleport():
 	end_game.emit()
+	trigger.queue_free()
 	#Globals.RoundCount += 1
 	#trans_level.emit()
 	#queue_free()

@@ -11,7 +11,7 @@ var RoundCount : int = 1
 
 var OrbitMode : bool = false
 var DianthusCount : int = 0
-var DianthusDamage : float = 50
+var DianthusDamage : float = 5
 var GemMaxHP : int = 3
 
 var MousePos : Vector2

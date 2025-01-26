@@ -3,9 +3,13 @@ class_name WarpHole
 
 signal trans_level
 
+@onready var trigger = $trigger
+
+
 func teleport():
 	Globals.RoundCount += 1
 	trans_level.emit()
+	trigger.queue_free()
 	#queue_free()
 	#Globals.RoundCount += 1
 
