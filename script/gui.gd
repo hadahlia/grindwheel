@@ -14,8 +14,9 @@ signal cleanup
 
 @onready var round_counter = $arena_gui/round_counter
 @onready var boss_name = $arena_gui/boss_health/boss_name
-
+@onready var values = $arena_gui/boss_health/values
 @onready var boss_health = $arena_gui/boss_health
+
 
 #@onready var boss_state_debug_label = $"arena_gui/boss state debug label"
 @onready var boss_state_debug_label = $"arena_gui/state/boss state debug label"
@@ -71,7 +72,7 @@ func post_ready():
 		boss_health.max_value = bossy._health
 		dash_charge_.value = 0
 	
-		_on_bossl_update_health(bossy._health)
+		_on_bossl_update_health(bossy._health, bossy._max_health)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -101,8 +102,9 @@ func _on_grindwheel_update_spin(new_spin: float) -> void:
 func _update_round() -> void:
 	round_counter.text = "ROUND " + str(Globals.RoundCount) + "\nDIANTHUS " + str(Globals.DianthusCount)
 
-func _on_bossl_update_health(_new_health: float) -> void:
+func _on_bossl_update_health(_new_health: float, _max_health: float) -> void:
 	boss_health.value = _new_health
+	values.text = str(_new_health) + "/" + str(_max_health)
 
 #@TODO update dash meter func
 

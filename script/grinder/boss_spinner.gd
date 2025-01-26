@@ -51,7 +51,7 @@ var saw_damn : float = 0
 func _ready():
 	wheel_sfx.stream = stats.bump_sound
 	_dmg = stats.damage
-	_max_health = stats.health * Globals.RoundCount
+	_max_health = stats.health + stats.health * (Globals.RoundCount * 0.1)
 	_health = _max_health
 	#cur_state.emit(str(state_machine.current_state))
 	#boss_spawned.emit()
@@ -120,7 +120,7 @@ func _take_damage_once(val: float) -> void:
 	if _health < (_max_health / 2):
 		_phase_two = true
 		enter_phase_two.emit()
-	update_health.emit(_health)
+	update_health.emit(_health, _max_health)
 	if _health <= 0:
 		_death()
 	_invuln = true
