@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://cau0atwkvl67f"]
+[gd_scene load_steps=54 format=3 uid="uid://cau0atwkvl67f"]
 
 [ext_resource type="Script" path="res://script/arena/mach_arena.gd" id="1_lwp4d"]
 [ext_resource type="Texture2D" uid="uid://cvbxjk0rh5p8k" path="res://sprite/gui/frame1.png" id="2_7qsjr"]
@@ -14,9 +14,15 @@
 [ext_resource type="Theme" uid="uid://ckg1xrpun5mdw" path="res://sprite/font/label_theme.tres" id="13_28tee"]
 [ext_resource type="Texture2D" uid="uid://cllq0gulo6nap" path="res://sprite/gui/empty_gray_bar.png" id="13_sybxv"]
 [ext_resource type="Texture2D" uid="uid://bi4c3ev3bnbef" path="res://sprite/gui/full_gray_bar.png" id="14_x54gm"]
+[ext_resource type="Script" path="res://script/util/title_screen.gd" id="16_d0tv2"]
+[ext_resource type="Texture2D" uid="uid://dhlde2ear35ej" path="res://sprite/gui/title/dianthusLogo2.png" id="16_ncj5u"]
 [ext_resource type="PackedScene" uid="uid://dhs8pmg1iceku" path="res://scenes/dianthus_floor.tscn" id="16_y2ukj"]
 [ext_resource type="Animation" uid="uid://rf2u58tmq6ug" path="res://script/fade_title.res" id="17_6yx7o"]
-[ext_resource type="Texture2D" uid="uid://d0kqiqdo7t2iy" path="res://sprite/gui/title/dianthus_title.png" id="19_aeia2"]
+[ext_resource type="Texture2D" uid="uid://kenbmkuq115t" path="res://sprite/gui/title/dianthusLogo1.png" id="17_7s6oi"]
+[ext_resource type="AudioStream" uid="uid://scv0jnu1x233" path="res://audio/sfx/Retro Blop 18.wav" id="20_5bbci"]
+[ext_resource type="AudioStream" uid="uid://bd7f6dbmcxkxp" path="res://audio/sfx/Lever Cycle Fast MP3.mp3" id="21_rckkm"]
+[ext_resource type="AudioStream" uid="uid://b3diakevox0va" path="res://audio/music/Dianthuzzzzzzzzz.mp3" id="22_la67c"]
+[ext_resource type="AudioStream" uid="uid://dkk82dqglwds" path="res://audio/sfx/Retro Event UI 01.wav" id="23_f3ha4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fcpmf"]
 shader = ExtResource("6_sikrn")
@@ -189,11 +195,27 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
+[sub_resource type="Animation" id="Animation_onhjf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TitleCardBG:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="Animation" id="Animation_g8y4u"]
 resource_name = "new_animation"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xq1eg"]
 _data = {
+"RESET": SubResource("Animation_onhjf"),
 "fade_title": ExtResource("17_6yx7o"),
 "new_animation": SubResource("Animation_g8y4u")
 }
@@ -212,42 +234,6 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(0.054902, 0.0392157, 0.0470588, 1)]
 }
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../title_screen/ColorRect:color")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0.237347, 1.96133e-06, 0.160834, 0.384314)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("../title_screen/TitleCardFG:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("../title_screen/click_begin:modulate")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
 
 [sub_resource type="Animation" id="Animation_qodmh"]
 resource_name = "fade_in"
@@ -260,7 +246,7 @@ tracks/0/path = NodePath(".:color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.3, 2.5),
+"times": PackedFloat32Array(0.5, 2.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(0.054902, 0.0392157, 0.0470588, 0), Color(0.054902, 0.0392157, 0.0470588, 1)]
@@ -287,7 +273,6 @@ tracks/0/keys = {
 _data = {
 "RESET": SubResource("Animation_0qyq8"),
 "fade_in": SubResource("Animation_qodmh"),
-"fade_title": ExtResource("17_6yx7o"),
 "fade_trans": SubResource("Animation_le153")
 }
 
@@ -649,7 +634,8 @@ theme = ExtResource("13_28tee")
 theme_override_colors/font_color = Color(0.936702, 0.936702, 0.936702, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 15
-text = "ROUND 0"
+text = "ROUND 0
+Dianthus 0"
 
 [node name="boss_health" type="ProgressBar" parent="gui/arena_gui"]
 layout_mode = 1
@@ -818,12 +804,14 @@ texture_under = ExtResource("13_sybxv")
 texture_progress = ExtResource("14_x54gm")
 
 [node name="title_screen" type="Control" parent="gui"]
+process_mode = 3
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("16_d0tv2")
 
 [node name="ColorRect" type="ColorRect" parent="gui/title_screen"]
 layout_mode = 1
@@ -835,6 +823,25 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.237347, 1.96133e-06, 0.160834, 0.384314)
 
+[node name="TitleCardBG" type="TextureRect" parent="gui/title_screen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -332.0
+offset_right = 256.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(256, 248)
+mouse_filter = 2
+texture = ExtResource("16_ncj5u")
+expand_mode = 4
+stretch_mode = 5
+
 [node name="TitleCardFG" type="TextureRect" parent="gui/title_screen"]
 layout_mode = 1
 anchors_preset = 8
@@ -843,14 +850,14 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -256.0
-offset_top = -252.0
+offset_top = -340.0
 offset_right = 256.0
-offset_bottom = -52.0
+offset_bottom = 172.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("19_aeia2")
-expand_mode = 1
+texture = ExtResource("17_7s6oi")
+expand_mode = 4
 stretch_mode = 5
 
 [node name="click_begin" type="Panel" parent="gui/title_screen"]
@@ -898,6 +905,31 @@ horizontal_alignment = 3
 libraries = {
 "": SubResource("AnimationLibrary_xq1eg")
 }
+
+[node name="credits" type="Label" parent="gui/title_screen"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -72.0
+offset_right = 384.0
+offset_bottom = -27.0
+grow_vertical = 0
+theme = ExtResource("13_28tee")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 10
+text = "- dev -
+hadahlia 
+
+- sfx, title ost -
+prism_up2it "
+vertical_alignment = 2
+
+[node name="ui_select" type="AudioStreamPlayer3D" parent="gui/title_screen"]
+stream = ExtResource("23_f3ha4")
+unit_size = 80.0
+pitch_scale = 0.52
 
 [node name="fade" type="ColorRect" parent="gui"]
 layout_mode = 1
@@ -949,10 +981,50 @@ those toys have imprisoned me,
 i hate them. kill them all
 
 
-[PRESS M2 to leash,
+[take the dianthus, then PRESS M2 to leash,
 X to switch orbit direction]"
 horizontal_alignment = 1
 vertical_alignment = 3
+
+[node name="credits" type="Control" parent="gui"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="ColorRect" type="ColorRect" parent="gui/credits"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0365563, 0.0365563, 0.0365563, 1)
+
+[node name="Sfx" type="Node3D" parent="."]
+
+[node name="health_pickup_sfx" type="AudioStreamPlayer3D" parent="Sfx"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 0)
+stream = ExtResource("20_5bbci")
+volume_db = -2.0
+unit_size = 50.0
+pitch_scale = 1.2
+
+[node name="spinner_pickup_sfx" type="AudioStreamPlayer3D" parent="Sfx"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 5, 0)
+stream = ExtResource("21_rckkm")
+volume_db = -2.0
+unit_size = 50.0
+pitch_scale = 1.2
+
+[node name="title_music" type="AudioStreamPlayer3D" parent="Sfx"]
+stream = ExtResource("22_la67c")
+unit_size = 80.0
+autoplay = true
 
 [connection signal="call_death_screen" from="." to="gui" method="_on_grindwheel_die"]
 [connection signal="call_fade" from="." to="gui" method="_on_mach_arena_call_fade"]

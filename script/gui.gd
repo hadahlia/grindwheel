@@ -8,6 +8,8 @@ signal cleanup
 @onready var death = $death
 @onready var flavortext = $death/flavortext
 @onready var title_screen = $title_screen
+@onready var ui_select = $title_screen/ui_select
+@onready var title_music = $"../Sfx/title_music"
 
 
 @onready var round_counter = $arena_gui/round_counter
@@ -96,7 +98,7 @@ func _on_grindwheel_update_spin(new_spin: float) -> void:
 #func _on_wheel_update_stability(new_val: int, max_val:int) -> void:
 	
 func _update_round() -> void:
-	round_counter.text = "ROUND " + str(Globals.RoundCount)
+	round_counter.text = "ROUND " + str(Globals.RoundCount) + "\nDIANTHUS " + str(Globals.DianthusCount)
 
 func _on_bossl_update_health(_new_health: float) -> void:
 	boss_health.value = _new_health
@@ -140,6 +142,8 @@ func _on_animation_player_animation_finished(anim_name):
 func _on_title_screen_gui_input(event):
 	if event is InputEventMouseButton:
 		print("Started")
+		ui_select.play()
+		title_music.stop()
 		title_anim.play("fade_title")
 		start_game.emit()
 		
@@ -147,14 +151,26 @@ func show_gui():
 	arena_gui.show()
 	if Globals.RoundCount == 0:
 		round_0.show()
+		boss_health.hide()
 	else:
 		round_0.hide()
+		boss_health.show()
 
 func hide_text():
 	round_0.hide()
+
+func toggle_healthbar(yes: bool) -> void:
+	if yes:
+		boss_health.show()
+	else:
+		boss_health.hide()
 
 func _on_title_animation_finished(anim_name):
 	if anim_name == "fade_title":
 		title_screen.queue_free()
 		
 		
+
+
+#func _on_mach_arena_fade_to_end():
+	#pass # Replace with function body.

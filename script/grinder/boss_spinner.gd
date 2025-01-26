@@ -51,7 +51,7 @@ var saw_damn : float = 0
 func _ready():
 	wheel_sfx.stream = stats.bump_sound
 	_dmg = stats.damage
-	_max_health = stats.health
+	_max_health = stats.health * Globals.RoundCount
 	_health = _max_health
 	#cur_state.emit(str(state_machine.current_state))
 	#boss_spawned.emit()

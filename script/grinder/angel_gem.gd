@@ -4,6 +4,9 @@ extends CharacterBody3D
 signal soul_health
 signal shatter
 
+
+@onready var gem_anims = $gem_anims
+
 @onready var to_pos = $to_pos
 @onready var pivot = $pivot
 
@@ -193,6 +196,7 @@ func gem_damage():
 func _start_invuln():
 	_invuln = true
 	_invuln_timer.start()
+	gem_anims.play("hurt soul")
 
 func gem_death():
 	health = 0

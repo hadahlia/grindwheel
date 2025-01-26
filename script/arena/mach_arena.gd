@@ -4,27 +4,42 @@ signal uncall_death
 signal call_death_screen
 signal fade_out
 signal call_fade
+signal fade_to_end
 signal finally_fucking_start
 #@onready var boss_spawn_pos = $SubViewportContainer/SubViewport/true_arena
 @onready var true_arena = $SubViewportContainer/SubViewport/true_arena
 
 @onready var pos_container = $SubViewportContainer/SubViewport/true_arena/pos_container
 
+#sfx_stuff
+@onready var health_pickup_sfx = $Sfx/health_pickup_sfx
+@onready var spinner_pickup_sfx = $Sfx/spinner_pickup_sfx
+
+
+# music
+@onready var title_music = $Sfx/title_music
+
 
 @onready var boss_pos_start = $SubViewportContainer/SubViewport/true_arena/boss_pos_start
 @onready var player_pos_start = $SubViewportContainer/SubViewport/true_arena/player_pos_start
 @onready var hole_spot = $SubViewportContainer/SubViewport/true_arena/hole_spot
+@onready var heaven_spot = $SubViewportContainer/SubViewport/true_arena/heaven_spot
+
 #@onready var hole_spot = $SubViewportContainer/SubViewport/true_arena/hole_spot
 
 @onready var gui = $gui
 @onready var cammie = $SubViewportContainer/SubViewport/true_arena/visual_/cammie
 
 var is_dead : bool = false
+var game_over : bool = false
+var restart_to_menu : bool = false
 var once : bool = true
 #player scene
+const ending_scene = preload("res://scenes/ending_scene.tscn")
 const gem_scene = preload("res://scenes/angel_gem.tscn")
 const dianthus_scene = preload("res://scenes/grindwheel.tscn")
 const warp_hole = preload("res://scenes/god_hole.tscn")
+const ending_hole = preload("res://scenes/heaven_gate.tscn")
 const upgrade_scene = preload("res://scenes/upgrade_choice_scene.tscn")
 const _3d_cursor = preload("res://scenes/3d_cursor.tscn")
 
@@ -93,6 +108,11 @@ func raycast_from_mouse(m_pos, collision_mask):
 	
 	return space_state.intersect_ray(query)
 
+func _start_end():
+	spawn_ending()
+	gui.toggle_healthbar(false)
+	fade_out.emit()
+
 func _start_round():
 	gui.show_gui()
 	gui._update_round()
@@ -118,8 +138,9 @@ func spawn_gem():
 	true_arena.add_child(g)
 	g.global_position = Vector3(player_pos_start.position.x, -3.8, player_pos_start.position.z)
 
+# spawns dianthus. reworked code
 func spawn_player():
-	
+	gui._update_round()
 	var dia = get_tree().get_nodes_in_group("Dianthus")
 	for k in dia:
 		k.queue_free()
@@ -161,21 +182,54 @@ func spawn_boss():
 
 func spawn_upgrades():
 	var upg := upgrade_scene.instantiate()
-	upg.upgrade_selected.connect(spawn_hole)
-	upg.spawn_dianthus.connect(spawn_player)
-	var c = get_tree().get_first_node_in_group("CenterPoint")
-	upg.global_position = c.global_position
-	upg.rotation_degrees.y += 90
-	true_arena.add_child(upg)
+	if upg:
+		upg.upgrade_selected.connect(spawn_hole)
+		upg.spawn_dianthus.connect(spawn_player)
+		var c = get_tree().get_first_node_in_group("CenterPoint")
+	
+		upg.global_position = c.global_position
+		upg.rotation_degrees.y += 90
+		true_arena.add_child(upg)
 
-func spawn_hole():
+func spawn_hole(was_health_chosen: bool):
+	if was_health_chosen:
+		health_pickup_sfx.play()
+	else:
+		spinner_pickup_sfx.play()
 	if Globals.RoundCount == 0:
 		gui.hide_text()
 	var hc := warp_hole.instantiate()
-	
-	hc.trans_level.connect(_on_trans_level)
-	hc.global_position = hole_spot.global_position
-	true_arena.add_child(hc)
+	if hc:
+		hc.trans_level.connect(_on_trans_level)
+		hc.global_position = hole_spot.global_position
+		true_arena.add_child(hc)
+	if Globals.RoundCount > 1 and Globals.RoundCount % 3 == 0:
+		heaven_hole()
+
+#@TODO ending handling
+func heaven_hole():
+	var hh := ending_hole.instantiate()
+	if hh:
+		hh.end_game.connect(_on_end_game)
+		hh.global_position = heaven_spot.global_position
+		true_arena.add_child(hh)
+
+func spawn_ending():
+	var farewell := ending_scene.instantiate()
+	if farewell:
+		var c = get_tree().get_first_node_in_group("CenterPoint")
+		farewell.final_fade.connect(_on_final_fade)
+		c.add_child(farewell)
+		farewell.play_ending()
+		#_on_trans_level()
+#
+func _on_final_fade():
+	restart_to_menu = true
+	call_fade.emit()
+func _on_end_game():
+	#fade_to_end.emit()
+	game_over = true
+	call_fade.emit()
 
 func _on_trans_level():
 	call_fade.emit()
@@ -270,7 +324,7 @@ func destroy_actors():
 	
 	var pp = get_tree().get_nodes_in_group("Dianthus")
 	#var bp = get_tree().get_first_node_in_group("BossEnem")
-	var hole = get_tree().get_first_node_in_group("Portal")
+	var hole = get_tree().get_nodes_in_group("Portal")
 	if sg:
 		sg.queue_free()
 	for i in pp:
@@ -280,15 +334,21 @@ func destroy_actors():
 		c.queue_free()
 	#if pp :
 		#pp.queue_free()
-	if hole:
-		hole.queue_free()
+	for u in hole:
+		u.queue_free()
 
 func _on_gui_cleanup():
 	destroy_actors()
 	await get_tree().create_timer(1.0).timeout
 	
 	#await get_tree().create_timer(2.0).timeout
-	_start_round()
+	#@TODO check for ending condition here?
+	if restart_to_menu:
+		get_tree().reload_current_scene()
+	elif game_over:
+		_start_end()
+	else:
+		_start_round()
 	#_get_spinner_reference()
 
 

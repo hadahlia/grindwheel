@@ -306,8 +306,8 @@ func apply_friction(delta):
 func get_direction():
 	acceleration = Vector3.ZERO
 	#var _fuck_name : Vector3 = Globals.RayPos - self.global_position
-	if _dir == Vector3.ZERO:
-		_dir = Vector3(0, 0,-1)#.rotated(Vector3.UP, cam.rotation.z)
+	#if _dir == Vector3.ZERO:
+		#_dir = Vector3(0, 0,-1)#.rotated(Vector3.UP, cam.rotation.z)
 	acceleration = _dir.normalized() * _move_speed
 	#look_at(Globals.RayPos, Vector3.UP)
 

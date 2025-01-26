@@ -22,7 +22,7 @@ collision_mask = 65
 shape = SubResource("BoxShape3D_unbgy")
 
 [node name="mesh_body" parent="spinner_upgrade_trig" instance=ExtResource("2_13nxq")]
-transform = Transform3D(0.513165, 0.596008, 0.14641, -0.369677, 0.45252, -0.54641, -0.489898, 0.282843, 0.565685, -0.299999, -1, -0.6)
+transform = Transform3D(0.705602, 0.819511, 0.201314, -0.508306, 0.622215, -0.751314, -0.67361, 0.388909, 0.777817, -0.299999, -1, -0.6)
 
 [node name="Label3D" type="Label3D" parent="spinner_upgrade_trig"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -2, 1)
@@ -31,7 +31,7 @@ billboard = 1
 texture_filter = 0
 text = "+1"
 font = ExtResource("3_gwm0a")
-font_size = 20
+font_size = 30
 outline_size = 6
 
 [node name="health_upgrade_trig" type="Area3D" parent="."]
@@ -43,17 +43,17 @@ collision_mask = 65
 shape = SubResource("BoxShape3D_unbgy")
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="health_upgrade_trig"]
-transform = Transform3D(1.17807e-07, -1.89443, -0.7, 1.78427e-07, -1.09375, 1.21244, -2.1875, -1.91237e-07, 6.11959e-08, -0.166025, -1, -0.199946)
+transform = Transform3D(1.53149e-07, -2.46276, -0.91, 2.31955e-07, -1.42188, 1.57617, -2.84375, -2.48608e-07, 7.95547e-08, -0.425832, -1.15, -0.199866)
 mesh = SubResource("PrismMesh_av6xb")
 material = ExtResource("3_py6j6")
 
 [node name="CSGMesh3D2" type="CSGMesh3D" parent="health_upgrade_trig"]
-transform = Transform3D(-2.56941e-08, 0.703646, -0.70875, 4.45035e-08, 0.40625, 1.22759, 1.17562, 0, -6.19609e-08, 1.13301, -0.25, -0.70811)
+transform = Transform3D(-3.34023e-08, 0.91474, -0.921375, 5.78545e-08, 0.528125, 1.59587, 1.52831, 0, -8.05492e-08, 1.26291, -0.175, -0.860479)
 mesh = SubResource("PrismMesh_av6xb")
 material = ExtResource("3_py6j6")
 
 [node name="CSGMesh3D3" type="CSGMesh3D" parent="health_upgrade_trig"]
-transform = Transform3D(-2.56941e-08, 0.703646, -0.70875, 4.45035e-08, 0.40625, 1.22759, 1.17562, 0, -6.19609e-08, 1.13301, -0.25, 0.307419)
+transform = Transform3D(-3.34023e-08, 0.91474, -0.921375, 5.78545e-08, 0.528125, 1.59587, 1.52831, 0, -8.05492e-08, 1.26291, -0.175, 0.459708)
 mesh = SubResource("PrismMesh_av6xb")
 material = ExtResource("3_py6j6")
 
@@ -64,8 +64,18 @@ billboard = 1
 texture_filter = 0
 text = "+1"
 font = ExtResource("3_gwm0a")
-font_size = 20
+font_size = 30
 outline_size = 6
+
+[node name="Label3D" type="Label3D" parent="health_upgrade_trig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 6.7, -5)
+pixel_size = 0.05
+billboard = 1
+modulate = Color(1, 0.109804, 0.0588235, 1)
+text = "choose."
+font = ExtResource("3_gwm0a")
+font_size = 30
+outline_size = 2
 
 [connection signal="body_entered" from="spinner_upgrade_trig" to="." method="_on_spinner_upgrade_trig_body_entered"]
 [connection signal="body_entered" from="health_upgrade_trig" to="." method="_on_health_upgrade_trig_body_entered"]
