@@ -14,7 +14,7 @@ signal finally_fucking_start
 #sfx_stuff
 @onready var health_pickup_sfx = $Sfx/health_pickup_sfx
 @onready var spinner_pickup_sfx = $Sfx/spinner_pickup_sfx
-
+#@onready var ui_select = $Sfx/ui_select
 
 # music
 @onready var title_music = $Sfx/title_music
@@ -359,6 +359,7 @@ func _on_gui_start_game():
 	await get_tree().create_timer(3.0).timeout
 	cammie._is_moving = false
 	if once == true:
+		
 		finally_fucking_start.emit()
 		once = false
 	

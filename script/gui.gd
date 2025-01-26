@@ -34,6 +34,7 @@ signal cleanup
 @onready var fade_anim = $fade/AnimationPlayer
 @onready var title_anim = $title_screen/AnimationPlayer
 
+var selected : bool = false
 #@onready var label = $Label
 #@onready var spin_meter = $spin_meter
 #@onready var stability_ui = $"Stability Gauge"
@@ -142,7 +143,9 @@ func _on_animation_player_animation_finished(anim_name):
 func _on_title_screen_gui_input(event):
 	if event is InputEventMouseButton:
 		print("Started")
-		ui_select.play()
+		if !selected:
+			ui_select.play()
+			selected = true
 		title_music.stop()
 		title_anim.play("fade_title")
 		start_game.emit()
