@@ -157,6 +157,7 @@ func _leash_flower():
 	Globals.OrbitMode = _leash_toggle
 	_toggleable_orbit = false
 	orbit_toggle_time.start()
+	base_speed *= 0.5
 	#var coordarray : Array = pivot.getCoordinates()
 	var dt := get_tree().get_nodes_in_group("Dianthus")
 	#var nc = pivot.get_children()
@@ -173,7 +174,7 @@ func _leash_flower():
 		#i.position = coord[id]
 		i.orbit_pos = coord[id]
 		i.spin_sfx.stop()
-		i._saw_dmg *= 0.5
+		i._saw_dmg *= 0.25
 		#pivot.add_child(i)
 		
 		id += 1
@@ -185,6 +186,7 @@ func _unleash():
 	Globals.OrbitMode = _leash_toggle
 	_toggleable_orbit = false
 	orbit_toggle_time.start()
+	base_speed *= 2
 	var dt := get_tree().get_nodes_in_group("Dianthus")
 	if !dt: return
 	#var coord = pivot.getCoordinates()
@@ -199,7 +201,7 @@ func _unleash():
 		
 		#i._dir = nd.normalized()
 		i.spin_sfx.play()
-		i._saw_dmg *= 2
+		i._saw_dmg *= 4
 	
 	
 
