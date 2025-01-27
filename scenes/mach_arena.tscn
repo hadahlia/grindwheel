@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://cau0atwkvl67f"]
+[gd_scene load_steps=55 format=3 uid="uid://cau0atwkvl67f"]
 
 [ext_resource type="Script" path="res://script/arena/mach_arena.gd" id="1_lwp4d"]
 [ext_resource type="Texture2D" uid="uid://cvbxjk0rh5p8k" path="res://sprite/gui/frame1.png" id="2_7qsjr"]
@@ -275,6 +275,9 @@ _data = {
 "fade_in": SubResource("Animation_qodmh"),
 "fade_trans": SubResource("Animation_le153")
 }
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a8sfq"]
+size = Vector3(150, 1, 100)
 
 [node name="mach_arena" type="Node3D"]
 script = ExtResource("1_lwp4d")
@@ -1041,6 +1044,20 @@ stream = ExtResource("22_la67c")
 unit_size = 80.0
 autoplay = true
 
+[node name="void_trig" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -9, 0)
+collision_mask = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="void_trig"]
+shape = SubResource("BoxShape3D_a8sfq")
+
+[node name="void_trig2" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 0)
+collision_mask = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="void_trig2"]
+shape = SubResource("BoxShape3D_a8sfq")
+
 [connection signal="call_death_screen" from="." to="gui" method="_on_grindwheel_die"]
 [connection signal="call_fade" from="." to="gui" method="_on_mach_arena_call_fade"]
 [connection signal="fade_out" from="." to="gui" method="_on_mach_arena_fade_out"]
@@ -1052,3 +1069,5 @@ autoplay = true
 [connection signal="gui_input" from="gui/title_screen" to="gui" method="_on_title_screen_gui_input"]
 [connection signal="animation_finished" from="gui/title_screen/AnimationPlayer" to="gui" method="_on_title_animation_finished"]
 [connection signal="animation_finished" from="gui/fade/AnimationPlayer" to="gui" method="_on_animation_player_animation_finished"]
+[connection signal="body_entered" from="void_trig" to="." method="_on_void_trig_body_entered"]
+[connection signal="body_entered" from="void_trig2" to="." method="_on_void_trig_body_entered"]

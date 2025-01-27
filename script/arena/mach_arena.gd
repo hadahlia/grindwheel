@@ -386,3 +386,9 @@ func _on_finally_fucking_start():
 	#print("hiiiiiiiiiii")
 	#_on_trans_level()
 	_start_round()
+
+
+func _on_void_trig_body_entered(body):
+	if body is GrindWheel:
+		body.global_position = player_pos_start.global_position
+		body.velocity = Vector3.ZERO
