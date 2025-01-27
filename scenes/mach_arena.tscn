@@ -517,10 +517,10 @@ shape = SubResource("CylinderShape3D_7omef")
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 17.3, -7)
 
 [node name="player_pos_start" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.6, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.6, 1)
 
 [node name="angel_spawn" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.6, 22)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.6, 22)
 
 [node name="hole_spot" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -4, -20)
@@ -646,9 +646,9 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -448.0
-offset_top = 16.0
+offset_top = 48.0
 offset_right = -64.0
-offset_bottom = 40.0
+offset_bottom = 72.0
 grow_horizontal = 0
 mouse_filter = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_lj0ri")

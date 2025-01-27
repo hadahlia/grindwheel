@@ -69,7 +69,7 @@ normal_enabled = true
 [node name="dianthus_floor" instance=ExtResource("1_bok78")]
 
 [node name="bowlfloor" parent="." index="0"]
-layers = 97
+layers = 65
 surface_material_override/0 = SubResource("StandardMaterial3D_xilby")
 surface_material_override/1 = SubResource("StandardMaterial3D_hbl8w")
 surface_material_override/2 = SubResource("StandardMaterial3D_csbmk")

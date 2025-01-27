@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://py510t1jpp8s"]
+
+[ext_resource type="PackedScene" uid="uid://cxtt5r3pqnsjx" path="res://scenes/angel_gem.tscn" id="1_jcyut"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0sbbv"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ckgyr"]
+gravity = Vector3(0, 0, 0)
+scale_over_velocity_min = 1.0
+scale_over_velocity_max = 2.0
+color = Color(1, 0.207843, 0.662745, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_rsurc"]
+radius = 1.0
+height = 2.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ivohl"]
+radius = 1.0
+
+[node name="ligh_projectile" type="Node3D"]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+material_override = SubResource("ShaderMaterial_0sbbv")
+amount = 1
+lifetime = 3.0
+process_material = SubResource("ParticleProcessMaterial_ckgyr")
+draw_pass_1 = SubResource("SphereMesh_rsurc")
+
+[node name="AngelGem" parent="." instance=ExtResource("1_jcyut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00704, 1.19209e-07, -0.524025)
+visible = false
+base_rot_speed = 6.0
+
+[node name="bullet_collider" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+collision_layer = 8
+collision_mask = 16
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="bullet_collider"]
+shape = SubResource("SphereShape3D_ivohl")

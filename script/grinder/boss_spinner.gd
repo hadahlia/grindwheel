@@ -51,7 +51,7 @@ var saw_damn : float = 0
 func _ready():
 	wheel_sfx.stream = stats.bump_sound
 	_dmg = stats.damage
-	_max_health = stats.health + stats.health * (Globals.RoundCount * 0.1)
+	_max_health = stats.health + ((stats.health * Globals.RoundCount) * 0.5)
 	_health = _max_health
 	#cur_state.emit(str(state_machine.current_state))
 	#boss_spawned.emit()
@@ -182,5 +182,5 @@ func _on_hurt_ball_area_entered(area):
 	if p is GrindWheel:
 		#print("hit!")
 		_take_damage_once(p._saw_dmg)
-		if p.velocity == Vector3.ZERO:
-			p.velocity = self.velocity
+		#if p.velocity == Vector3.ZERO:
+			#p.velocity = self.velocity

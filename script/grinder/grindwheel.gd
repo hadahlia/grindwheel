@@ -40,6 +40,7 @@ var explosion_scene : PackedScene = preload("res://scenes/vfx/deathsplosion.tscn
 @onready var _spin_charge = $_spin_charge
 #@onready var _invuln_timer = $_invuln_timer
 #@onready var _stun_timer = $_stun_timer
+#@onready var _get_col_back = $_get_col_back
 
 
 @export var data : WheelStats
@@ -100,9 +101,12 @@ func _spinny():
 	blade_root.rotation.y += _stability * 0.5 #+ data.damage)
 	
 	#if velocity == Vector3.ZERO: return
-	safe_look_at(mesh_body, self.position + _dir.normalized())
+	#safe_look_at(mesh_body, self.position + _dir.normalized())
 	#safe_look_at(dir_pointer, self.position + _dir)
 	#safe_look_at(arrow_g, self.position + velocity)
+
+func _set_direction(new_dir: Vector3) -> void:
+	_dir = new_dir
 
 func _physics_process(delta):
 	#if _spin_meter <= 40 or _spin_meter >= 780:
@@ -110,25 +114,33 @@ func _physics_process(delta):
 		#_spin_meter = 460
 	if Globals.OrbitMode: 
 		
-		position = lerp(self.position, orbit_pos, 4 * delta)
-		#position = lerp(self.position, get_parent().position, _move_speed * delta)
+		#position = lerp(self.position, orbit_pos, 4 * delta)
+		velocity = Vector3.ZERO
+		position = position.move_toward(orbit_pos, _move_speed * delta)
+		#position.lerp(get_parent().position,  * delta)
 		return
 	#if _leash_toggle:
 		#_connect_leash()
 	
-	if is_on_floor() and !_is_idle:
-		get_direction()
-		apply_friction(delta)
+	#velocity.y = _grav
+	#acceleration.y = _grav
+	#if is_on_floor() and !_is_idle:
+		#acceleration.y = 0
+		#get_direction()
+		#apply_friction(delta)
 		#_spin_meter += _spin_scalar * delta
 		#_spin_meter -= _spin_decay * delta
 		#update_spin.emit(_spin_meter)
+		
 	
-	acceleration.y = _grav
+	
 	_spinny()
 	wheel_sfx.pitch_scale = 1 + randf_range(-0.35, 0.35)
 	if velocity.length() < 21:
 		
-		velocity += acceleration * delta
+		
+		velocity = _dir.normalized() * _move_speed #acceleration * delta
+		#velocity += acceleration * delta
 		#move_and_collide(velocity * delta)
 		move_and_slide()
 		#if _dashing:
@@ -142,8 +154,8 @@ func _physics_process(delta):
 			#_death()
 			wheel_sfx.play()
 			wheel_sfx.pitch_scale += 0.2
-			velocity *= 0.8
-			_dir = _dir.bounce(col.get_normal())
+			#velocity *= 0.8
+			#_dir = _dir.bounce(col.get_normal())
 			#_dir *=-1
 			velocity = velocity.bounce(col.get_normal()) #* randf_range(0.85, 1.15)
 			
@@ -304,11 +316,13 @@ func apply_friction(delta):
 	acceleration += friction_force
 
 func get_direction():
-	acceleration = Vector3.ZERO
+	#acceleration = Vector3.ZERO
 	#var _fuck_name : Vector3 = Globals.RayPos - self.global_position
 	#if _dir == Vector3.ZERO:
 		#_dir = Vector3(0, 0,-1)#.rotated(Vector3.UP, cam.rotation.z)
-	acceleration = _dir.normalized() * _move_speed
+	#acceleration = _dir.normalized() * _move_speed
+	pass
+	velocity = _dir.normalized() * _move_speed
 	#look_at(Globals.RayPos, Vector3.UP)
 
 func get_input():
@@ -459,3 +473,7 @@ func _on_bump_radius_area_entered(area):
 		velocity = a.velocity
 		#if velocity == Vector3.ZERO:
 		#velocity = area.velocity
+
+
+#func _on__get_col_back_timeout():
+	#col.disabled = false

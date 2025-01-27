@@ -21,7 +21,7 @@ damage = 5
 rot_speed = 10.0
 stability = 20
 dash_max_charge = 4
-health = 40.0
+health = 60.0
 bump_sound = ExtResource("2_tnwpy")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ymlrj"]
@@ -58,7 +58,7 @@ radius = 1.72289
 [node name="opponent_wheel" type="CharacterBody3D" groups=["BossEnem"]]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.846653, 0)
 collision_layer = 32
-collision_mask = 32
+collision_mask = 33
 input_ray_pickable = false
 script = ExtResource("1_e7753")
 stats = SubResource("Resource_0j8l7")

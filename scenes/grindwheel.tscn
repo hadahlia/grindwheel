@@ -13,7 +13,7 @@
 [sub_resource type="Resource" id="Resource_e6243"]
 script = ExtResource("2_gd5nx")
 dash_cooldown = 8
-_movespeed = 70.0
+_movespeed = 60.0
 damage = 50
 rot_speed = 10.0
 stability = 10
@@ -42,7 +42,7 @@ script = ExtResource("1_uw4wv")
 data = SubResource("Resource_e6243")
 
 [node name="col" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.676487, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07649, 0)
 shape = SubResource("CylinderShape3D_yti04")
 
 [node name="mesh_body" parent="." instance=ExtResource("5_vjf4n")]

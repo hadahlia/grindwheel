@@ -10,15 +10,18 @@ signal shatter
 @onready var to_pos = $to_pos
 @onready var pivot = $pivot
 
-@export var base_rot_speed : float = 10
+@export var base_rot_speed : float = 6
 @export var base_speed : float = 3
 @export var orbit_scale : float = 8
 
 @export var max_health : int = 3
 @export var health : int
 
+
 # Timers. u get the drill
 @onready var _invuln_timer = $_invuln_timer
+@onready var orbit_toggle_time = $orbit_toggle_time
+
 
 # Sounds
 @onready var _angel_damage = $_angel_damage
@@ -31,6 +34,8 @@ var _leash_toggle : bool = false
 var _invuln : bool = false
 var _orbit_right : bool = false
 
+var _toggleable_orbit : bool = true
+
 func _ready():
 	max_health = Globals.GemMaxHP
 	health = max_health
@@ -38,9 +43,14 @@ func _ready():
 	Globals.OrbitMode = _leash_toggle
 	if Globals.RoundCount == 0:
 		Globals.can_move = false
+	#else:
+		#_leash_flower()
+		#orbit_toggle_time.stop()
+		#_unleash()
 
 func _angel_spin(delta: float):
-	if !_leash_toggle: return
+	if !Globals.OrbitMode: return
+	#if !_leash_toggle: return
 	if _orbit_right:
 		pivot.rotation.y -= base_rot_speed * delta
 	else:
@@ -55,7 +65,7 @@ func _physics_process(delta):
 	#if _dir_to_cursor == Vector2.ZERO: return
 	_dir_gem = Vector3(_dir_to_cursor.x, 0, _dir_to_cursor.y)
 	velocity = _dir_gem.normalized() * base_speed
-	if _dir_to_cursor.length() < 0.2: 
+	if _dir_to_cursor.length() < 0.4: 
 		velocity = Vector3.ZERO
 	move_and_slide()
 	
@@ -65,7 +75,7 @@ func _physics_process(delta):
 	#global_position = global_position.lerp(to_pos.global_position, base_speed * delta)
 
 func _input(event):
-	
+	if !_toggleable_orbit: return
 	if event is InputEventMouseButton:
 		#print("event is InputEventMouseButton")
 		
@@ -143,7 +153,10 @@ func _setup_orbit():
 
 func _leash_flower():
 	
-
+	_leash_toggle = true
+	Globals.OrbitMode = _leash_toggle
+	_toggleable_orbit = false
+	orbit_toggle_time.start()
 	#var coordarray : Array = pivot.getCoordinates()
 	var dt := get_tree().get_nodes_in_group("Dianthus")
 	#var nc = pivot.get_children()
@@ -165,25 +178,30 @@ func _leash_flower():
 		
 		id += 1
 	
-	Globals.OrbitMode = true
+	
 	_angel_blip.play()
 
 func _unleash():
-	Globals.OrbitMode = false
+	Globals.OrbitMode = _leash_toggle
+	_toggleable_orbit = false
+	orbit_toggle_time.start()
 	var dt := get_tree().get_nodes_in_group("Dianthus")
 	if !dt: return
 	#var coord = pivot.getCoordinates()
 	for i in dt:
-		var nd : Vector3 = Vector3( i.global_position.x - self.global_position.x,0,i.global_position.z - self.global_position.z)
+		var nd : Vector3 = Vector3( (i.global_position.x - pivot.global_position.x)  ,0, (i.global_position.z - pivot.global_position.z) ) 
+		
 		i.col.disabled = false
 		i.reparent(get_parent())
+		i._set_direction(nd)
 		
 		i._is_idle = false
-		i._dir = nd
+		
+		#i._dir = nd.normalized()
 		i.spin_sfx.play()
 		i._saw_dmg *= 2
-		
-		
+	
+	
 
 func gem_damage():
 	if _invuln: return
@@ -228,3 +246,7 @@ func _on_hitbox_area_entered(area):
 
 func _on_stuck_spawn_timer_timeout():
 	Globals.can_move = true
+
+
+func _on_orbit_toggle_time_timeout():
+	_toggleable_orbit = true

@@ -125,8 +125,8 @@ _data = {
 collision_layer = 64
 collision_mask = 64
 script = ExtResource("1_jxsa4")
-base_rot_speed = 5.0
-base_speed = 35.0
+base_rot_speed = 4.0
+base_speed = 36.0
 orbit_scale = 10.0
 max_health = 4
 
@@ -181,7 +181,12 @@ libraries = {
 one_shot = true
 autostart = true
 
+[node name="orbit_toggle_time" type="Timer" parent="."]
+wait_time = 0.8
+one_shot = true
+
 [connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="timeout" from="_invuln_timer" to="." method="_on__invuln_timer_timeout"]
 [connection signal="timeout" from="stuck_spawn_timer" to="." method="_on_stuck_spawn_timer_timeout"]
+[connection signal="timeout" from="orbit_toggle_time" to="." method="_on_orbit_toggle_time_timeout"]

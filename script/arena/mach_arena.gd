@@ -120,8 +120,10 @@ func _start_round():
 	gui.show_gui()
 	gui._update_round()
 	spawn_cursor()
-	spawn_gem()
 	spawn_player()
+	spawn_gem()
+	
+	
 	spawn_boss()
 	
 	fade_out.emit()
@@ -151,7 +153,7 @@ func spawn_player():
 	for i in range(Globals.DianthusCount):
 		var p := dianthus_scene.instantiate()
 		var m := Marker3D.new()
-		m.global_position = Vector3(0, -2.6, 1 + index)
+		m.global_position = Vector3(0, -3.6, 1 + index)
 		index+=2
 		#p.bumped.connect(_on_player_bumped)
 	#p.die.connect(_on_grindwheel_die)
@@ -160,18 +162,20 @@ func spawn_player():
 		p.global_position = m.global_position
 		true_arena.add_child(p)
 		
-	pass
+	#pass
 
 func spawn_boss():
 	var rc = Globals.RoundCount
 	if rc > 1:
 		rc = (rc % 1) + 1
 	match rc:
+		# tutorial msg
 		0:
-			pass
+			#pass
 			gui._set_boss_name("")
 			#spawn_hole()
 			spawn_upgrades()
+		# dread wheel
 		1:
 			var bc := dread_wheel.instantiate()
 			
@@ -180,7 +184,12 @@ func spawn_boss():
 			bc.global_position = boss_pos_start.global_position
 			gui._update_state_label(bc._state_transmit)
 			gui._set_boss_name(" DREAD WHEEL ")
+			gui.toggle_healthbar(true)
 			#bc.boss_spawned.connect(_get_spinner_reference)
+		# snake (dipsa)
+		# dead hands
+		# cerberus
+		# widower
 
 
 func spawn_upgrades():
@@ -191,10 +200,11 @@ func spawn_upgrades():
 		var c = get_tree().get_first_node_in_group("CenterPoint")
 	
 		upg.global_position = c.global_position
+		#upg.global_position.z = -28
 		upg.rotation_degrees.y += 90
 		true_arena.add_child(upg)
-	else:
-		pass
+	#else:
+		#pass
 
 func spawn_hole(was_health_chosen: bool):
 	if was_health_chosen:
@@ -265,6 +275,7 @@ func _on_gem_die(pos: Vector3) -> void:
 func _on_opponent_wheel_boss_death(pos: Vector3) -> void:
 	spawn_explosion(pos)
 	spawn_upgrades()
+	gui.toggle_healthbar(false)
 	#spawn_hole()
 	#Globals.superstate = Globals.GameState.WORLDPEACE
 
@@ -334,6 +345,7 @@ func destroy_actors():
 		sg.queue_free()
 	for i in pp:
 		i.queue_free()
+	
 	
 	for c in pos_container.get_children():
 		c.queue_free()
