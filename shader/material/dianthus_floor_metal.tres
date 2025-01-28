@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://cvepd0adwf2i4"]
+
+[ext_resource type="Texture2D" uid="uid://cxju4yfhsi3q6" path="res://sprite/env/Horror_Floor_07-128x128.png" id="1_0xjjn"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_k8f2b"]
+noise_type = 0
+frequency = 0.0149
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_nf02d"]
+as_normal_map = true
+bump_strength = 9.0
+noise = SubResource("FastNoiseLite_k8f2b")
+
+[resource]
+albedo_color = Color(0.180392, 0.176471, 0.2, 1)
+albedo_texture = ExtResource("1_0xjjn")
+metallic_specular = 0.2
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_nf02d")

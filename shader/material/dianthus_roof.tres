@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://bsdq2e4gfa3f7"]
+
+[ext_resource type="Texture2D" uid="uid://hgmldo0ha1qf" path="res://sprite/env/roof/Roof_Tiles_01_Grey_1.png" id="1_avboa"]
+
+[resource]
+albedo_color = Color(1, 0.333333, 0.227451, 1)
+albedo_texture = ExtResource("1_avboa")
+metallic = 0.03
+metallic_specular = 0.14
+uv1_scale = Vector3(2, 2, 2)

@@ -65,6 +65,8 @@ Portal=""
 "Orbit Point"=""
 Dianthus="belonging to global Player group"
 CenterPoint=""
+SnakeArrow=""
+SnakeHealth=""
 
 [importer_defaults]
 

@@ -1,9 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://x0c0k7wt1t8u"]
+[gd_scene load_steps=12 format=3 uid="uid://x0c0k7wt1t8u"]
 
 [ext_resource type="Script" path="res://script/grinder/grindwheel.gd" id="1_uw4wv"]
 [ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="2_gd5nx"]
 [ext_resource type="AudioStream" uid="uid://w4jg2q3un5o3" path="res://audio/sfx/bounce.wav" id="2_i25ww"]
-[ext_resource type="Texture2D" uid="uid://d3mshby6wthon" path="res://sprite/gui/pointer.png" id="3_ncc8r"]
 [ext_resource type="AudioStream" uid="uid://o25xxxjad6xe" path="res://audio/sfx/lvlup.mp3" id="5_8q7xo"]
 [ext_resource type="AudioStream" uid="uid://be7a3kjxdenkm" path="res://audio/sfx/twirler.wav" id="5_qcflb"]
 [ext_resource type="PackedScene" uid="uid://brutrpcx1wsjh" path="res://scenes/spinner_mesh_body.tscn" id="5_vjf4n"]
@@ -26,14 +25,8 @@ hit_sound = ExtResource("7_5yyiu")
 height = 1.17485
 radius = 1.46038
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_vt5kx"]
-radius = 2.2
-
 [sub_resource type="SphereShape3D" id="SphereShape3D_0mvcy"]
 radius = 1.8
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_tawae"]
-radius = 1.89336
 
 [node name="grindwheel" type="CharacterBody3D" groups=["Dianthus"]]
 collision_layer = 16
@@ -46,42 +39,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07649, 0)
 shape = SubResource("CylinderShape3D_yti04")
 
 [node name="mesh_body" parent="." instance=ExtResource("5_vjf4n")]
-
-[node name="arrow_pointer" type="Node3D" parent="."]
-rotation_edit_mode = 2
-visible = false
-
-[node name="Sprite3D" type="Sprite3D" parent="arrow_pointer"]
-transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 0.250431, -3.07736)
-gi_mode = 2
-pixel_size = 0.04
-texture_filter = 2
-render_priority = 1
-texture = ExtResource("3_ncc8r")
-
-[node name="dir_pointer" type="Node3D" parent="."]
-rotation_edit_mode = 2
-visible = false
-
-[node name="Sprite3D" type="Sprite3D" parent="dir_pointer"]
-transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 0.636051, -3.07736)
-gi_mode = 2
-modulate = Color(1, 0, 0.219608, 1)
-pixel_size = 0.04
-texture_filter = 2
-render_priority = 1
-texture = ExtResource("3_ncc8r")
-
-[node name="killsaw" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.894349, 0)
-visible = false
-collision_layer = 4
-collision_mask = 2
-monitoring = false
-monitorable = false
-
-[node name="saw_rad" type="CollisionShape3D" parent="killsaw"]
-shape = SubResource("SphereShape3D_vt5kx")
 
 [node name="hitbox" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.208302, 0)
@@ -127,17 +84,6 @@ wait_time = 0.6
 [node name="_stun_timer" type="Timer" parent="."]
 wait_time = 1.2
 one_shot = true
-
-[node name="bump_radius" type="Area3D" parent="."]
-visible = false
-collision_layer = 16
-collision_mask = 32
-monitoring = false
-monitorable = false
-
-[node name="colie" type="CollisionShape3D" parent="bump_radius"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("SphereShape3D_tawae")
 
 [connection signal="timeout" from="_dash_recharge" to="." method="_on__dash_recharge_timeout"]
 [connection signal="timeout" from="_spin_charge" to="." method="_on__spin_charge_timeout"]

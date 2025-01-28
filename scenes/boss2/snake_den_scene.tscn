@@ -1,0 +1,76 @@
+[gd_scene load_steps=7 format=3 uid="uid://5w61ddfgrwoh"]
+
+[ext_resource type="Script" path="res://script/grinder/boss_ai/snake_den_manager.gd" id="1_mp7v2"]
+[ext_resource type="PackedScene" uid="uid://ewairoktau6u" path="res://scenes/the_dipsa.tscn" id="1_unswi"]
+[ext_resource type="Script" path="res://script/util/state/state_machine.gd" id="2_dlu00"]
+
+[sub_resource type="Animation" id="Animation_ly0sl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("snake_point:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(32, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xvov3"]
+resource_name = "circle_test"
+length = 5.0
+loop_mode = 1
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("snake_point:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2.5, 4, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(32, 0, 0), Vector3(0, 0, 30), Vector3(-33, 0, -0.25), Vector3(-0.499996, 0, -34.125), Vector3(32, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_83p1d"]
+_data = {
+"RESET": SubResource("Animation_ly0sl"),
+"circle_test": SubResource("Animation_xvov3")
+}
+
+[node name="snake_den_scene" type="Node3D"]
+script = ExtResource("1_mp7v2")
+
+[node name="state_machine" type="Node" parent="."]
+script = ExtResource("2_dlu00")
+
+[node name="snake_point" type="Marker3D" parent="." groups=["SnakeArrow"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 0)
+
+[node name="den_spawn_1" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64, 0, 8)
+
+[node name="den_spawn_2" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0, 8)
+
+[node name="den_spawn_3" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46, 0, -38)
+
+[node name="den_spawn_4" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, -40)
+
+[node name="den_spawn_5" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -56)
+
+[node name="snake_animator" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_83p1d")
+}
+
+[node name="dipsa_body" parent="." instance=ExtResource("1_unswi")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 6.84665, -97)

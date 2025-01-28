@@ -1,0 +1,330 @@
+[gd_scene load_steps=29 format=3 uid="uid://ewairoktau6u"]
+
+[ext_resource type="Script" path="res://script/grinder/dipsa_op.gd" id="1_lhgjy"]
+[ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="3_mjk2h"]
+[ext_resource type="Texture2D" uid="uid://ge4mu7x3pkk8" path="res://sprite/env/Horror_Metal_03-128x128.png" id="7_juhfk"]
+[ext_resource type="PackedScene" uid="uid://bjkmyvklh5di" path="res://object/weapons/bronzer.tscn" id="8_nlhau"]
+[ext_resource type="ArrayMesh" uid="uid://dsfda6wgpso48" path="res://object/snake_pieces/mid_mesh.res" id="9_0c2na"]
+[ext_resource type="Texture2D" uid="uid://fp4vnmefpim8" path="res://sprite/env/metal/Horror_Metal_12-128x128.png" id="9_0rcjd"]
+[ext_resource type="ArrayMesh" uid="uid://vpryh58x6cc0" path="res://object/snake_pieces/head_mesh.res" id="9_2rt16"]
+[ext_resource type="Texture2D" uid="uid://d3mqk2nylbrul" path="res://sprite/textures/snake_eye.png" id="9_kx8uf"]
+[ext_resource type="ArrayMesh" uid="uid://crlua4hshqxvk" path="res://object/snake_pieces/end_mesh.res" id="10_5as7b"]
+[ext_resource type="AudioStream" uid="uid://dsc4lj3vbtiwd" path="res://audio/sfx/newer/hit_danger.mp3" id="10_8vlib"]
+[ext_resource type="Script" path="res://script/grinder/boss_ai/seg_hitbox.gd" id="10_qt6yo"]
+[ext_resource type="Material" uid="uid://0nn8pk0qghib" path="res://shader/material/snakeskin.tres" id="11_f43ir"]
+
+[sub_resource type="Resource" id="Resource_uul6a"]
+script = ExtResource("3_mjk2h")
+dash_cooldown = 8
+_movespeed = 30.0
+damage = 5
+rot_speed = 10.0
+stability = 10
+dash_max_charge = 4
+health = 80.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ymlrj"]
+height = 3.2
+radius = 2.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1k38f"]
+albedo_color = Color(0.486275, 0.580392, 0.52549, 1)
+albedo_texture = ExtResource("7_juhfk")
+uv1_triplanar = true
+
+[sub_resource type="PrismMesh" id="PrismMesh_fhp5m"]
+size = Vector3(1.2, 1.8, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_js0t3"]
+albedo_color = Color(0.541176, 1, 0.862745, 1)
+albedo_texture = ExtResource("9_0rcjd")
+metallic = 1.0
+metallic_specular = 0.36
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kydru"]
+load_path = "res://.godot/imported/Horror_Metal_12-128x128.png-d8297e17133080436c600ca32c46762b.bptc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oc1bo"]
+albedo_color = Color(1, 0.109804, 0.0784314, 1)
+albedo_texture = SubResource("CompressedTexture2D_kydru")
+metallic = 1.0
+metallic_specular = 0.36
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0yv7a"]
+transparency = 1
+albedo_texture = ExtResource("9_kx8uf")
+emission = Color(0, 26.55, 0, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_og54v"]
+radius = 2.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vgp6p"]
+albedo_color = Color(1, 0.580392, 0.113725, 1)
+albedo_texture = ExtResource("7_juhfk")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l8gpg"]
+transparency = 1
+albedo_color = Color(0.764706, 0.152941, 1, 0.505882)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_dji7p"]
+material = SubResource("StandardMaterial3D_l8gpg")
+height = 5.0
+radial_segments = 8
+rings = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gc0ju"]
+transparency = 1
+albedo_color = Color(2.2, 0.5, 1.2, 1)
+emission_enabled = true
+emission = Color(0.00392157, 0.00392157, 0.00392157, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_8480l"]
+material = SubResource("StandardMaterial3D_gc0ju")
+height = 5.0
+radial_segments = 8
+rings = 1
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_e5uoo"]
+radius = 1.0
+height = 6.0
+
+[sub_resource type="PrismMesh" id="PrismMesh_ti0oy"]
+size = Vector3(1.2, 3, 1)
+
+[node name="dipsa_body" type="CharacterBody3D" groups=["BossEnem"]]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.846653, 0)
+collision_layer = 33
+collision_mask = 32
+input_ray_pickable = false
+script = ExtResource("1_lhgjy")
+stats = SubResource("Resource_uul6a")
+
+[node name="col_body" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.677951, 0)
+shape = SubResource("CylinderShape3D_ymlrj")
+
+[node name="head_" type="Node3D" parent="."]
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="head_"]
+transform = Transform3D(0.34202, -0.0373182, -0.938951, 0.939693, 0.0135827, 0.34175, -2.27786e-08, -0.999211, 0.0397131, 0, 0.038982, 1.88291)
+radius = 0.8
+height = 1.98095
+sides = 9
+material = SubResource("StandardMaterial3D_1k38f")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="head_"]
+transform = Transform3D(-1, -2.2954e-08, 6.40777e-08, -2.53129e-09, 0.707107, 0.707107, -9.31508e-08, 0.707107, -0.707107, -0.00507005, 1.99176, 0.835259)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="head_"]
+transform = Transform3D(1, -6.44688e-08, -6.40777e-08, 6.70099e-08, 0.258819, 0.965926, -2.50721e-09, -0.965926, 0.258819, -0.00506989, 1.00824, -2.83526)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="head_"]
+transform = Transform3D(-0.866025, 0.5, 3.09086e-08, 4.2222e-08, 1.13133e-08, 1, 0.5, 0.866025, -3.09086e-08, 1.09493, 1, 1.9)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D4" type="CSGMesh3D" parent="head_"]
+transform = Transform3D(0.866025, 0.5, -4.2222e-08, 4.2222e-08, 1.13133e-08, 1, 0.5, -0.866026, -1.13133e-08, 1.09493, 0.5, -2.8)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_oc1bo")
+
+[node name="CSGMesh3D5" type="CSGMesh3D" parent="head_"]
+transform = Transform3D(-0.866025, -0.5, 4.2222e-08, 4.2222e-08, 1.13133e-08, 1, -0.5, 0.866025, 1.13133e-08, -1.10507, 1, 1.9)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D6" type="CSGMesh3D" parent="head_"]
+transform = Transform3D(0.866025, -0.5, -3.09086e-08, 4.2222e-08, 1.13133e-08, 1, -0.5, -0.866025, 3.09086e-08, -1.10507, 0.5, -2.8)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_oc1bo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="head_"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.5, 0)
+mesh = ExtResource("9_2rt16")
+surface_material_override/0 = ExtResource("11_f43ir")
+surface_material_override/1 = SubResource("StandardMaterial3D_0yv7a")
+
+[node name="spinning_" type="Node3D" parent="head_"]
+
+[node name="weapon" parent="head_/spinning_" instance=ExtResource("8_nlhau")]
+transform = Transform3D(20, 0, 0, 0, 19.8197, 2.67972, 0, -2.67972, 19.8197, 0, 0.67202, -1.9)
+
+[node name="hurtbox" type="Area3D" parent="head_"]
+visible = false
+collision_layer = 2
+collision_mask = 4
+input_ray_pickable = false
+monitorable = false
+
+[node name="hurt_radius" type="CollisionShape3D" parent="head_/hurtbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("SphereShape3D_og54v")
+disabled = true
+
+[node name="middle_" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 5.5)
+collision_layer = 33
+collision_mask = 32
+
+[node name="col_body" type="CollisionShape3D" parent="middle_"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.677951, 0)
+shape = SubResource("CylinderShape3D_ymlrj")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="middle_"]
+transform = Transform3D(0.34202, -0.0373182, -0.938951, -0.939693, -0.0135827, -0.34175, -1.86e-08, 0.999211, -0.0397133, 0, 0.138982, 0.13291)
+radius = 0.8
+height = 5.8
+sides = 9
+material = SubResource("StandardMaterial3D_vgp6p")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="middle_"]
+transform = Transform3D(-4.69205e-08, 0.866025, -0.5, 2.16642e-08, 0.5, 0.866025, 1, -1.49012e-08, -4.2222e-08, 0.89493, 1.5, -1)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="middle_"]
+transform = Transform3D(-2.87897e-08, -0.866025, 0.5, 6.53755e-08, 0.5, 0.866025, -1, 1.02324e-07, 4.2222e-08, -0.90507, 1.5, -1)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="middle_"]
+transform = Transform3D(-0.5, 0.866025, 1.13133e-08, 4.2222e-08, 1.13133e-08, 1, 0.866025, 0.5, -4.22219e-08, 1.59493, 1, 1.4)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D4" type="CSGMesh3D" parent="middle_"]
+transform = Transform3D(-2.68221e-07, 1, -1.13134e-08, 4.2222e-08, 1.13133e-08, 1, 1, -2.38419e-07, -4.2222e-08, 2.09493, 1, -1.3)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_oc1bo")
+
+[node name="CSGMesh3D5" type="CSGMesh3D" parent="middle_"]
+transform = Transform3D(-0.5, -0.866025, 3.09087e-08, 4.2222e-08, 1.13133e-08, 1, -0.866025, 0.5, 3.09086e-08, -1.60507, 1, 1.4)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D6" type="CSGMesh3D" parent="middle_"]
+transform = Transform3D(-2.98023e-07, -1, 1.13133e-08, 4.2222e-08, 1.13133e-08, 1, -1, 2.98023e-07, 4.22219e-08, -2.10507, 1, -1.3)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_oc1bo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="middle_"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.5, 0)
+mesh = ExtResource("9_0c2na")
+surface_material_override/0 = ExtResource("11_f43ir")
+
+[node name="spinning_" type="Node3D" parent="middle_"]
+
+[node name="weapon" parent="middle_/spinning_" instance=ExtResource("8_nlhau")]
+transform = Transform3D(22, 0, 0, 0, 22, 0, 0, 0, 22, 0, 0.67202, -0.0999994)
+
+[node name="weakpoint_" type="Node3D" parent="middle_"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="middle_/weakpoint_"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 1.05, 0.0999999)
+mesh = SubResource("CapsuleMesh_dji7p")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="middle_/weakpoint_"]
+transform = Transform3D(-3.93403e-08, -0.9, 0, 0.9, -3.93403e-08, 0, 0, 0, 0.9, 0, 1, 0.0999999)
+mesh = SubResource("CapsuleMesh_8480l")
+
+[node name="seg_hitbox" type="Area3D" parent="middle_/weakpoint_" groups=["SnakeHealth"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("10_qt6yo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="middle_/weakpoint_/seg_hitbox"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, -0.2, 0)
+shape = SubResource("CapsuleShape3D_e5uoo")
+
+[node name="tail_" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.5)
+collision_layer = 33
+collision_mask = 32
+
+[node name="col_body" type="CollisionShape3D" parent="tail_"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.677951, 0)
+shape = SubResource("CylinderShape3D_ymlrj")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="tail_"]
+transform = Transform3D(0.34202, -0.0373182, -0.938951, 0.939693, 0.0135827, 0.34175, -2.27786e-08, -0.999211, 0.0397131, 0, -0.011018, -1.46709)
+radius = 0.8
+height = 1.98095
+sides = 9
+material = SubResource("StandardMaterial3D_1k38f")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="tail_"]
+transform = Transform3D(-2.98023e-08, 1, -1.13133e-08, -0.422618, 1.65509e-08, 0.906308, 0.906308, -8.72387e-09, 0.422618, 1.89493, 0.85, -1)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="tail_"]
+transform = Transform3D(-5.76204e-08, -1, 1.13133e-08, 0.422619, -3.29907e-08, 0.906307, -0.906307, 9.75182e-08, 0.422619, -1.90507, 0.85, -1)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="tail_"]
+transform = Transform3D(-0.866025, 0.5, 5.09645e-08, -0.0868239, -0.150384, 0.984808, 0.492404, 0.852868, 0.173648, 1.09493, 0.0952998, 2.25951)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D4" type="CSGMesh3D" parent="tail_"]
+transform = Transform3D(-0.482963, -0.12941, -5.26449e-09, 0.0112789, -0.0420929, 0.498097, -0.128917, 0.481125, 0.0435779, -0.35507, 0.60251, 2.64062)
+mesh = SubResource("PrismMesh_ti0oy")
+material = SubResource("StandardMaterial3D_oc1bo")
+
+[node name="CSGMesh3D5" type="CSGMesh3D" parent="tail_"]
+transform = Transform3D(-0.866025, -0.5, 1.95919e-08, 0.0868239, -0.150384, 0.984808, -0.492404, 0.852868, 0.173648, -1.10507, 0.0952998, 2.25951)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D6" type="CSGMesh3D" parent="tail_"]
+transform = Transform3D(-0.482963, 0.12941, 5.26447e-09, -0.0112789, -0.0420929, 0.498097, 0.128917, 0.481125, 0.0435779, 0.29493, 0.601593, 2.59035)
+mesh = SubResource("PrismMesh_ti0oy")
+material = SubResource("StandardMaterial3D_oc1bo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="tail_"]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.5, -0.5)
+mesh = ExtResource("10_5as7b")
+surface_material_override/0 = ExtResource("11_f43ir")
+
+[node name="spinning_" type="Node3D" parent="tail_"]
+
+[node name="weapon" parent="tail_/spinning_" instance=ExtResource("8_nlhau")]
+transform = Transform3D(22, 0, 0, 0, 21.6658, -3.82026, 0, 3.82026, 21.6658, 0, 0.67202, 0.15)
+
+[node name="wheel_sfx" type="AudioStreamPlayer3D" parent="."]
+volume_db = 1.2
+pitch_scale = 0.41
+max_polyphony = 3
+
+[node name="attacked_sfx" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+stream = ExtResource("10_8vlib")
+volume_db = 4.0
+max_distance = 423.72
+max_polyphony = 3
+
+[node name="_invuln_timer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+autostart = true
+
+[node name="_stun_timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="_invuln_saw_time" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+autostart = true
+
+[connection signal="area_entered" from="head_/hurtbox" to="." method="_on_hurt_ball_area_entered"]
+[connection signal="area_entered" from="middle_/weakpoint_/seg_hitbox" to="middle_/weakpoint_/seg_hitbox" method="_on_area_entered"]
+[connection signal="core_destroyed" from="middle_/weakpoint_/seg_hitbox" to="." method="_on_seg_hitbox_core_destroyed"]
+[connection signal="timeout" from="_invuln_timer" to="." method="_on__invuln_timer_timeout"]

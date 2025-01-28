@@ -1,78 +1,19 @@
-[gd_scene load_steps=16 format=3 uid="uid://dhs8pmg1iceku"]
+[gd_scene load_steps=7 format=3 uid="uid://dhs8pmg1iceku"]
 
 [ext_resource type="PackedScene" uid="uid://bdlwmlgd83ump" path="res://object/dianthus_floor.glb" id="1_bok78"]
-[ext_resource type="Texture2D" uid="uid://cxju4yfhsi3q6" path="res://sprite/env/Horror_Floor_07-128x128.png" id="2_jhkjt"]
-[ext_resource type="Texture2D" uid="uid://cjm4ox8h0t5sb" path="res://sprite/env/Horror_Brick_08-128x128.png" id="3_ngtjy"]
-[ext_resource type="Texture2D" uid="uid://5a2s2qe4whgp" path="res://sprite/env/stone/256_Tiles Square 03 Red.png" id="4_5i21y"]
+[ext_resource type="Material" uid="uid://cvepd0adwf2i4" path="res://shader/material/dianthus_floor_metal.tres" id="2_00pvw"]
+[ext_resource type="Material" uid="uid://djksqin1s647w" path="res://shader/material/dianthus_floor.tres" id="3_l6v52"]
+[ext_resource type="Material" uid="uid://dgrfjlq55kdyq" path="res://shader/material/dianthus_floor2.tres" id="4_hwwr8"]
 [ext_resource type="PackedScene" uid="uid://bm41ggaaee4pw" path="res://scenes/dianthus_wall.tscn" id="5_7gcv7"]
 [ext_resource type="PackedScene" uid="uid://dh26vxdofl3yr" path="res://scenes/dianthus_outerwall.tscn" id="6_l05kg"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_k8f2b"]
-noise_type = 0
-frequency = 0.0149
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_nf02d"]
-as_normal_map = true
-bump_strength = 9.0
-noise = SubResource("FastNoiseLite_k8f2b")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xilby"]
-albedo_color = Color(0.180392, 0.176471, 0.2, 1)
-albedo_texture = ExtResource("2_jhkjt")
-metallic_specular = 0.2
-normal_enabled = true
-normal_texture = SubResource("NoiseTexture2D_nf02d")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_csvsf"]
-noise_type = 3
-frequency = 0.0111
-fractal_type = 2
-fractal_octaves = 4
-fractal_gain = 0.455
-fractal_weighted_strength = 0.48
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hxb5r"]
-seamless = true
-normalize = false
-noise = SubResource("FastNoiseLite_csvsf")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_wx3f3"]
-noise_type = 3
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_45obn"]
-as_normal_map = true
-bump_strength = 2.0
-noise = SubResource("FastNoiseLite_wx3f3")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hbl8w"]
-albedo_color = Color(0.254492, 0.143699, 0.0795467, 1)
-albedo_texture = ExtResource("3_ngtjy")
-metallic = 0.06
-metallic_specular = 0.3
-roughness = 0.91
-emission = Color(0.763034, 0.0919222, 2.88785e-07, 1)
-emission_operator = 1
-emission_texture = SubResource("NoiseTexture2D_hxb5r")
-normal_enabled = true
-normal_texture = SubResource("NoiseTexture2D_45obn")
-uv1_scale = Vector3(2, 2, 2)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_csbmk"]
-albedo_color = Color(0.133333, 0.67451, 0.309804, 1)
-albedo_texture = ExtResource("4_5i21y")
-metallic = 0.49
-metallic_specular = 0.13
-roughness_texture = ExtResource("4_5i21y")
-roughness_texture_channel = 4
-normal_enabled = true
 
 [node name="dianthus_floor" instance=ExtResource("1_bok78")]
 
 [node name="bowlfloor" parent="." index="0"]
 layers = 65
-surface_material_override/0 = SubResource("StandardMaterial3D_xilby")
-surface_material_override/1 = SubResource("StandardMaterial3D_hbl8w")
-surface_material_override/2 = SubResource("StandardMaterial3D_csbmk")
+surface_material_override/0 = ExtResource("2_00pvw")
+surface_material_override/1 = ExtResource("3_l6v52")
+surface_material_override/2 = ExtResource("4_hwwr8")
 
 [node name="StaticBody3D" parent="bowlfloor" index="0"]
 collision_layer = 97

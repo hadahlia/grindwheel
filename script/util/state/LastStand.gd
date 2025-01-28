@@ -24,7 +24,7 @@ func fire_lasers():
 	#pass
 
 func physics_update(_dt: float):
-	laser_machine.rotation.y += deg_to_rad(30) * (_dt / 2)
+	laser_machine.rotation.y += deg_to_rad(30) * (_dt * 2)
 	
 	self_reference.global_position = lerp(self_reference.global_position, target, 2 * _dt)
 	

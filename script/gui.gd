@@ -45,7 +45,7 @@ var selected : bool = false
 
 var soul : GemSoul
 var player : GrindWheel
-var bossy : BossWheel
+var bossy : CharacterBody3D
 #@onready var plyr = get_tree().get_first_node_in_group("Player")
 
 # Called when the node enters the scene tree for the first time.
@@ -70,7 +70,7 @@ func post_ready():
 	if bossy:
 		bossy.update_health.connect(_on_bossl_update_health)
 		boss_health.max_value = bossy._health
-		dash_charge_.value = 0
+		#dash_charge_.value = 0
 	
 		_on_bossl_update_health(bossy._health, bossy._max_health)
 

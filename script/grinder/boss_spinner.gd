@@ -48,6 +48,8 @@ var _invuln : bool = false
 var _invuln_saw : bool = false
 var saw_damn : float = 0
 
+#@TODO make phase 1 bullet hell, make phase 2 harder
+
 func _ready():
 	wheel_sfx.stream = stats.bump_sound
 	_dmg = stats.damage

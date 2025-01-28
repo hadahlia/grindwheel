@@ -466,11 +466,11 @@ func _on_opponent_wheel_output_damage(dmg_val: float, in_vel: Vector3) -> void:
 	#Globals.can_move = true
 	#velocity = Vector3.ZERO
 
-
-func _on_bump_radius_area_entered(area):
-	if area is BossWheel:
-		var a := get_tree().get_first_node_in_group("BossEnem")
-		velocity = a.velocity
+#
+#func _on_bump_radius_area_entered(area):
+	#if area is BossWheel or SnakeBoss:
+		#var a := get_tree().get_first_node_in_group("BossEnem")
+		#velocity = a.velocity
 		#if velocity == Vector3.ZERO:
 		#velocity = area.velocity
 

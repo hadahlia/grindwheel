@@ -229,8 +229,8 @@ func gem_death():
 
 
 func _on_hitbox_body_entered(body):
-	if body is BossWheel:
-		gem_damage()
+	#if body is BossWheel:
+	gem_damage()
 		#if health > 1:
 			#health -= 1
 			#soul_health.emit(health, max_health)

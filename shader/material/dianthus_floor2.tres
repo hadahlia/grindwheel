@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dgrfjlq55kdyq"]
+
+[ext_resource type="Texture2D" uid="uid://5a2s2qe4whgp" path="res://sprite/env/stone/256_Tiles Square 03 Red.png" id="1_86swc"]
+
+[resource]
+albedo_color = Color(0.133333, 0.67451, 0.309804, 1)
+albedo_texture = ExtResource("1_86swc")
+metallic = 0.49
+metallic_specular = 0.13
+roughness_texture = ExtResource("1_86swc")
+roughness_texture_channel = 4
+normal_enabled = true

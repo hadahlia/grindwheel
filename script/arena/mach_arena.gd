@@ -50,6 +50,7 @@ const explosion_vfx : PackedScene = preload("res://scenes/vfx/deathsplosion.tscn
 
 #boss scenes
 const dread_wheel : PackedScene = preload("res://scenes/opponent_wheel.tscn")
+const dipsa : PackedScene = preload("res://scenes/boss2/snake_den_scene.tscn")
 
 # refs to existing boss and player
 #@export_node_path("GrindWheel") var player_ref_path
@@ -57,7 +58,7 @@ var gem_ref : GemSoul
 #var player_ref : GrindWheel
 #var dianthuses : Array
 #@export_node_path("BossWheel") var boss_ref_path
-var boss_ref: BossWheel
+var boss_ref: CharacterBody3D
 var cursor_ref: Node3D
 
 const ray_len : float = 1000
@@ -65,8 +66,9 @@ const ray_len : float = 1000
 const BASEDMG : float = 4
 
 func _ready():
-	Globals.RoundCount = 0
-	Globals.DianthusCount = 0
+	# REMEMBER TO UNCOMMENT B4 UPLOAD
+	#Globals.RoundCount = 0
+	#Globals.DianthusCount = 0
 	fade_out.emit()
 	#_start_round()
 	#pass
@@ -166,8 +168,9 @@ func spawn_player():
 
 func spawn_boss():
 	var rc = Globals.RoundCount
-	if rc > 1:
-		rc = (rc % 1) + 1
+	var numrounds : int = 2
+	if rc > numrounds:
+		rc = (rc % numrounds) + 1
 	match rc:
 		# tutorial msg
 		0:
@@ -182,10 +185,17 @@ func spawn_boss():
 			true_arena.add_child(bc)
 			bc.boss_death.connect(_on_opponent_wheel_boss_death)
 			bc.global_position = boss_pos_start.global_position
-			gui._update_state_label(bc._state_transmit)
+			#gui._update_state_label(bc._state_transmit)
 			gui._set_boss_name(" DREAD WHEEL ")
 			gui.toggle_healthbar(true)
 			#bc.boss_spawned.connect(_get_spinner_reference)
+		2:
+			var sd := dipsa.instantiate()
+			true_arena.add_child(sd)
+			#sd.boss_death.connect(_on_opponent_wheel_boss_death)
+			#gui._update_state_label()
+			gui._set_boss_name(" DIPSA THE VITRIOL ")
+			gui.toggle_healthbar(true)
 		# snake (dipsa)
 		# dead hands
 		# cerberus

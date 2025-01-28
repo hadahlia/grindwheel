@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://bewq71p2mf7gt"]
+
+[ext_resource type="Texture2D" uid="uid://bya6i2vvwb14x" path="res://sprite/env/stone/Horror_Brick_07-128x128.png" id="1_0gx3g"]
+
+[resource]
+albedo_color = Color(0.435294, 0.286275, 0.294118, 1)
+albedo_texture = ExtResource("1_0gx3g")
+metallic = 0.19
+metallic_specular = 0.22
+roughness = 0.92
