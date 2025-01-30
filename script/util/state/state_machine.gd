@@ -55,3 +55,8 @@ func _enter_phase_two():
 		current_state = phase_2_state
 		cur_state.emit(str(current_state))
 	#current_state.Transition.emit(pursuit, last_stand)
+
+
+func _on_snake_den_scene_intro_finish():
+	states["emerge"].enter()
+	current_state = states["emerge"]

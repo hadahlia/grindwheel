@@ -8,6 +8,7 @@ signal fade_to_end
 signal finally_fucking_start
 #@onready var boss_spawn_pos = $SubViewportContainer/SubViewport/true_arena
 @onready var true_arena = $SubViewportContainer/SubViewport/true_arena
+@onready var upgrade_spawn_time = $upgrade_spawn_time
 
 @onready var pos_container = $SubViewportContainer/SubViewport/true_arena/pos_container
 
@@ -66,9 +67,10 @@ const ray_len : float = 1000
 const BASEDMG : float = 4
 
 func _ready():
+	#gui.toggle_healthbar(false)
 	# REMEMBER TO UNCOMMENT B4 UPLOAD
-	#Globals.RoundCount = 0
-	#Globals.DianthusCount = 0
+	Globals.RoundCount = 0
+	Globals.DianthusCount = 0
 	fade_out.emit()
 	#_start_round()
 	#pass
@@ -119,7 +121,9 @@ func _start_end():
 	fade_out.emit()
 
 func _start_round():
+	
 	gui.show_gui()
+	gui.toggle_healthbar(false)
 	gui._update_round()
 	spawn_cursor()
 	spawn_player()
@@ -170,7 +174,9 @@ func spawn_boss():
 	var rc = Globals.RoundCount
 	var numrounds : int = 2
 	if rc > numrounds:
-		rc = (rc % numrounds) + 1
+		rc = (rc % numrounds) #+ 1
+		if rc == 0:
+			rc += 1
 	match rc:
 		# tutorial msg
 		0:
@@ -192,17 +198,25 @@ func spawn_boss():
 		2:
 			var sd := dipsa.instantiate()
 			true_arena.add_child(sd)
+			sd.intro_finish.connect(_on_boss_intro_finish)
+			sd.snake_death.connect(_on_opponent_wheel_boss_death)
 			#sd.boss_death.connect(_on_opponent_wheel_boss_death)
 			#gui._update_state_label()
 			gui._set_boss_name(" DIPSA THE VITRIOL ")
-			gui.toggle_healthbar(true)
+			gui.toggle_healthbar(false)
+			
 		# snake (dipsa)
 		# dead hands
 		# cerberus
 		# widower
 
+func _on_boss_intro_finish():
+	Globals.can_move = true
+	#gui.show_gui()
+	gui.toggle_healthbar(true)
 
 func spawn_upgrades():
+	gui.toggle_healthbar(false)
 	var upg := upgrade_scene.instantiate()
 	if upg:
 		upg.upgrade_selected.connect(spawn_hole)
@@ -284,10 +298,15 @@ func _on_gem_die(pos: Vector3) -> void:
 
 func _on_opponent_wheel_boss_death(pos: Vector3) -> void:
 	spawn_explosion(pos)
-	spawn_upgrades()
-	gui.toggle_healthbar(false)
+	if !upgrade_spawn_time.is_stopped(): return
+	upgrade_spawn_time.start()
+	#get_tree().create_timer(10.0).timeout.connect(spawn_upgrades)
+	#()
+	
 	#spawn_hole()
 	#Globals.superstate = Globals.GameState.WORLDPEACE
+
+
 
 func spawn_explosion(pos: Vector3) -> void:
 	var expl := explosion_vfx.instantiate()
@@ -348,6 +367,12 @@ func destroy_actors():
 	if bss:
 		bss.queue_free()
 	
+	var sdd = get_tree().get_first_node_in_group("Snake Den")
+	if sdd:
+		sdd.queue_free()
+	#if dipsa:
+		#dipsa.queue_free()
+	
 	var pp = get_tree().get_nodes_in_group("Dianthus")
 	#var bp = get_tree().get_first_node_in_group("BossEnem")
 	var hole = get_tree().get_nodes_in_group("Portal")
@@ -366,16 +391,18 @@ func destroy_actors():
 
 func _on_gui_cleanup():
 	destroy_actors()
-	await get_tree().create_timer(1.0).timeout
+	get_tree().create_timer(1.0).timeout.connect(func() -> void:
+		#@TODO check for ending condition here?
+		if restart_to_menu:
+			get_tree().reload_current_scene()
+		elif game_over:
+			_start_end()
+	#elif is_dead:
+		else:
+			_start_round())
 	
 	#await get_tree().create_timer(2.0).timeout
-	#@TODO check for ending condition here?
-	if restart_to_menu:
-		get_tree().reload_current_scene()
-	elif game_over:
-		_start_end()
-	else:
-		_start_round()
+	
 	#_get_spinner_reference()
 
 
@@ -383,12 +410,14 @@ func _on_gui_start_game():
 	#print("started :3:3:3")
 	cammie._is_moving = true
 	
-	await get_tree().create_timer(3.0).timeout
-	cammie._is_moving = false
-	if once == true:
+	get_tree().create_timer(3.0).timeout.connect(func() -> void:
+		cammie._is_moving = false
+		if once == true:
 		
-		finally_fucking_start.emit()
-		once = false
+			finally_fucking_start.emit()
+			once = false
+	)
+	
 	
 
 
@@ -402,3 +431,7 @@ func _on_void_trig_body_entered(body):
 	if body is GrindWheel:
 		body.global_position = angel_spawn.global_position
 		body.velocity = Vector3.ZERO
+
+
+func _on_upgrade_spawn_time_timeout():
+	spawn_upgrades()

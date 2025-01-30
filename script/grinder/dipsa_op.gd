@@ -13,6 +13,11 @@ signal boss_death
 @onready var head_ = $head_
 @onready var middle_ = $middle_
 @onready var tail_ = $tail_
+@onready var mesh_ = $middle_/mesh_
+@onready var mesh_broken = $middle_/mesh_broken
+
+@onready var true_weakpoint = $head_/true_weakpoint
+@onready var weakpoint_col = $head_/true_weakpoint/CollisionShape3D
 
 
 #@onready var state_machine = $state_machine
@@ -56,22 +61,26 @@ var saw_damn : float = 0
 
 #@TODO Dipsa is going to chase a point in space will be animated via the state machine (point represents the head) ^^
 
-var Bait_Point : Marker3D
+@onready var Bait_Point : Marker3D
 
-var segment_num : int = 10
+var segment_num : int = 16
 
 var segments : Array = []
 var distance : float = 8
 
 var _slither_speed : float = 0
 
+# keep track of the tunnel the snake is in. 0 == not in a tunnel
+#var tunnel_id : int = 0
+
 func _ready():
-	wheel_sfx.stream = stats.bump_sound
+	#wheel_sfx.stream = stats.bump_sound
 	_dmg = stats.damage
-	_max_health = stats.health + ((stats.health * Globals.RoundCount) * 0.5)
+	_max_health = stats.health + ((stats.health * Globals.RoundCount) * 0.2)
 	_health = _max_health
 	_slither_speed = stats._movespeed
 	Bait_Point = get_tree().get_first_node_in_group("SnakeArrow")
+	#get_parent().spawn_dipsa()
 	
 	_build_snake()
 	#segments[0] = head_
@@ -83,7 +92,7 @@ func visual_spin():
 	spin_root.rotation.y += stats.rot_speed * stats.stability
 
 func _physics_process(delta):
-	if !Bait_Point: return
+	if !Bait_Point or !segments[0]: return
 	segments[0].global_position = segments[0].global_position.move_toward(Bait_Point.global_position, _slither_speed * delta)
 	for i in range(segment_num-1):
 			#if i == segment_num: break
@@ -143,17 +152,28 @@ func _direction_to_point(dest: Vector3, origin: Vector3) -> Vector3:
 			#velocity = velocity.bounce(col.get_normal()) #* randf_range(0.85, 1.15)
 
 func _build_snake():
+	#set_physics_process(false)
+	segments.clear()
+	var crystals := get_tree().get_nodes_in_group("SnakeHealth")
+	if _phase_two:
+		for x in crystals:
+			x.delete_triggers()
+		segment_num = 32
 	for i in range(segment_num):
 		var mid := middle_.duplicate()
 		add_child(mid)
 		segments.append(mid)
 		#pass
-	var crystals := get_tree().get_nodes_in_group("SnakeHealth")
-	var calc_health = (_health / 2) / crystals.size()
-	for c in crystals:
-		c._piece_health = calc_health
+	
 	segments[0] = head_
 	segments[-1] = tail_
+		
+	#if !_phase_two: 
+	var calc_health = (_health * 0.75) / crystals.size()
+	for c in crystals:
+		#c._piece_health = calc_health
+		c._set_max_hp(calc_health)
+	#set_physics_process(true)
 
 func _constrain_dist(point: Vector3, anchor: Vector3, dist: float) -> Vector3:
 	return ((point - anchor).normalized() * dist) + anchor
@@ -185,7 +205,8 @@ func _take_damage_once(val: float) -> void:
 	if _invuln: return
 	attacked_sfx.play()
 	_health -= val
-	if _health < (_max_health / 2):
+	if _health <= (_max_health * 0.41) and !_phase_two:
+		#set_phase_two()
 		_phase_two = true
 		enter_phase_two.emit()
 	update_health.emit(_health, _max_health)
@@ -193,6 +214,15 @@ func _take_damage_once(val: float) -> void:
 		_death()
 	_invuln = true
 	_invuln_timer.start()
+
+func set_phase_two():
+	# reveal true hitpoint, rebuild silly snake
+	_slither_speed = stats._movespeed * 1.5
+	if weakpoint_col:
+		weakpoint_col.disabled = false
+	_build_snake()
+	true_weakpoint.show()
+	
 
 #func _take_damage(delta: float) -> void:
 	#if _invuln_saw: return
@@ -203,13 +233,39 @@ func _take_damage_once(val: float) -> void:
 	#_invuln_saw = true
 	#_invuln_saw_time.start()
 
-func _death():
+
+
+func _death() -> void:
 	#var exp := explosion_scene.instantiate()
 	#add_child(exp)
 	#exp.explode()
-	boss_death.emit(self.global_position)
+	var den = get_tree().get_first_node_in_group("Snake Den")
+	if segments.is_empty(): return
+	set_physics_process(false)
+	
+	var delay : float = 0.1
+	for b in segments:
+		#await get_tree().create_timer(0.3).timeout
+		get_tree().create_timer(delay).timeout.connect(func() -> void:
+			den.snake_death.emit(b.global_position)
+			#boss_death.emit(b.global_position)
+			b.queue_free())
+		delay += 0.1
+		#segments.erase(b)
+		#b.queue_free()
+		
+	segments.clear()
+	#segments.queue_free()
+	#use function in the body?
+		#segments[b].erase()
+	#await get_tree().create_timer(8.0).timeout
+	
+	#var sd := get_tree().get_first_node_in_group("Snake Den")
+	#if den:
+		#den.queue_free()
+	
 	#@TODO an explosion death animation for every segment in order? :P
-	queue_free()
+	#queue_free()
 
 #func _on_weapon_area_entered(area):
 	##boss_slice_sfx.play()

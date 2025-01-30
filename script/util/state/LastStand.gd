@@ -2,6 +2,9 @@ extends State
 
 @export var self_reference : BossWheel
 @onready var laser_machine = $"../../laser_machine"
+@onready var laser_idle = $"../../laser_idle"
+
+
 
 var target : Vector3
 
@@ -17,6 +20,7 @@ func fire_lasers():
 	for i in laser_machine.get_children():
 		i.activation()
 	fired = true
+	
 #func exit():
 	#pass
 
@@ -30,3 +34,4 @@ func physics_update(_dt: float):
 	
 	if !fired and target.length() - self_reference.global_position.length() < 0.01:
 		fire_lasers()
+		laser_idle.play()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://ewairoktau6u"]
+[gd_scene load_steps=52 format=4 uid="uid://ewairoktau6u"]
 
 [ext_resource type="Script" path="res://script/grinder/dipsa_op.gd" id="1_lhgjy"]
 [ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="3_mjk2h"]
@@ -10,22 +10,44 @@
 [ext_resource type="Texture2D" uid="uid://d3mqk2nylbrul" path="res://sprite/textures/snake_eye.png" id="9_kx8uf"]
 [ext_resource type="ArrayMesh" uid="uid://crlua4hshqxvk" path="res://object/snake_pieces/end_mesh.res" id="10_5as7b"]
 [ext_resource type="AudioStream" uid="uid://dsc4lj3vbtiwd" path="res://audio/sfx/newer/hit_danger.mp3" id="10_8vlib"]
+[ext_resource type="Material" uid="uid://dwa8vbo1hgolo" path="res://shader/material/snakeskin_rot.tres" id="10_68151"]
+[ext_resource type="Material" uid="uid://rspvb3jywb2s" path="res://shader/material/dipsa_core_hull.tres" id="10_hfkcb"]
 [ext_resource type="Script" path="res://script/grinder/boss_ai/seg_hitbox.gd" id="10_qt6yo"]
+[ext_resource type="Material" uid="uid://vikudx2mhb5d" path="res://shader/material/dipsa_core_hull_broken.tres" id="11_08pxd"]
 [ext_resource type="Material" uid="uid://0nn8pk0qghib" path="res://shader/material/snakeskin.tres" id="11_f43ir"]
+[ext_resource type="Material" uid="uid://nh7b7njdgxhy" path="res://shader/material/dipsa_core_crystal.tres" id="11_k13cp"]
+[ext_resource type="Material" uid="uid://dquom0bewxgs5" path="res://shader/material/dipsa_core_crystal_broken.tres" id="12_rm6ma"]
 
 [sub_resource type="Resource" id="Resource_uul6a"]
 script = ExtResource("3_mjk2h")
 dash_cooldown = 8
-_movespeed = 30.0
+_movespeed = 40.0
 damage = 5
 rot_speed = 10.0
 stability = 10
 dash_max_charge = 4
-health = 80.0
+health = 240.0
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ymlrj"]
-height = 3.2
-radius = 2.6
+height = 5.6
+radius = 2.2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_1wh1d"]
+radius = 2.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_nfioj"]
+material = ExtResource("10_hfkcb")
+radius = 0.8
+height = 3.0
+radial_segments = 8
+rings = 0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_64qkq"]
+material = ExtResource("11_k13cp")
+radius = 0.8
+height = 3.0
+radial_segments = 8
+rings = 0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1k38f"]
 albedo_color = Color(0.486275, 0.580392, 0.52549, 1)
@@ -58,44 +80,169 @@ emission = Color(0, 26.55, 0, 1)
 [sub_resource type="SphereShape3D" id="SphereShape3D_og54v"]
 radius = 2.2
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_h7n2r"]
+radius = 2.9
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vgp6p"]
 albedo_color = Color(1, 0.580392, 0.113725, 1)
 albedo_texture = ExtResource("7_juhfk")
 uv1_triplanar = true
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l8gpg"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rk56i"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_oldia"]
+_surfaces = [{
+"aabb": AABB(-1, -0.802371, -1.14214, 2, 1.58574, 2.28429),
+"format": 34896613377,
+"index_count": 324,
+"index_data": PackedByteArray("NwADAA0ANwAOAAMAMwAHABMAMwAUAAcALwAFABkALwAaAAUAKwABAB8AKwALAAEAJwAEABYAJwAdAAQAIwABAAwAIwAfAAEAGQAeACEAGQAFAB4AIQAfACMAIQAeAB8ABwAgABMABwAYACAAGAAhACAAGAAZACEAEwAiABIAEwAgACIAIAAjACIAIAAhACMAEgANAAMAEgAiAA0AIgAMAA0AIgAjAAwACQAcACUACQAAABwAJQAdACcAJQAcAB0AAgAkABEAAgAIACQACAAlACQACAAJACUAEQAmABAAEQAkACYAJAAnACYAJAAlACcAEAAXAAYAEAAmABcAJgAWABcAJgAnABYAHAAKACkAHAAAAAoAKQALACsAKQAKAAsABAAoABsABAAdACgAHQApACgAHQAcACkAGwAqABoAGwAoACoAKAArACoAKAApACsAGgAeAAUAGgAqAB4AKgAfAB4AKgArAB8AFgAbAC0AFgAEABsALQAaAC8ALQAbABoABgAsABUABgAXACwAFwAtACwAFwAWAC0AFQAuABQAFQAsAC4ALAAvAC4ALAAtAC8AFAAYAAcAFAAuABgALgAZABgALgAvABkAEAAVADEAEAAGABUAMQAUADMAMQAVABQAAgAwAA8AAgARADAAEQAxADAAEQAQADEADwAyAA4ADwAwADIAMAAzADIAMAAxADMADgASAAMADgAyABIAMgATABIAMgAzABMACAAPADUACAACAA8ANQAOADcANQAPAA4AAAA0AAoAAAAJADQACQA1ADQACQAIADUACgA2AAsACgA0ADYANAA3ADYANAA1ADcACwAMAAEACwA2AAwANgANAAwANgA3AA0A"),
+"lods": [0.248987, PackedByteArray("DgADAA0ACwAOAA0ACwANAAwACwAMAAEAAAAOAAsACgAAAAsAAAAIAA4ACQAIAAAACAAPAA4ACAACAA8AFAAHABMADgAUABMADgATABIADgASAAMAMAAUAA4ADwAwAA4AAgAwAA8AAgARADAAMAAxABQAEQAxADAAMQAVABQAEQAQADEAEAAVADEAEAAGABUAGgAFABkAFAAaABkAFAAZABgAFAAYAAcABgAaABQAFQAGABQABgAWABoAFwAWAAYAFgAbABoAFgAEABsAHwALAAEAKQALAB8AKQAKAAsAHAAKACkAHAAAAAoAHQAcACkAHQApACgAKAApAB8ABAAdACgABAAoABsAKAAfACoAGwAoACoAKgAfAB4AGwAqABoAGgAqAB4AGgAeAAUAHQAEABYAEAAdABYAEAAWABcAEAAXAAYAEQAdABAAEQAlAB0AJQAcAB0ACAAlABEAAgAIABEACAAJACUACQAcACUACQAAABwAGQAFAB4AGQAeAB8AGQAfAAEABwAZAAEAGAAZAAcABwABAA0ADQABAAwAEwAHAA0AEwANABIAEgANAAMA"), 0.436714, PackedByteArray("DwADAA0ACwAPAA0ACwANAAEAAAAPAAsAAAAJAA8ACQACAA8AFAAHABMADwAUABMADwATAAMAEAAUAA8AEAAGABQAAgAQAA8AGgAFABkAFAAaABkAFAAZAAcABgAaABQABgAWABoAFgAEABoAHwALAAEAHQALAB8AHQAAAAsAGgAdAB8ABAAdABoAGgAfAAUAHQAEABYAEAAdABYAEAAWAAYAEAAJAB0AAgAJABAACQAAAB0AGQAFAB8AGQAfAAEABwAZAAEABwABAA0AEwAHAA0AEwANAAMA")],
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 56,
+"vertex_data": PackedByteArray("fB8FLHjTAAD4HLLDBtkAAHwfBSyGLAAA+Byyw/gmAACC4AUseNMAAAbjssMG2QAAguAFLIYsAAAG47LD+CYAAJEZPxykWgAAkRk/HFqlAACRGWBXi+AAAJEZ25eL4AAAtA4s3FqlAAC0DizcpFoAAJEZ25dzHwAAkRlgV3MfAACpqsoMcx8AAFVVygxzHwAAVVUs3NsYAACpqizc2xgAAG3m25dzHwAAbeZgV3MfAABt5j8cWqUAAG3mPxykWgAASvEs3KRaAABK8SzcWqUAAG3m25eL4AAAbeZgV4vgAABVVcoMi+AAAKmqygyL4AAAqaos3CPnAABVVSzcI+cAAKmq//+kWgAAqar//1qlAABVVf//pFoAAFVV//9apQAAez8AAIJHAAB7PwAAfLgAAIPAAACCRwAAg8AAAHy4AAAGuEdN//8AAPhHR03//wAABrj0of//AAD4R/Sh//8AAP//YFekWgAA//9gV1qlAAD//9uXpFoAAP//25dapQAAVVVgVwAAAACpqmBXAAAAAFVV25cAAAAAqarblwAAAAAAAGBXWqUAAAAAYFekWgAAAADbl1qlAAAAANuXpFoAAA==")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_p2qn3"]
+resource_name = "mid_seg_立方体"
+_surfaces = [{
+"aabb": AABB(-1, -0.802371, -1.14214, 2, 1.58574, 2.28429),
+"attribute_data": PackedByteArray("ZGzp2o9r6dqPa0zx52c+jMhpPozIaXP1SvPp2o9rkXSPa+nax/c+jMhpPozIaWpwH/Tp2h/0TPFkbOna5vVz9eb1PoznZz6MH/Tp2h/0kXRK8+na5vVqcOb1PozH9z6MB84Y419nBZenkRjjX2fYztNhbcRfZ23EX2dtxNNh+6JfZ/uip5GLf7Bf2M4Hzot/sF8Fl9v9+6JfZ/ui2/1txF9nbcQHzsxqB84c6wfOzGqnkcxqp5Ec66eRzGqnkYt/p5HfZQfO32UHzot/T/j7otv9+6JP+G3E2/1txE/42M6nkRjjT/gFlwfOGOP//wWXB86Lf///2M6nkYt/T/j7otNh+6JP+G3ET/htxNNhbcSnkRzrp5ER+6eREfunkRzrB84R+wfOHOsHzhzrB84R+wfO//8Hzot/p5GLf6eR//8HzgWXB87YzqeRBZenkdjOMoK6iDKCuogygiPdMoIj3Xzduoh83bqIfN0j3XzdI91716nJe9epyXvXqcl716nJM4ipyTOIqckziKnJM4ipyXvXvp17176dM4i+nTOIvp0Hzm3Ep5FtxAfO+6Knkfuip5FtxKeRbcQHzm3EB85txKeR+6IHzvuip5FtxAfObcSnkfuiB877oub1anBfZ9jOX2f7ol9n+6JfZ23ET/j7ok/4+6IHzhH7B84c66eRi39fZ23EB87MaqeRzGpP+G3Ep5ER+3vXqckziKnJe9e+nQfObcQ="),
+"format": 34896613399,
+"index_count": 324,
+"index_data": PackedByteArray("dQAJACMAdQAlAAkAcQAWADIAcQAzABYAawARAD4AawBAABEAZgAEAE4AZgAgAAQAWwANADcAWwBLAA0AUwAFACIAUwBPAAUAPQBMAFEAPQAPAEwAUQBPAFMAUQBMAE8AFQBQADEAFQA7AFAAOwBRAFAAOwA9AFEAMQBSADAAMQBQAFIAUABTAFIAUABRAFMAMAAkAAsAMABSACQAUgAiACQAUgBTACIAGwBFAFYAGwACAEUAVwBIAFoAVwBGAEgABwBUACwABwAZAFQAGQBWAFQAGQAbAFYALgBYACkALgBVAFgAVQBaAFgAVQBXAFoAKwA5ABMAKwBZADkAWQA3ADkAWQBbADcARAAeAGEARAABAB4AYAAgAGYAYAAdACAADABeAEEADABKAF4ASQBiAFwASQBHAGIAQgBlAD8AQgBfAGUAXQBnAGQAXQBjAGcAPwBNABAAPwBlAE0AZQBOAE0AZQBmAE4AOABDAGkAOAAOAEMAaQBAAGsAaQBDAEAAFABoADYAFAA6AGgAOgBpAGgAOgA4AGkANgBqADQANgBoAGoAaABrAGoAaABpAGsANAA8ABcANABqADwAagA+ADwAagBrAD4AKgA1AG8AKgASADUAbwAzAHEAbwA1ADMACABsACgACAAtAGwALQBvAGwALQAqAG8AKABwACYAKABsAHAAbQBxAHAAbQBuAHEAJgAvAAoAJgBwAC8AcAAyAC8AcABxADIAGAAnAHMAGAAGACcAcwAlAHUAcwAnACUAAAByABwAAAAaAHIAGgBzAHIAGgAYAHMAHAB0AB8AHAByAHQAcgB1AHQAcgBzAHUAHwAhAAMAHwB0ACEAdAAjACEAdAB1ACMA"),
+"lods": [0.248987, PackedByteArray("JQAJACMAHwAlACMAHwAjACEAHwAhAAMAAAAlAB8AHAAAAB8AAAAYACUAGgAYAAAAGAAnACUAGAAGACcAMwAWADIAJgAzADIAJgAyAC8AJgAvAAoAbAAzACYAKABsACYACABsACgACAAtAGwAbACIADMALQCIAGwAiAA1ADMALQAqAIgAKgA1AIgAKgASADUAQAARAD4ANABAAD4ANAA+ADwANAA8ABcAFABAADQANgAUADQAFAA4AEAAOgA4ABQAOABDAEAAOAAOAEMATgAgAAQAhgAgAE4AhgCAACAARACAAIYARAABAIAASQBEAIYASQCGAIUAhQCGAE4ADABJAIUADACFAIMAhQBOAIcAgwCFAIcAhwBOAE0AgwCHAD8APwCHAE0APwBNABAASAANADcAgQBIADcAgQA3ADkAgQA5ABMAggBIAIEAggBWAEgAVgCEAEgAGQBWAIIABwAZAIIAGQAbAFYAGwCEAFYAGwACAIQAPQAPAEwAPQBMAE8APQBPAAUAFQA9AAUAOwA9ABUAFQAFACQAJAAFACIAMQAVACQAMQAkADAAMAAkAAsA"), 0.436714, PackedByteArray("JwAJACMAHwAnACMAHwAjAAMAAAAnAB8AAAAaACcAGgAGACcAewAWADIAegB7ADIAegAyAAoAKgB7AHoAKgASAHsACAAqAHoAQAARAD4ANABAAD4ANAA+ABcAFABAADQAFAA4AEAAOAAOAEAAfwB4AAQAfgB4AH8AfgABAHkAfAB+AH8ADAB+AHwAfAB/ABAAfQANADcAKQB9ADcAKQA3ABMAKQB3AH0ABwB3ACkAdwACAEgAPQAPAE8APQBPAAUAdgA9AAUAdgAFACQAMQB2ACQAMQAkAAsA")],
+"material": SubResource("StandardMaterial3D_rk56i"),
+"primitive": 3,
+"uv_scale": Vector4(2.47506, 2.6768, 0, 0),
+"vertex_count": 137,
+"vertex_data": PackedByteArray("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")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_oldia")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1xbil"]
 transparency = 1
 albedo_color = Color(0.764706, 0.152941, 1, 0.505882)
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_dji7p"]
-material = SubResource("StandardMaterial3D_l8gpg")
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_x1vs6"]
+material = SubResource("StandardMaterial3D_1xbil")
 height = 5.0
 radial_segments = 8
 rings = 1
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gc0ju"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eo5oq"]
 transparency = 1
 albedo_color = Color(2.2, 0.5, 1.2, 1)
 emission_enabled = true
 emission = Color(0.00392157, 0.00392157, 0.00392157, 1)
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_8480l"]
-material = SubResource("StandardMaterial3D_gc0ju")
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_tivcd"]
+material = SubResource("StandardMaterial3D_eo5oq")
 height = 5.0
 radial_segments = 8
 rings = 1
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_e5uoo"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_grit5"]
+transparency = 1
+albedo_color = Color(0.764706, 0.152941, 1, 0.505882)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_aor8m"]
+material = SubResource("StandardMaterial3D_grit5")
+radius = 1.2
+height = 4.0
+radial_segments = 8
+rings = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5662i"]
+transparency = 1
+albedo_color = Color(2.2, 0.5, 1.2, 1)
+emission_enabled = true
+emission = Color(0.00392157, 0.00392157, 0.00392157, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_t3qj1"]
+material = SubResource("StandardMaterial3D_5662i")
 radius = 1.0
+height = 4.0
+radial_segments = 8
+rings = 1
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_e5uoo"]
+radius = 1.5
 height = 6.0
+
+[sub_resource type="Animation" id="Animation_v2j31"]
+resource_name = "die"
+length = 3.0
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:mesh:material:albedo_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0333333, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.764706, 0.152941, 1, 0.505882), Color(0, 0, 0, 0.506)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D2:mesh:material:albedo_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.0333333, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(2.2, 0.5, 1.2, 1), Color(0, 0.01, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_qoehe"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jn6l6"]
+_data = {
+"RESET": SubResource("Animation_qoehe"),
+"die": SubResource("Animation_v2j31")
+}
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_dji7p"]
+material = ExtResource("11_08pxd")
+height = 5.0
+radial_segments = 8
+rings = 1
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_8480l"]
+material = ExtResource("12_rm6ma")
+height = 5.0
+radial_segments = 8
+rings = 1
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ui7tt"]
+material = ExtResource("11_08pxd")
+radius = 1.2
+height = 4.0
+radial_segments = 8
+rings = 1
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_tukg1"]
+material = ExtResource("12_rm6ma")
+radius = 1.0
+height = 4.0
+radial_segments = 8
+rings = 1
 
 [sub_resource type="PrismMesh" id="PrismMesh_ti0oy"]
 size = Vector3(1.2, 3, 1)
 
 [node name="dipsa_body" type="CharacterBody3D" groups=["BossEnem"]]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.846653, 0)
-collision_layer = 33
-collision_mask = 32
+collision_layer = 32
+collision_mask = 49
 input_ray_pickable = false
 script = ExtResource("1_lhgjy")
 stats = SubResource("Resource_uul6a")
@@ -104,7 +251,28 @@ stats = SubResource("Resource_uul6a")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.677951, 0)
 shape = SubResource("CylinderShape3D_ymlrj")
 
-[node name="head_" type="Node3D" parent="."]
+[node name="head_" type="CharacterBody3D" parent="."]
+collision_layer = 32
+collision_mask = 33
+
+[node name="true_weakpoint" type="Area3D" parent="head_"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -2)
+visible = false
+collision_layer = 2
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="head_/true_weakpoint"]
+shape = SubResource("SphereShape3D_1wh1d")
+disabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="head_/true_weakpoint"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 1, 1)
+mesh = SubResource("CapsuleMesh_nfioj")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="head_/true_weakpoint"]
+transform = Transform3D(0.8, 0, 0, 0, 0.565685, 0.565685, 0, -0.565685, 0.565685, 0, 1, 1)
+mesh = SubResource("CapsuleMesh_64qkq")
 
 [node name="CSGCylinder3D3" type="CSGCylinder3D" parent="head_"]
 transform = Transform3D(0.34202, -0.0373182, -0.938951, 0.939693, 0.0135827, 0.34175, -2.27786e-08, -0.999211, 0.0397131, 0, 0.038982, 1.88291)
@@ -143,6 +311,16 @@ transform = Transform3D(0.866025, -0.5, -3.09086e-08, 4.2222e-08, 1.13133e-08, 1
 mesh = SubResource("PrismMesh_fhp5m")
 material = SubResource("StandardMaterial3D_oc1bo")
 
+[node name="CSGMesh3D7" type="CSGMesh3D" parent="head_"]
+transform = Transform3D(0.5, 0.866026, -3.09087e-08, 4.2222e-08, 1.13133e-08, 1, 0.866025, -0.5, -3.09086e-08, 2.09493, 0.5, -0.3)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_oc1bo")
+
+[node name="CSGMesh3D8" type="CSGMesh3D" parent="head_"]
+transform = Transform3D(0.5, -0.866025, -1.13133e-08, 4.2222e-08, 1.13133e-08, 1, -0.866025, -0.5, 4.22219e-08, -2.10507, 0.5, -0.3)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_oc1bo")
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="head_"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.5, 0)
 mesh = ExtResource("9_2rt16")
@@ -152,7 +330,10 @@ surface_material_override/1 = SubResource("StandardMaterial3D_0yv7a")
 [node name="spinning_" type="Node3D" parent="head_"]
 
 [node name="weapon" parent="head_/spinning_" instance=ExtResource("8_nlhau")]
-transform = Transform3D(20, 0, 0, 0, 19.8197, 2.67972, 0, -2.67972, 19.8197, 0, 0.67202, -1.9)
+transform = Transform3D(10, 0, 0, 0, 9.90983, 1.33986, 0, -1.33986, 9.90983, 1, 0.17202, -2.9)
+
+[node name="weapon2" parent="head_/spinning_" instance=ExtResource("8_nlhau")]
+transform = Transform3D(10, 0, 0, 0, 9.90983, 1.33986, 0, -1.33986, 9.90983, -1, 0.17202, -2.9)
 
 [node name="hurtbox" type="Area3D" parent="head_"]
 visible = false
@@ -166,86 +347,188 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("SphereShape3D_og54v")
 disabled = true
 
+[node name="head_hurtbox" type="Area3D" parent="head_"]
+visible = false
+collision_layer = 2
+collision_mask = 4
+
+[node name="col_body3" type="CollisionShape3D" parent="head_/head_hurtbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.677951, -1.6)
+shape = SubResource("SphereShape3D_h7n2r")
+disabled = true
+
+[node name="col_body2" type="CollisionShape3D" parent="head_"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.677951, -2)
+shape = SubResource("CylinderShape3D_ymlrj")
+
 [node name="middle_" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 5.5)
-collision_layer = 33
-collision_mask = 32
+collision_layer = 32
+collision_mask = 33
 
 [node name="col_body" type="CollisionShape3D" parent="middle_"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.677951, 0)
 shape = SubResource("CylinderShape3D_ymlrj")
 
-[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="middle_"]
+[node name="mesh_" type="Node3D" parent="middle_"]
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="middle_/mesh_"]
 transform = Transform3D(0.34202, -0.0373182, -0.938951, -0.939693, -0.0135827, -0.34175, -1.86e-08, 0.999211, -0.0397133, 0, 0.138982, 0.13291)
 radius = 0.8
 height = 5.8
 sides = 9
 material = SubResource("StandardMaterial3D_vgp6p")
 
-[node name="CSGMesh3D" type="CSGMesh3D" parent="middle_"]
+[node name="CSGMesh3D" type="CSGMesh3D" parent="middle_/mesh_"]
 transform = Transform3D(-4.69205e-08, 0.866025, -0.5, 2.16642e-08, 0.5, 0.866025, 1, -1.49012e-08, -4.2222e-08, 0.89493, 1.5, -1)
 mesh = SubResource("PrismMesh_fhp5m")
 material = SubResource("StandardMaterial3D_js0t3")
 
-[node name="CSGMesh3D2" type="CSGMesh3D" parent="middle_"]
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="middle_/mesh_"]
 transform = Transform3D(-2.87897e-08, -0.866025, 0.5, 6.53755e-08, 0.5, 0.866025, -1, 1.02324e-07, 4.2222e-08, -0.90507, 1.5, -1)
 mesh = SubResource("PrismMesh_fhp5m")
 material = SubResource("StandardMaterial3D_js0t3")
 
-[node name="CSGMesh3D3" type="CSGMesh3D" parent="middle_"]
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="middle_/mesh_"]
 transform = Transform3D(-0.5, 0.866025, 1.13133e-08, 4.2222e-08, 1.13133e-08, 1, 0.866025, 0.5, -4.22219e-08, 1.59493, 1, 1.4)
 mesh = SubResource("PrismMesh_fhp5m")
 material = SubResource("StandardMaterial3D_js0t3")
 
-[node name="CSGMesh3D4" type="CSGMesh3D" parent="middle_"]
+[node name="CSGMesh3D4" type="CSGMesh3D" parent="middle_/mesh_"]
 transform = Transform3D(-2.68221e-07, 1, -1.13134e-08, 4.2222e-08, 1.13133e-08, 1, 1, -2.38419e-07, -4.2222e-08, 2.09493, 1, -1.3)
 mesh = SubResource("PrismMesh_fhp5m")
 material = SubResource("StandardMaterial3D_oc1bo")
 
-[node name="CSGMesh3D5" type="CSGMesh3D" parent="middle_"]
+[node name="CSGMesh3D5" type="CSGMesh3D" parent="middle_/mesh_"]
 transform = Transform3D(-0.5, -0.866025, 3.09087e-08, 4.2222e-08, 1.13133e-08, 1, -0.866025, 0.5, 3.09086e-08, -1.60507, 1, 1.4)
 mesh = SubResource("PrismMesh_fhp5m")
 material = SubResource("StandardMaterial3D_js0t3")
 
-[node name="CSGMesh3D6" type="CSGMesh3D" parent="middle_"]
+[node name="CSGMesh3D6" type="CSGMesh3D" parent="middle_/mesh_"]
 transform = Transform3D(-2.98023e-07, -1, 1.13133e-08, 4.2222e-08, 1.13133e-08, 1, -1, 2.98023e-07, 4.22219e-08, -2.10507, 1, -1.3)
 mesh = SubResource("PrismMesh_fhp5m")
 material = SubResource("StandardMaterial3D_oc1bo")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="middle_"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="middle_/mesh_"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.5, 0)
-mesh = ExtResource("9_0c2na")
+mesh = SubResource("ArrayMesh_p2qn3")
+skeleton = NodePath("../..")
 surface_material_override/0 = ExtResource("11_f43ir")
 
-[node name="spinning_" type="Node3D" parent="middle_"]
+[node name="spinning_" type="Node3D" parent="middle_/mesh_"]
 
-[node name="weapon" parent="middle_/spinning_" instance=ExtResource("8_nlhau")]
+[node name="weapon" parent="middle_/mesh_/spinning_" instance=ExtResource("8_nlhau")]
 transform = Transform3D(22, 0, 0, 0, 22, 0, 0, 0, 22, 0, 0.67202, -0.0999994)
 
-[node name="weakpoint_" type="Node3D" parent="middle_"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="middle_/mesh_"]
+skeleton = NodePath("../..")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="middle_/weakpoint_"]
+[node name="weakpoint_" type="Node3D" parent="middle_/mesh_"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="middle_/mesh_/weakpoint_"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 1.05, 0.0999999)
-mesh = SubResource("CapsuleMesh_dji7p")
+mesh = SubResource("CapsuleMesh_x1vs6")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="middle_/weakpoint_"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="middle_/mesh_/weakpoint_"]
 transform = Transform3D(-3.93403e-08, -0.9, 0, 0.9, -3.93403e-08, 0, 0, 0, 0.9, 0, 1, 0.0999999)
-mesh = SubResource("CapsuleMesh_8480l")
+mesh = SubResource("CapsuleMesh_tivcd")
 
-[node name="seg_hitbox" type="Area3D" parent="middle_/weakpoint_" groups=["SnakeHealth"]]
+[node name="top_1" type="MeshInstance3D" parent="middle_/mesh_/weakpoint_"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, -0.0250001, 0.875, 0.0999999)
+mesh = SubResource("CapsuleMesh_aor8m")
+
+[node name="top_2" type="MeshInstance3D" parent="middle_/mesh_/weakpoint_"]
+transform = Transform3D(-0.9, 7.86806e-08, 0, -7.86806e-08, -0.9, 0, 0, 0, 0.9, -0.0250006, 0.875, 0.0999999)
+mesh = SubResource("CapsuleMesh_t3qj1")
+
+[node name="seg_hitbox" type="Area3D" parent="middle_/mesh_/weakpoint_" groups=["SnakeHealth"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 collision_layer = 2
 collision_mask = 4
 script = ExtResource("10_qt6yo")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="middle_/weakpoint_/seg_hitbox"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="middle_/mesh_/weakpoint_/seg_hitbox"]
 transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, -0.2, 0)
 shape = SubResource("CapsuleShape3D_e5uoo")
 
+[node name="gem_anims" type="AnimationPlayer" parent="middle_/mesh_/weakpoint_"]
+libraries = {
+"": SubResource("AnimationLibrary_jn6l6")
+}
+
+[node name="mesh_broken" type="Node3D" parent="middle_"]
+visible = false
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="middle_/mesh_broken"]
+transform = Transform3D(0.34202, -0.0373182, -0.938951, -0.939693, -0.0135827, -0.34175, -1.86e-08, 0.999211, -0.0397133, 0, 0.138982, 0.13291)
+radius = 0.8
+height = 5.8
+sides = 9
+material = SubResource("StandardMaterial3D_vgp6p")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="middle_/mesh_broken"]
+transform = Transform3D(-4.69205e-08, 0.866025, -0.5, 2.16642e-08, 0.5, 0.866025, 1, -1.49012e-08, -4.2222e-08, 0.89493, 1.5, -1)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="middle_/mesh_broken"]
+transform = Transform3D(-2.87897e-08, -0.866025, 0.5, 6.53755e-08, 0.5, 0.866025, -1, 1.02324e-07, 4.2222e-08, -0.90507, 1.5, -1)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="middle_/mesh_broken"]
+transform = Transform3D(-0.5, 0.866025, 1.13133e-08, 4.2222e-08, 1.13133e-08, 1, 0.866025, 0.5, -4.22219e-08, 1.59493, 1, 1.4)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D4" type="CSGMesh3D" parent="middle_/mesh_broken"]
+transform = Transform3D(-2.68221e-07, 1, -1.13134e-08, 4.2222e-08, 1.13133e-08, 1, 1, -2.38419e-07, -4.2222e-08, 2.09493, 1, -1.3)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_oc1bo")
+
+[node name="CSGMesh3D5" type="CSGMesh3D" parent="middle_/mesh_broken"]
+transform = Transform3D(-0.5, -0.866025, 3.09087e-08, 4.2222e-08, 1.13133e-08, 1, -0.866025, 0.5, 3.09086e-08, -1.60507, 1, 1.4)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_js0t3")
+
+[node name="CSGMesh3D6" type="CSGMesh3D" parent="middle_/mesh_broken"]
+transform = Transform3D(-2.98023e-07, -1, 1.13133e-08, 4.2222e-08, 1.13133e-08, 1, -1, 2.98023e-07, 4.22219e-08, -2.10507, 1, -1.3)
+mesh = SubResource("PrismMesh_fhp5m")
+material = SubResource("StandardMaterial3D_oc1bo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="middle_/mesh_broken"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.5, 0)
+mesh = ExtResource("9_0c2na")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("10_68151")
+
+[node name="spinning_" type="Node3D" parent="middle_/mesh_broken"]
+
+[node name="weapon" parent="middle_/mesh_broken/spinning_" instance=ExtResource("8_nlhau")]
+transform = Transform3D(22, 0, 0, 0, 22, 0, 0, 0, 22, 0, 0.67202, -0.0999994)
+
+[node name="weakpoint_" type="Node3D" parent="middle_/mesh_broken"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="middle_/mesh_broken/weakpoint_"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 1.05, 0.0999999)
+mesh = SubResource("CapsuleMesh_dji7p")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="middle_/mesh_broken/weakpoint_"]
+transform = Transform3D(-3.93403e-08, -0.9, 0, 0.9, -3.93403e-08, 0, 0, 0, 0.9, 0, 1, 0.0999999)
+mesh = SubResource("CapsuleMesh_8480l")
+
+[node name="top_1" type="MeshInstance3D" parent="middle_/mesh_broken/weakpoint_"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, -0.0250001, 0.875, 0.0999999)
+mesh = SubResource("CapsuleMesh_ui7tt")
+
+[node name="top_2" type="MeshInstance3D" parent="middle_/mesh_broken/weakpoint_"]
+transform = Transform3D(-0.9, 7.86806e-08, 0, -7.86806e-08, -0.9, 0, 0, 0, 0.9, -0.0250006, 0.875, 0.0999999)
+mesh = SubResource("CapsuleMesh_tukg1")
+
 [node name="tail_" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.5)
-collision_layer = 33
-collision_mask = 32
+collision_layer = 32
+collision_mask = 33
 
 [node name="col_body" type="CollisionShape3D" parent="tail_"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.677951, 0)
@@ -298,15 +581,11 @@ surface_material_override/0 = ExtResource("11_f43ir")
 [node name="weapon" parent="tail_/spinning_" instance=ExtResource("8_nlhau")]
 transform = Transform3D(22, 0, 0, 0, 21.6658, -3.82026, 0, 3.82026, 21.6658, 0, 0.67202, 0.15)
 
-[node name="wheel_sfx" type="AudioStreamPlayer3D" parent="."]
-volume_db = 1.2
-pitch_scale = 0.41
-max_polyphony = 3
-
 [node name="attacked_sfx" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 stream = ExtResource("10_8vlib")
 volume_db = 4.0
+unit_size = 50.0
 max_distance = 423.72
 max_polyphony = 3
 
@@ -324,7 +603,8 @@ wait_time = 0.05
 one_shot = true
 autostart = true
 
+[connection signal="area_entered" from="head_/true_weakpoint" to="." method="_on_hurt_ball_area_entered"]
 [connection signal="area_entered" from="head_/hurtbox" to="." method="_on_hurt_ball_area_entered"]
-[connection signal="area_entered" from="middle_/weakpoint_/seg_hitbox" to="middle_/weakpoint_/seg_hitbox" method="_on_area_entered"]
-[connection signal="core_destroyed" from="middle_/weakpoint_/seg_hitbox" to="." method="_on_seg_hitbox_core_destroyed"]
+[connection signal="area_entered" from="middle_/mesh_/weakpoint_/seg_hitbox" to="middle_/mesh_/weakpoint_/seg_hitbox" method="_on_area_entered"]
+[connection signal="core_destroyed" from="middle_/mesh_/weakpoint_/seg_hitbox" to="." method="_on_seg_hitbox_core_destroyed"]
 [connection signal="timeout" from="_invuln_timer" to="." method="_on__invuln_timer_timeout"]

@@ -67,6 +67,7 @@ Dianthus="belonging to global Player group"
 CenterPoint=""
 SnakeArrow=""
 SnakeHealth=""
+"Snake Den"=""
 
 [importer_defaults]
 

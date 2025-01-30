@@ -21,6 +21,7 @@ signal shatter
 # Timers. u get the drill
 @onready var _invuln_timer = $_invuln_timer
 @onready var orbit_toggle_time = $orbit_toggle_time
+@onready var stuck_spawn_timer = $stuck_spawn_timer
 
 
 # Sounds
@@ -43,6 +44,7 @@ func _ready():
 	Globals.OrbitMode = _leash_toggle
 	if Globals.RoundCount == 0:
 		Globals.can_move = false
+		stuck_spawn_timer.start()
 	#else:
 		#_leash_flower()
 		#orbit_toggle_time.stop()
@@ -75,7 +77,7 @@ func _physics_process(delta):
 	#global_position = global_position.lerp(to_pos.global_position, base_speed * delta)
 
 func _input(event):
-	if !_toggleable_orbit: return
+	if !_toggleable_orbit or !Globals.can_move: return
 	if event is InputEventMouseButton:
 		#print("event is InputEventMouseButton")
 		
@@ -174,7 +176,7 @@ func _leash_flower():
 		#i.position = coord[id]
 		i.orbit_pos = coord[id]
 		i.spin_sfx.stop()
-		i._saw_dmg *= 0.25
+		i._saw_dmg *= 0.5
 		#pivot.add_child(i)
 		
 		id += 1
@@ -201,7 +203,7 @@ func _unleash():
 		
 		#i._dir = nd.normalized()
 		i.spin_sfx.play()
-		i._saw_dmg *= 4
+		i._saw_dmg *= 2
 	
 	
 

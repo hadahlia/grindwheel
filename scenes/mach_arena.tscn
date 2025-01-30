@@ -1060,6 +1060,10 @@ collision_mask = 16
 [node name="CollisionShape3D" type="CollisionShape3D" parent="void_trig2"]
 shape = SubResource("BoxShape3D_a8sfq")
 
+[node name="upgrade_spawn_time" type="Timer" parent="."]
+wait_time = 6.0
+one_shot = true
+
 [connection signal="call_death_screen" from="." to="gui" method="_on_grindwheel_die"]
 [connection signal="call_fade" from="." to="gui" method="_on_mach_arena_call_fade"]
 [connection signal="fade_out" from="." to="gui" method="_on_mach_arena_fade_out"]
@@ -1073,3 +1077,4 @@ shape = SubResource("BoxShape3D_a8sfq")
 [connection signal="animation_finished" from="gui/fade/AnimationPlayer" to="gui" method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="void_trig" to="." method="_on_void_trig_body_entered"]
 [connection signal="body_entered" from="void_trig2" to="." method="_on_void_trig_body_entered"]
+[connection signal="timeout" from="upgrade_spawn_time" to="." method="_on_upgrade_spawn_time_timeout"]

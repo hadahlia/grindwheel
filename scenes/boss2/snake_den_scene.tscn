@@ -1,15 +1,26 @@
-[gd_scene load_steps=7 format=3 uid="uid://5w61ddfgrwoh"]
+[gd_scene load_steps=20 format=3 uid="uid://5w61ddfgrwoh"]
 
 [ext_resource type="Script" path="res://script/grinder/boss_ai/snake_den_manager.gd" id="1_mp7v2"]
 [ext_resource type="PackedScene" uid="uid://ewairoktau6u" path="res://scenes/the_dipsa.tscn" id="1_unswi"]
 [ext_resource type="Script" path="res://script/util/state/state_machine.gd" id="2_dlu00"]
+[ext_resource type="Script" path="res://script/util/state/dipsa/tunnel_emerge.gd" id="3_j0hqn"]
+[ext_resource type="PackedScene" uid="uid://dhs8pmg1iceku" path="res://scenes/dianthus_floor.tscn" id="4_j5600"]
+[ext_resource type="Script" path="res://script/util/state/dipsa/hell.gd" id="4_ssmol"]
+[ext_resource type="Script" path="res://script/util/state/dipsa/disperse.gd" id="5_fljye"]
+[ext_resource type="AudioStream" uid="uid://cv2utsv1637jh" path="res://audio/sfx/dipsa/dipsa_grinder.wav" id="7_6ul7s"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_kfbck"]
+size = Vector3(10, 5, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3wi6r"]
+albedo_color = Color(1, 0.21, 0.21, 1)
 
 [sub_resource type="Animation" id="Animation_ly0sl"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("snake_point:position")
+tracks/0/path = NodePath("snake_point_animated:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -18,54 +29,193 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector3(32, 0, 0)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CSGBox3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-20.5, 0, 38.5)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CSGBox3D:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_xvov3"]
 resource_name = "circle_test"
-length = 5.0
+length = 12.0
 loop_mode = 1
 step = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("snake_point:position")
+tracks/0/path = NodePath("snake_point_animated:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1, 2.5, 4, 5),
+"times": PackedFloat32Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 8.5, 9, 10, 11),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-29, -1.6, 0), Vector3(-22, -1.6, 18), Vector3(2, -1.6, 26.75), Vector3(18.25, -1.6, 15.5625), Vector3(46.5, -1.6, -21.625), Vector3(-6.83334, -1.6, -21.875), Vector3(-19.2667, -1.6, 3.5), Vector3(0.299995, -1.6, 14.625), Vector3(17.5333, -1.6, 11.75), Vector3(13.9, -1.6, -3.1875), Vector3(-2, -1.6, -10), Vector3(-9, -1.6, 0), Vector3(-19, 11.4, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_udwkb"]
+resource_name = "flight intro"
+length = 16.0
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("snake_point_animated:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10.5, 11, 14),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 3.4, -28), Vector3(0, 3.4, -28), Vector3(49, 6.4, -10), Vector3(26, 6.4, 31), Vector3(3.8, 6.4, 52), Vector3(-25, 6.4, 54), Vector3(-29, 9.4, 48), Vector3(-23, 6.4, -14), Vector3(21, -1.6, -17), Vector3(12, -1.6, 13), Vector3(30, 31.4, 1), Vector3(47.8333, 6.23333, 13.3333), Vector3(312, -1.6, -3)]
+}
+
+[sub_resource type="Animation" id="Animation_6gwk6"]
+resource_name = "den_emerge"
+length = 12.0
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("snake_point_animated:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5, 6, 7.5, 9, 10, 11, 12),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(-1, 0, 43), Vector3(31, 0, 71), Vector3(-26, 0, 67), Vector3(-24, 0, 21), Vector3(34, 0, -27), Vector3(-33, 8, -25)]
+}
+
+[sub_resource type="Animation" id="Animation_q8civ"]
+resource_name = "idle_anim"
+length = 10.0
+loop_mode = 1
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CSGBox3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-20.5, 0, 38.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CSGBox3D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_n38oa"]
+resource_name = "dispersal"
+length = 4.0
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("snake_point_animated:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3, 4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(32, 0, 0), Vector3(0, 0, 30), Vector3(-33, 0, -0.25), Vector3(-0.499996, 0, -34.125), Vector3(32, 0, 0)]
+"values": [Vector3(0, 0, 138), Vector3(0, 0, 138), Vector3(-30, 2.33333, 64), Vector3(30.5, 4.66667, 56), Vector3(-9, 7, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_5dymf"]
+resource_name = "hell"
+length = 10.0
+loop_mode = 2
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("snake_point_animated:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, -15), Vector3(0, 0, -15), Vector3(44, 0, -14), Vector3(-42, 0, -7), Vector3(41, 0, 8), Vector3(-42, 0, 25), Vector3(43, 0, 36), Vector3(-35, 0, 75), Vector3(38, 0, 89), Vector3(63, 0, 72)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_83p1d"]
 _data = {
 "RESET": SubResource("Animation_ly0sl"),
-"circle_test": SubResource("Animation_xvov3")
+"circle_test": SubResource("Animation_xvov3"),
+"den_emerge": SubResource("Animation_6gwk6"),
+"dispersal": SubResource("Animation_n38oa"),
+"flight intro": SubResource("Animation_udwkb"),
+"hell": SubResource("Animation_5dymf"),
+"idle_anim": SubResource("Animation_q8civ")
 }
 
-[node name="snake_den_scene" type="Node3D"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q1j38"]
+albedo_color = Color(1, 0, 0, 1)
+
+[node name="snake_den_scene" type="Node3D" groups=["Snake Den"]]
 script = ExtResource("1_mp7v2")
 
 [node name="state_machine" type="Node" parent="."]
 script = ExtResource("2_dlu00")
 
-[node name="snake_point" type="Marker3D" parent="." groups=["SnakeArrow"]]
+[node name="emerge" type="Node" parent="state_machine"]
+script = ExtResource("3_j0hqn")
+
+[node name="hell" type="Node" parent="state_machine"]
+script = ExtResource("4_ssmol")
+
+[node name="disperse" type="Node" parent="state_machine"]
+script = ExtResource("5_fljye")
+
+[node name="Node4" type="Node" parent="state_machine"]
+
+[node name="snake_point_animated" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 0)
 
-[node name="den_spawn_1" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64, 0, 8)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="snake_point_animated"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+mesh = SubResource("BoxMesh_kfbck")
 
-[node name="den_spawn_2" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0, 8)
+[node name="snake_chase_point" type="Marker3D" parent="." groups=["SnakeArrow"]]
 
-[node name="den_spawn_3" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46, 0, -38)
-
-[node name="den_spawn_4" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, -40)
-
-[node name="den_spawn_5" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -56)
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="snake_chase_point"]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("BoxMesh_kfbck")
+skeleton = NodePath("../../snake_point_animated")
+surface_material_override/0 = SubResource("StandardMaterial3D_3wi6r")
 
 [node name="snake_animator" type="AnimationPlayer" parent="."]
 libraries = {
@@ -73,4 +223,52 @@ libraries = {
 }
 
 [node name="dipsa_body" parent="." instance=ExtResource("1_unswi")]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 6.84665, -97)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -3.6, -183)
+up_direction = Vector3(0, -1, 0)
+
+[node name="snake_idle" type="AudioStreamPlayer3D" parent="dipsa_body"]
+stream = ExtResource("7_6ul7s")
+volume_db = -11.0
+unit_size = 15.0
+autoplay = true
+
+[node name="dianthus_floor" parent="." instance=ExtResource("4_j5600")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -4, -2)
+
+[node name="den_spawns" type="Node3D" parent="."]
+
+[node name="den_spawn_1" type="Marker3D" parent="den_spawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -218, -3.6, 8)
+
+[node name="den_spawn_2" type="Marker3D" parent="den_spawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 238, -3.6, 8)
+
+[node name="den_spawn_3" type="Marker3D" parent="den_spawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -162, -3.6, -151)
+
+[node name="den_spawn_4" type="Marker3D" parent="den_spawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 141, -3.6, -163)
+
+[node name="den_spawn_5" type="Marker3D" parent="den_spawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.6, -237)
+
+[node name="state_timer" type="Timer" parent="."]
+wait_time = 18.0
+one_shot = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.5, 0, 38.5)
+visible = false
+size = Vector3(6, 1, 6)
+material = SubResource("StandardMaterial3D_q1j38")
+
+[node name="dipsa_spawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -90)
+
+[node name="dipsa_sfx_root" type="Node3D" parent="."]
+
+[connection signal="intro_finish" from="." to="state_machine" method="_on_snake_den_scene_intro_finish"]
+[connection signal="animation_finished" from="snake_animator" to="." method="_on_snake_animator_animation_finished"]
+[connection signal="current_animation_changed" from="snake_animator" to="." method="_on_snake_animator_current_animation_changed"]
+[connection signal="enter_phase_two" from="dipsa_body" to="." method="_on_dipsa_phase_trans"]
+[connection signal="timeout" from="state_timer" to="." method="_on_state_timer_timeout"]

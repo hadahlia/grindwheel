@@ -50,7 +50,7 @@ var bossy : CharacterBody3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
+	#arena_gui.hide()
 	pass
 
 func post_ready():
@@ -103,6 +103,9 @@ func _update_round() -> void:
 	round_counter.text = "ROUND " + str(Globals.RoundCount) + "\nDIANTHUS " + str(Globals.DianthusCount)
 
 func _on_bossl_update_health(_new_health: float, _max_health: float) -> void:
+	#if !boss_health.visible: 
+		#boss_health.hide()
+		#return
 	boss_health.value = _new_health
 	values.text = str(_new_health) + "/" + str(_max_health)
 
@@ -154,21 +157,24 @@ func _on_title_screen_gui_input(event):
 		
 func show_gui():
 	arena_gui.show()
+	boss_health.hide()
 	if Globals.RoundCount == 0:
 		round_0.show()
-		boss_health.hide()
+		
 	else:
 		round_0.hide()
-		boss_health.show()
+	
+		#boss_health.show()
 
 func hide_text():
 	round_0.hide()
 
-func toggle_healthbar(yes: bool) -> void:
-	if yes:
-		boss_health.show()
-	else:
+func toggle_healthbar(yes: bool):
+	if !yes:
 		boss_health.hide()
+		
+	else:
+		boss_health.show()
 
 func _on_title_animation_finished(anim_name):
 	if anim_name == "fade_title":
