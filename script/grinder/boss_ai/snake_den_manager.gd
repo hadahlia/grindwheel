@@ -118,5 +118,6 @@ func _on_state_timer_timeout():
 	#
 
 
-func _on_dipsa_body_boss_death(position: Vector3) -> void:
-	snake_death.emit(position)
+func _on_dipsa_body_boss_death() -> void:
+	snake_idle.queue_free()
+	#snake_death.emit(position)

@@ -208,7 +208,7 @@ func _take_damage_once(val: float) -> void:
 	if _invuln: return
 	attacked_sfx.play()
 	_health -= val
-	if _health <= (_max_health * 0.41) and !_phase_two:
+	if _health <= (_max_health * 0.2) and !_phase_two:
 		#set_phase_two()
 		_phase_two = true
 		enter_phase_two.emit()
@@ -258,6 +258,7 @@ func _death() -> void:
 		#b.queue_free()
 		
 	segments.clear()
+	
 	#segments.queue_free()
 	#use function in the body?
 		#segments[b].erase()

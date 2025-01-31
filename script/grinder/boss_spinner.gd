@@ -203,3 +203,7 @@ func _on_dread_anims_animation_finished(anim_name):
 		Globals.can_move = true
 		hurt_radius.disabled = false
 		dread_intro_finish.emit()
+
+
+func _on_laser_cooldown_timer_timeout():
+	pass # Replace with function body.

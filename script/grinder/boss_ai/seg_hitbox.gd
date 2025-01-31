@@ -38,17 +38,18 @@ func delete_triggers():
 func _damage_core(val: float) -> void:
 	if dipsa_body._invuln: return
 	_piece_health -= val
-	core_destroyed.emit(val)
+	
 	if _piece_health <= 0:
 		fucking_die()
-	
+	else:
+		core_destroyed.emit(val)
 	
 		#gem_anims.play("die")
 		
 		#weakpoint_.queue_free()
 
 func fucking_die():
-	core_destroyed.emit(10)
+	core_destroyed.emit(max_hp / 2)
 	delete_triggers()
 
 func _on_area_entered(area):

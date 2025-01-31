@@ -296,7 +296,8 @@ func fade_music():
 	fade_track.play("fade_bunydogy")
 
 func _on_gem_die(pos: Vector3) -> void:
-	cursor_ref.queue_free()
+	if cursor_ref:
+		cursor_ref.queue_free()
 	spawn_explosion(pos)
 	call_death_screen.emit()
 	is_dead = true

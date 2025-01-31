@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dnp37a43gamo6"]
+[gd_scene load_steps=27 format=3 uid="uid://dnp37a43gamo6"]
 
 [ext_resource type="Script" path="res://script/util/state/state_machine.gd" id="1_51oic"]
 [ext_resource type="Script" path="res://script/grinder/boss_spinner.gd" id="1_e7753"]
@@ -55,6 +55,13 @@ radius = 2.2
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_tr0d1"]
 radius = 1.72289
+
+[sub_resource type="QuadMesh" id="QuadMesh_skfoo"]
+size = Vector2(2.2, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hfmon"]
+shading_mode = 0
+albedo_color = Color(0.871, 0, 0, 0.37)
 
 [sub_resource type="Animation" id="Animation_ypq7n"]
 resource_name = "dread_intro"
@@ -168,6 +175,9 @@ enem = NodePath("../..")
 [node name="last_stand" type="Node" parent="state_machine" node_paths=PackedStringArray("self_reference")]
 script = ExtResource("6_12e1k")
 self_reference = NodePath("../..")
+
+[node name="laser_cooldown_timer" type="Timer" parent="state_machine/last_stand"]
+one_shot = true
 
 [node name="shoot_gun" type="Node" parent="state_machine"]
 
@@ -298,6 +308,30 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.5, 
 [node name="laser_beam4" parent="laser_machine" instance=ExtResource("11_x0ga7")]
 transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 2.5, 1, 1.09278e-07)
 
+[node name="gun_" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+visible = false
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="gun_"]
+transform = Transform3D(-1, -1.77636e-15, -5.96046e-08, -5.96046e-08, 4.37114e-08, 1, 0, 1, -4.37114e-08, 0, -4, -28)
+mesh = SubResource("QuadMesh_skfoo")
+material = SubResource("StandardMaterial3D_hfmon")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="gun_"]
+transform = Transform3D(-1, -1.77636e-15, -5.96046e-08, -5.96046e-08, 4.37114e-08, 1, 0, 1, -4.37114e-08, 0, -4, 28)
+mesh = SubResource("QuadMesh_skfoo")
+material = SubResource("StandardMaterial3D_hfmon")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="gun_"]
+transform = Transform3D(4.37114e-08, 1, -4.37114e-08, -5.96046e-08, 4.37114e-08, 1, 1, -4.37114e-08, 5.96046e-08, -28, -4, 1.28949e-06)
+mesh = SubResource("QuadMesh_skfoo")
+material = SubResource("StandardMaterial3D_hfmon")
+
+[node name="CSGMesh3D4" type="CSGMesh3D" parent="gun_"]
+transform = Transform3D(4.37114e-08, 1, -4.37114e-08, -5.96046e-08, 4.37114e-08, 1, 1, -4.37114e-08, 5.96046e-08, 28, -4, -1.28949e-06)
+mesh = SubResource("QuadMesh_skfoo")
+material = SubResource("StandardMaterial3D_hfmon")
+
 [node name="laser_idle" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 stream = ExtResource("13_yj1bx")
@@ -310,6 +344,7 @@ libraries = {
 
 [connection signal="enter_phase_two" from="." to="state_machine" method="_enter_phase_two"]
 [connection signal="cur_state" from="state_machine" to="." method="_on_state_machine_cur_state"]
+[connection signal="timeout" from="state_machine/last_stand/laser_cooldown_timer" to="state_machine/last_stand" method="_on_laser_cooldown_timer_timeout"]
 [connection signal="area_entered" from="hurt_ball" to="." method="_on_hurt_ball_area_entered"]
 [connection signal="timeout" from="_invuln_timer" to="." method="_on__invuln_timer_timeout"]
 [connection signal="animation_finished" from="dread_anims" to="." method="_on_dread_anims_animation_finished"]
