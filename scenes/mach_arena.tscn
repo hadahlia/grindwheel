@@ -277,6 +277,21 @@ _data = {
 "fade_trans": SubResource("Animation_le153")
 }
 
+[sub_resource type="Animation" id="Animation_473iv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("boss_track_1:unit_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [20.0]
+}
+
 [sub_resource type="Animation" id="Animation_ku3wx"]
 resource_name = "fade_bunydogy"
 length = 3.0
@@ -292,21 +307,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [20.0, 0.1]
-}
-
-[sub_resource type="Animation" id="Animation_473iv"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("boss_track_1:unit_size")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [20.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_07jwr"]
@@ -1097,14 +1097,14 @@ libraries = {
 }
 
 [node name="void_trig" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.2, 0)
 collision_mask = 16
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="void_trig"]
 shape = SubResource("BoxShape3D_a8sfq")
 
 [node name="void_trig2" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.9, 0)
 collision_mask = 16
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="void_trig2"]

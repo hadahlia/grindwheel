@@ -9,6 +9,9 @@ signal update_health
 signal enter_phase_two
 signal boss_death
 
+var bullets_spawn_scene : PackedScene = preload("res://scenes/bullet/bullets_scene.tscn")
+var bullets_ref : Node3D
+
 #@onready var state_machine = $state_machine
 @onready var state_machine = $state_machine
 @onready var dread_anims = $dread_anims
@@ -29,6 +32,8 @@ signal boss_death
 #@onready var boss_slice_sfx = $weapon/boss_slice_sfx
 @onready var attacked_sfx = $attacked_sfx
 
+#@onready var gun_ = $gun_laser_root/gun_
+@onready var gun_laser_root = $gun_laser_root
 
 var _grav : float = -20
 var friction : float = -9
@@ -60,6 +65,7 @@ func _ready():
 	_health = _max_health
 	
 	dread_anims.play("dread_intro")
+	bullets_ref = bullets_spawn_scene.instantiate()
 	#cur_state.emit(str(state_machine.current_state))
 	#boss_spawned.emit()
 #const SPEED = 5.0
@@ -90,12 +96,25 @@ func _physics_process(delta):
 	else:
 		var col = move_and_collide(velocity * delta)
 		if col:
+			
 			wheel_sfx.pitch_scale = 1 + randf_range(-0.35, 0.35)
 			wheel_sfx.play()
+			
+			get_tree().create_timer(0.1).timeout.connect(func()->void:
+				fire_projectiles()
+			)
 			#wheel_sfx.pitch_scale += 0.2
 			#data.bump_sound.play()
 			#velocity *= 0.48
 			velocity = velocity.bounce(col.get_normal()) #* randf_range(0.85, 1.15)
+
+func fire_projectiles():
+	var bullets_ref2 := bullets_spawn_scene.instantiate()
+	
+	get_parent().add_child(bullets_ref2)
+	bullets_ref2.global_position = self.global_position
+	bullets_ref2._set_directions()
+	
 
 func apply_friction(delta):
 	if velocity.length() < 0.1 and acceleration.length() < 0.1:

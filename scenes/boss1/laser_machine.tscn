@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://daewaxobrnn2r"]
+
+[ext_resource type="PackedScene" uid="uid://m0xwgprndvgl" path="res://scenes/vfx/laser_beam.tscn" id="1_bhseg"]
+
+[node name="laser_machine" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, 0)
+
+[node name="laser_beam" parent="." instance=ExtResource("1_bhseg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2.5)
+
+[node name="laser_beam2" parent="." instance=ExtResource("1_bhseg")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 1, -2.5)
+
+[node name="laser_beam3" parent="." instance=ExtResource("1_bhseg")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.5, 1, -1.09278e-07)
+
+[node name="laser_beam4" parent="." instance=ExtResource("1_bhseg")]
+transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 2.5, 1, 1.09278e-07)

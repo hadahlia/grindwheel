@@ -126,7 +126,7 @@ collision_layer = 64
 collision_mask = 64
 script = ExtResource("1_jxsa4")
 base_rot_speed = 4.0
-base_speed = 36.0
+base_speed = 40.0
 orbit_scale = 10.0
 max_health = 4
 

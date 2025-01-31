@@ -440,7 +440,7 @@ func _on_finally_fucking_start():
 
 func _on_void_trig_body_entered(body):
 	if body is GrindWheel:
-		body.global_position = angel_spawn.global_position
+		body.global_position = player_pos_start.global_position
 		body.velocity = Vector3.ZERO
 
 

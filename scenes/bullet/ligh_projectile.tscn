@@ -1,0 +1,85 @@
+[gd_scene load_steps=12 format=3 uid="uid://py510t1jpp8s"]
+
+[ext_resource type="Script" path="res://script/util/class/ligh_projectile.gd" id="1_2wg7x"]
+[ext_resource type="Shader" uid="uid://w63ay2n1p1nh" path="res://shader/beam_shader.tres" id="2_a2vx5"]
+[ext_resource type="Texture2D" uid="uid://ckunpxc5166vb" path="res://sprite/particle/Abstract_Noise_097-256x256.png" id="3_tika7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0sbbv"]
+render_priority = 0
+shader = ExtResource("2_a2vx5")
+shader_parameter/Scroll_Speed = Vector2(1, 1)
+shader_parameter/TexturePow = 3.0
+shader_parameter/Gradient_Power = 0.6
+shader_parameter/Texture_Energy = ExtResource("3_tika7")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ckgyr"]
+gravity = Vector3(0, 0, 0)
+scale_min = 1.7
+scale_max = 2.0
+scale_over_velocity_min = 1.0
+scale_over_velocity_max = 2.0
+color = Color(1.2, 0, 0.2, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_rsurc"]
+radius = 1.0
+height = 2.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rj18a"]
+render_priority = 0
+shader = ExtResource("2_a2vx5")
+shader_parameter/Scroll_Speed = Vector2(-1, -2)
+shader_parameter/TexturePow = 2.0
+shader_parameter/Gradient_Power = 1.0
+shader_parameter/Texture_Energy = ExtResource("3_tika7")
+
+[sub_resource type="Curve" id="Curve_wr7jb"]
+max_value = 1.2
+_data = [Vector2(0, 1.0022), 0.0, 0.0, 0, 0, Vector2(0.481481, 1.2), 0.0, 0.0, 0, 0, Vector2(1, 1.01538), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_cvavc"]
+curve = SubResource("Curve_wr7jb")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yrjgn"]
+gravity = Vector3(0, 0, 0)
+scale_min = 1.1
+scale_max = 1.4
+scale_curve = SubResource("CurveTexture_cvavc")
+scale_over_velocity_min = 1.0
+scale_over_velocity_max = 2.0
+color = Color(0.217, 0, 2, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_l4slw"]
+radius = 1.8
+height = 8.0
+
+[node name="ligh_projectile" type="Node3D" groups=["Bullet"]]
+script = ExtResource("1_2wg7x")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+material_override = SubResource("ShaderMaterial_0sbbv")
+amount = 1
+lifetime = 0.05
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_ckgyr")
+draw_pass_1 = SubResource("SphereMesh_rsurc")
+
+[node name="little_core" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+material_override = SubResource("ShaderMaterial_rj18a")
+amount = 1
+lifetime = 0.05
+process_material = SubResource("ParticleProcessMaterial_yrjgn")
+draw_pass_1 = SubResource("SphereMesh_rsurc")
+
+[node name="bullet_collider" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+collision_layer = 8
+collision_mask = 16
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="bullet_collider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0)
+shape = SubResource("CapsuleShape3D_l4slw")

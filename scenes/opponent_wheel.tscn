@@ -11,13 +11,13 @@
 [ext_resource type="AudioStream" uid="uid://5qb8oqcyyy3k" path="res://audio/sfx/198985__kolczok__circ_saw-01.wav" id="7_fjmq4"]
 [ext_resource type="Texture2D" uid="uid://fp4vnmefpim8" path="res://sprite/env/metal/Horror_Metal_12-128x128.png" id="8_i1s02"]
 [ext_resource type="AudioStream" uid="uid://dsc4lj3vbtiwd" path="res://audio/sfx/newer/hit_danger.mp3" id="9_uam27"]
-[ext_resource type="PackedScene" uid="uid://m0xwgprndvgl" path="res://scenes/vfx/laser_beam.tscn" id="11_x0ga7"]
+[ext_resource type="PackedScene" uid="uid://daewaxobrnn2r" path="res://scenes/boss1/laser_machine.tscn" id="12_gu33v"]
 [ext_resource type="AudioStream" uid="uid://cbald22birjo3" path="res://audio/sfx/dreadwheel/734759__drakedeweerd21__tractor-beam.mp3" id="13_yj1bx"]
 
 [sub_resource type="Resource" id="Resource_0j8l7"]
 script = ExtResource("2_b31gf")
 dash_cooldown = 8
-_movespeed = 48.0
+_movespeed = 60.0
 damage = 5
 rot_speed = 10.0
 stability = 20
@@ -56,12 +56,44 @@ radius = 2.2
 [sub_resource type="SphereShape3D" id="SphereShape3D_tr0d1"]
 radius = 1.72289
 
-[sub_resource type="QuadMesh" id="QuadMesh_skfoo"]
-size = Vector2(2.2, 50)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hfmon"]
-shading_mode = 0
-albedo_color = Color(0.871, 0, 0, 0.37)
+[sub_resource type="Animation" id="Animation_f0l48"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.846653, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("spin_root:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("hurt_ball/hurt_radius:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_ypq7n"]
 resource_name = "dread_intro"
@@ -104,50 +136,18 @@ tracks/2/keys = {
 "values": [true, true]
 }
 
-[sub_resource type="Animation" id="Animation_f0l48"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0.846653, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("spin_root:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("hurt_ball/hurt_radius:disabled")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_10074"]
 _data = {
 "RESET": SubResource("Animation_f0l48"),
 "dread_intro": SubResource("Animation_ypq7n")
 }
+
+[sub_resource type="QuadMesh" id="QuadMesh_skfoo"]
+size = Vector2(2.2, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hfmon"]
+shading_mode = 0
+albedo_color = Color(0.871, 0, 0, 0.37)
 
 [node name="opponent_wheel" type="CharacterBody3D" groups=["BossEnem"]]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.846653, 0)
@@ -177,6 +177,7 @@ script = ExtResource("6_12e1k")
 self_reference = NodePath("../..")
 
 [node name="laser_cooldown_timer" type="Timer" parent="state_machine/last_stand"]
+wait_time = 4.0
 one_shot = true
 
 [node name="shoot_gun" type="Node" parent="state_machine"]
@@ -292,46 +293,6 @@ wait_time = 0.05
 one_shot = true
 autostart = true
 
-[node name="laser_machine" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, 0)
-visible = false
-
-[node name="laser_beam" parent="laser_machine" instance=ExtResource("11_x0ga7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2.5)
-
-[node name="laser_beam2" parent="laser_machine" instance=ExtResource("11_x0ga7")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 1, -2.5)
-
-[node name="laser_beam3" parent="laser_machine" instance=ExtResource("11_x0ga7")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.5, 1, -1.09278e-07)
-
-[node name="laser_beam4" parent="laser_machine" instance=ExtResource("11_x0ga7")]
-transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 2.5, 1, 1.09278e-07)
-
-[node name="gun_" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
-visible = false
-
-[node name="CSGMesh3D" type="CSGMesh3D" parent="gun_"]
-transform = Transform3D(-1, -1.77636e-15, -5.96046e-08, -5.96046e-08, 4.37114e-08, 1, 0, 1, -4.37114e-08, 0, -4, -28)
-mesh = SubResource("QuadMesh_skfoo")
-material = SubResource("StandardMaterial3D_hfmon")
-
-[node name="CSGMesh3D2" type="CSGMesh3D" parent="gun_"]
-transform = Transform3D(-1, -1.77636e-15, -5.96046e-08, -5.96046e-08, 4.37114e-08, 1, 0, 1, -4.37114e-08, 0, -4, 28)
-mesh = SubResource("QuadMesh_skfoo")
-material = SubResource("StandardMaterial3D_hfmon")
-
-[node name="CSGMesh3D3" type="CSGMesh3D" parent="gun_"]
-transform = Transform3D(4.37114e-08, 1, -4.37114e-08, -5.96046e-08, 4.37114e-08, 1, 1, -4.37114e-08, 5.96046e-08, -28, -4, 1.28949e-06)
-mesh = SubResource("QuadMesh_skfoo")
-material = SubResource("StandardMaterial3D_hfmon")
-
-[node name="CSGMesh3D4" type="CSGMesh3D" parent="gun_"]
-transform = Transform3D(4.37114e-08, 1, -4.37114e-08, -5.96046e-08, 4.37114e-08, 1, 1, -4.37114e-08, 5.96046e-08, 28, -4, -1.28949e-06)
-mesh = SubResource("QuadMesh_skfoo")
-material = SubResource("StandardMaterial3D_hfmon")
-
 [node name="laser_idle" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 stream = ExtResource("13_yj1bx")
@@ -341,6 +302,35 @@ unit_size = 20.0
 libraries = {
 "": SubResource("AnimationLibrary_10074")
 }
+
+[node name="gun_laser_root" type="Node3D" parent="."]
+
+[node name="laser_machine" parent="gun_laser_root" instance=ExtResource("12_gu33v")]
+visible = false
+
+[node name="gun_" type="Node3D" parent="gun_laser_root"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+visible = false
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="gun_laser_root/gun_"]
+transform = Transform3D(-1, -1.77636e-15, -5.96046e-08, -5.96046e-08, 4.37114e-08, 1, 0, 1, -4.37114e-08, 0, -4, -28)
+mesh = SubResource("QuadMesh_skfoo")
+material = SubResource("StandardMaterial3D_hfmon")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="gun_laser_root/gun_"]
+transform = Transform3D(-1, -1.77636e-15, -5.96046e-08, -5.96046e-08, 4.37114e-08, 1, 0, 1, -4.37114e-08, 0, -4, 28)
+mesh = SubResource("QuadMesh_skfoo")
+material = SubResource("StandardMaterial3D_hfmon")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="gun_laser_root/gun_"]
+transform = Transform3D(4.37114e-08, 1, -4.37114e-08, -5.96046e-08, 4.37114e-08, 1, 1, -4.37114e-08, 5.96046e-08, -28, -4, 1.28949e-06)
+mesh = SubResource("QuadMesh_skfoo")
+material = SubResource("StandardMaterial3D_hfmon")
+
+[node name="CSGMesh3D4" type="CSGMesh3D" parent="gun_laser_root/gun_"]
+transform = Transform3D(4.37114e-08, 1, -4.37114e-08, -5.96046e-08, 4.37114e-08, 1, 1, -4.37114e-08, 5.96046e-08, 28, -4, -1.28949e-06)
+mesh = SubResource("QuadMesh_skfoo")
+material = SubResource("StandardMaterial3D_hfmon")
 
 [connection signal="enter_phase_two" from="." to="state_machine" method="_enter_phase_two"]
 [connection signal="cur_state" from="state_machine" to="." method="_on_state_machine_cur_state"]

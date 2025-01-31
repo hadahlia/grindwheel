@@ -20,10 +20,10 @@ func activation():
 	collision_shape_3d.disabled = false
 
 func deactivation():
-	#main_energy.emitting = false
-	#little_energy.emitting = false
-	#laser_crown.emitting = false
-	#sparkles.emitting = false
+	main_energy.emitting = false
+	little_energy.emitting = false
+	laser_crown.emitting = false
+	sparkles.emitting = false
 	collision_shape_3d.disabled = true
 #func _play_beam():
 	#animation_player.play("Beam Effect")
