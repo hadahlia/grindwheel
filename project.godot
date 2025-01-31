@@ -68,6 +68,7 @@ CenterPoint=""
 SnakeArrow=""
 SnakeHealth=""
 "Snake Den"=""
+Bullet=""
 
 [importer_defaults]
 

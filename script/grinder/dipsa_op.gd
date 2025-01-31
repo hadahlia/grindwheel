@@ -154,17 +154,20 @@ func _direction_to_point(dest: Vector3, origin: Vector3) -> Vector3:
 func _build_snake():
 	#set_physics_process(false)
 	segments.clear()
-	var crystals := get_tree().get_nodes_in_group("SnakeHealth")
+	
 	if _phase_two:
-		for x in crystals:
-			x.delete_triggers()
+		
 		segment_num = 32
 	for i in range(segment_num):
 		var mid := middle_.duplicate()
 		add_child(mid)
 		segments.append(mid)
 		#pass
-	
+	var crystals := get_tree().get_nodes_in_group("SnakeHealth")
+	if _phase_two and crystals:
+		for x in crystals:
+			#x.delete_triggers()
+			x.fucking_die()
 	segments[0] = head_
 	segments[-1] = tail_
 		
@@ -217,7 +220,7 @@ func _take_damage_once(val: float) -> void:
 
 func set_phase_two():
 	# reveal true hitpoint, rebuild silly snake
-	_slither_speed = stats._movespeed * 1.5
+	_slither_speed = stats._movespeed * 1.8
 	if weakpoint_col:
 		weakpoint_col.disabled = false
 	_build_snake()

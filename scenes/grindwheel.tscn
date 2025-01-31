@@ -51,8 +51,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("SphereShape3D_0mvcy")
 
 [node name="wheel_sfx" type="AudioStreamPlayer3D" parent="."]
-volume_db = 2.0
-max_polyphony = 3
+max_polyphony = 10
 
 [node name="lvl_sfx" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("5_8q7xo")
@@ -60,12 +59,10 @@ max_polyphony = 3
 
 [node name="spin_sfx" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("5_qcflb")
-volume_db = -10.0
-unit_size = 15.0
+volume_db = -12.0
 max_db = -1.105
-pitch_scale = 0.85
+pitch_scale = 0.57
 max_distance = 80.0
-max_polyphony = 2
 panning_strength = 1.48
 
 [node name="damage_sfx" type="AudioStreamPlayer3D" parent="."]

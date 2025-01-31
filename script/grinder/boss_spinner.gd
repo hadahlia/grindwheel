@@ -1,7 +1,7 @@
 class_name BossWheel
 extends CharacterBody3D
 
-
+signal dread_intro_finish
 signal boss_spawned
 
 signal update_health
@@ -11,6 +11,9 @@ signal boss_death
 
 #@onready var state_machine = $state_machine
 @onready var state_machine = $state_machine
+@onready var dread_anims = $dread_anims
+#@onready var col_body = $col_body
+@onready var hurt_radius = $hurt_ball/hurt_radius
 
 @export var stats : WheelStats
 @onready var spin_root = $spin_root
@@ -28,7 +31,7 @@ signal boss_death
 
 
 var _grav : float = -20
-var friction : float = -24
+var friction : float = -9
 var _dmg : int
 
 var wish_dir : Vector3 = Vector3.ZERO
@@ -55,6 +58,8 @@ func _ready():
 	_dmg = stats.damage
 	_max_health = stats.health + ((stats.health * Globals.RoundCount) * 0.5)
 	_health = _max_health
+	
+	dread_anims.play("dread_intro")
 	#cur_state.emit(str(state_machine.current_state))
 	#boss_spawned.emit()
 #const SPEED = 5.0
@@ -63,19 +68,19 @@ func visual_spin():
 	spin_root.rotation.y += stats.rot_speed * stats.stability
 
 func _physics_process(delta):
-	if _phase_two: return
+	if _phase_two or !Globals.can_move: return
 	if is_on_floor():
 		#get_input()
 		apply_friction(delta)
 		
 		#velocity.y -= fall_speed * delta
-	if saw_col:
-		_take_damage(delta)
+	#if saw_col:
+		#_take_damage(delta)
 	acceleration.y = _grav
 	visual_spin()
 	#if !_dashing:
-	if velocity.length() < 21:
-		wheel_sfx.pitch_scale = 1 + randf_range(-0.35, 0.35)
+	if velocity.length() < 35:
+		
 		velocity += acceleration * delta
 		#move_and_collide(velocity * delta)
 		move_and_slide()
@@ -85,11 +90,11 @@ func _physics_process(delta):
 	else:
 		var col = move_and_collide(velocity * delta)
 		if col:
-			
+			wheel_sfx.pitch_scale = 1 + randf_range(-0.35, 0.35)
 			wheel_sfx.play()
-			wheel_sfx.pitch_scale += 0.2
+			#wheel_sfx.pitch_scale += 0.2
 			#data.bump_sound.play()
-			velocity *= 0.48
+			#velocity *= 0.48
 			velocity = velocity.bounce(col.get_normal()) #* randf_range(0.85, 1.15)
 
 func apply_friction(delta):
@@ -186,3 +191,15 @@ func _on_hurt_ball_area_entered(area):
 		_take_damage_once(p._saw_dmg)
 		#if p.velocity == Vector3.ZERO:
 			#p.velocity = self.velocity
+
+
+func _on_dread_anims_current_animation_changed(name):
+	if name == "dread_intro":
+		Globals.can_move = false
+
+
+func _on_dread_anims_animation_finished(anim_name):
+	if anim_name == "dread_intro":
+		Globals.can_move = true
+		hurt_radius.disabled = false
+		dread_intro_finish.emit()

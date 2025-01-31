@@ -19,7 +19,8 @@ signal finally_fucking_start
 
 # music
 @onready var title_music = $Sfx/title_music
-
+@onready var boss_track_1 = $Sfx/boss_track_1
+@onready var fade_track = $Sfx/fade_track
 
 @onready var boss_pos_start = $SubViewportContainer/SubViewport/true_arena/boss_pos_start
 @onready var player_pos_start = $SubViewportContainer/SubViewport/true_arena/player_pos_start
@@ -159,8 +160,8 @@ func spawn_player():
 	for i in range(Globals.DianthusCount):
 		var p := dianthus_scene.instantiate()
 		var m := Marker3D.new()
-		m.global_position = Vector3(0, -3.6, 1 + index)
-		index+=2
+		m.global_position = Vector3(-25 + index, -3.6, 11 )
+		index+=3
 		#p.bumped.connect(_on_player_bumped)
 	#p.die.connect(_on_grindwheel_die)
 	#p.charge_spent()
@@ -189,6 +190,8 @@ func spawn_boss():
 			var bc := dread_wheel.instantiate()
 			
 			true_arena.add_child(bc)
+			# i wish dreadwheel had an intro :3
+			bc.dread_intro_finish.connect(_on_boss_intro_finish)
 			bc.boss_death.connect(_on_opponent_wheel_boss_death)
 			bc.global_position = boss_pos_start.global_position
 			#gui._update_state_label(bc._state_transmit)
@@ -214,6 +217,8 @@ func _on_boss_intro_finish():
 	Globals.can_move = true
 	#gui.show_gui()
 	gui.toggle_healthbar(true)
+	boss_track_1.unit_size = 25
+	boss_track_1.play()
 
 func spawn_upgrades():
 	gui.toggle_healthbar(false)
@@ -287,19 +292,24 @@ func _get_spinner_reference():
 		$gui/arena_gui/boss_health.show()
 	#gui.post_ready()
 
-
+func fade_music():
+	fade_track.play("fade_bunydogy")
 
 func _on_gem_die(pos: Vector3) -> void:
 	cursor_ref.queue_free()
 	spawn_explosion(pos)
 	call_death_screen.emit()
 	is_dead = true
+	#boss_track_1.stop()
+	fade_music()
 
 
 func _on_opponent_wheel_boss_death(pos: Vector3) -> void:
 	spawn_explosion(pos)
 	if !upgrade_spawn_time.is_stopped(): return
 	upgrade_spawn_time.start()
+	#boss_track_1.stop()
+	fade_music()
 	#get_tree().create_timer(10.0).timeout.connect(spawn_upgrades)
 	#()
 	
@@ -435,3 +445,8 @@ func _on_void_trig_body_entered(body):
 
 func _on_upgrade_spawn_time_timeout():
 	spawn_upgrades()
+
+
+func _on_fade_track_animation_finished(anim_name):
+	if anim_name == "fade_bunydogy":
+		boss_track_1.stop()

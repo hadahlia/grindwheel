@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=4 uid="uid://ewairoktau6u"]
+[gd_scene load_steps=51 format=4 uid="uid://ewairoktau6u"]
 
 [ext_resource type="Script" path="res://script/grinder/dipsa_op.gd" id="1_lhgjy"]
 [ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="3_mjk2h"]
@@ -29,8 +29,8 @@ dash_max_charge = 4
 health = 240.0
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ymlrj"]
-height = 5.6
-radius = 2.2
+height = 4.6
+radius = 2.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_1wh1d"]
 radius = 2.0
@@ -76,9 +76,6 @@ metallic_specular = 0.36
 transparency = 1
 albedo_texture = ExtResource("9_kx8uf")
 emission = Color(0, 26.55, 0, 1)
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_og54v"]
-radius = 2.2
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_h7n2r"]
 radius = 2.9
@@ -169,8 +166,11 @@ radial_segments = 8
 rings = 1
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_e5uoo"]
-radius = 1.5
+radius = 2.0
 height = 6.0
+
+[sub_resource type="Animation" id="Animation_qoehe"]
+length = 0.001
 
 [sub_resource type="Animation" id="Animation_v2j31"]
 resource_name = "die"
@@ -200,9 +200,6 @@ tracks/1/keys = {
 "update": 0,
 "values": [Color(2.2, 0.5, 1.2, 1), Color(0, 0.01, 0, 1)]
 }
-
-[sub_resource type="Animation" id="Animation_qoehe"]
-length = 0.001
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jn6l6"]
 _data = {
@@ -335,27 +332,14 @@ transform = Transform3D(10, 0, 0, 0, 9.90983, 1.33986, 0, -1.33986, 9.90983, 1, 
 [node name="weapon2" parent="head_/spinning_" instance=ExtResource("8_nlhau")]
 transform = Transform3D(10, 0, 0, 0, 9.90983, 1.33986, 0, -1.33986, 9.90983, -1, 0.17202, -2.9)
 
-[node name="hurtbox" type="Area3D" parent="head_"]
-visible = false
-collision_layer = 2
-collision_mask = 4
-input_ray_pickable = false
-monitorable = false
-
-[node name="hurt_radius" type="CollisionShape3D" parent="head_/hurtbox"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("SphereShape3D_og54v")
-disabled = true
-
 [node name="head_hurtbox" type="Area3D" parent="head_"]
-visible = false
-collision_layer = 2
-collision_mask = 4
+collision_layer = 8
+collision_mask = 16
+monitoring = false
 
 [node name="col_body3" type="CollisionShape3D" parent="head_/head_hurtbox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.677951, -1.6)
 shape = SubResource("SphereShape3D_h7n2r")
-disabled = true
 
 [node name="col_body2" type="CollisionShape3D" parent="head_"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.677951, -2)
@@ -590,7 +574,7 @@ max_distance = 423.72
 max_polyphony = 3
 
 [node name="_invuln_timer" type="Timer" parent="."]
-wait_time = 0.05
+wait_time = 0.08
 one_shot = true
 autostart = true
 
@@ -604,7 +588,7 @@ one_shot = true
 autostart = true
 
 [connection signal="area_entered" from="head_/true_weakpoint" to="." method="_on_hurt_ball_area_entered"]
-[connection signal="area_entered" from="head_/hurtbox" to="." method="_on_hurt_ball_area_entered"]
 [connection signal="area_entered" from="middle_/mesh_/weakpoint_/seg_hitbox" to="middle_/mesh_/weakpoint_/seg_hitbox" method="_on_area_entered"]
 [connection signal="core_destroyed" from="middle_/mesh_/weakpoint_/seg_hitbox" to="." method="_on_seg_hitbox_core_destroyed"]
 [connection signal="timeout" from="_invuln_timer" to="." method="_on__invuln_timer_timeout"]
+[connection signal="timeout" from="_invuln_timer" to="middle_/mesh_/weakpoint_/seg_hitbox" method="_on__invuln_timer_timeout"]

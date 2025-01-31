@@ -227,7 +227,8 @@ func gem_death():
 	
 	#print("uh oh u shld be dead")
 	shatter.emit(self.global_position)
-	queue_free()
+	get_tree().create_timer(3.0).timeout.connect(queue_free)
+	
 
 
 func _on_hitbox_body_entered(body):
@@ -246,6 +247,8 @@ func _on__invuln_timer_timeout():
 
 func _on_hitbox_area_entered(area):
 	gem_damage()
+	if area is LightBullet:
+		area.bullet_destroy()
 
 
 func _on_stuck_spawn_timer_timeout():

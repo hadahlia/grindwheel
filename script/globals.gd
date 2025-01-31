@@ -10,7 +10,7 @@ var superstate = GameState.MENU1
 var RoundCount : int = 2
 
 var OrbitMode : bool = false
-var DianthusCount : int = 2
+var DianthusCount : int = 32
 var DianthusDamage : float = 5
 var GemMaxHP : int = 3
 

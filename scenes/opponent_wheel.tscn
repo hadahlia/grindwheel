@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dnp37a43gamo6"]
+[gd_scene load_steps=25 format=3 uid="uid://dnp37a43gamo6"]
 
 [ext_resource type="Script" path="res://script/util/state/state_machine.gd" id="1_51oic"]
 [ext_resource type="Script" path="res://script/grinder/boss_spinner.gd" id="1_e7753"]
@@ -17,7 +17,7 @@
 [sub_resource type="Resource" id="Resource_0j8l7"]
 script = ExtResource("2_b31gf")
 dash_cooldown = 8
-_movespeed = 24.0
+_movespeed = 48.0
 damage = 5
 rot_speed = 10.0
 stability = 20
@@ -56,6 +56,92 @@ radius = 2.2
 [sub_resource type="SphereShape3D" id="SphereShape3D_tr0d1"]
 radius = 1.72289
 
+[sub_resource type="Animation" id="Animation_ypq7n"]
+resource_name = "dread_intro"
+length = 5.0
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.846653, 0), Vector3(17, 0.846653, 15), Vector3(-17, 0.846653, 11), Vector3(-19, 0.846653, -18), Vector3(22, 0.846653, -25), Vector3(0, 0.846653, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("spin_root:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3, 4, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 3.14159, 0), Vector3(0, -3.14159, 0), Vector3(0, 0, 0), Vector3(0, 3.14159, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("hurt_ball/hurt_radius:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
+
+[sub_resource type="Animation" id="Animation_f0l48"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.846653, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("spin_root:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("hurt_ball/hurt_radius:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_10074"]
+_data = {
+"RESET": SubResource("Animation_f0l48"),
+"dread_intro": SubResource("Animation_ypq7n")
+}
+
 [node name="opponent_wheel" type="CharacterBody3D" groups=["BossEnem"]]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.846653, 0)
 collision_layer = 32
@@ -83,7 +169,9 @@ enem = NodePath("../..")
 script = ExtResource("6_12e1k")
 self_reference = NodePath("../..")
 
-[node name="Node" type="Node" parent="state_machine"]
+[node name="shoot_gun" type="Node" parent="state_machine"]
+
+[node name="Node2" type="Node" parent="state_machine"]
 
 [node name="spin_root" type="Node3D" parent="."]
 
@@ -149,6 +237,7 @@ monitorable = false
 [node name="hurt_radius" type="CollisionShape3D" parent="hurt_ball"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("SphereShape3D_og54v")
+disabled = true
 
 [node name="wheel_sfx" type="AudioStreamPlayer3D" parent="."]
 volume_db = 1.2
@@ -212,8 +301,16 @@ transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 2.5, 1, 
 [node name="laser_idle" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 stream = ExtResource("13_yj1bx")
+unit_size = 20.0
+
+[node name="dread_anims" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_10074")
+}
 
 [connection signal="enter_phase_two" from="." to="state_machine" method="_enter_phase_two"]
 [connection signal="cur_state" from="state_machine" to="." method="_on_state_machine_cur_state"]
 [connection signal="area_entered" from="hurt_ball" to="." method="_on_hurt_ball_area_entered"]
 [connection signal="timeout" from="_invuln_timer" to="." method="_on__invuln_timer_timeout"]
+[connection signal="animation_finished" from="dread_anims" to="." method="_on_dread_anims_animation_finished"]
+[connection signal="current_animation_changed" from="dread_anims" to="." method="_on_dread_anims_current_animation_changed"]

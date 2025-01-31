@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://cau0atwkvl67f"]
+[gd_scene load_steps=59 format=3 uid="uid://cau0atwkvl67f"]
 
 [ext_resource type="Script" path="res://script/arena/mach_arena.gd" id="1_lwp4d"]
 [ext_resource type="Texture2D" uid="uid://cvbxjk0rh5p8k" path="res://sprite/gui/frame1.png" id="2_7qsjr"]
@@ -23,6 +23,7 @@
 [ext_resource type="AudioStream" uid="uid://bd7f6dbmcxkxp" path="res://audio/sfx/Lever Cycle Fast MP3.mp3" id="21_rckkm"]
 [ext_resource type="AudioStream" uid="uid://b3diakevox0va" path="res://audio/music/Dianthuzzzzzzzzz.mp3" id="22_la67c"]
 [ext_resource type="AudioStream" uid="uid://dkk82dqglwds" path="res://audio/sfx/Retro Event UI 01.wav" id="23_f3ha4"]
+[ext_resource type="AudioStream" uid="uid://c3pdqv52uv1eq" path="res://audio/music/final_bunydogy.mp3" id="24_pqkn8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fcpmf"]
 shader = ExtResource("6_sikrn")
@@ -276,6 +277,44 @@ _data = {
 "fade_trans": SubResource("Animation_le153")
 }
 
+[sub_resource type="Animation" id="Animation_ku3wx"]
+resource_name = "fade_bunydogy"
+length = 3.0
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("boss_track_1:unit_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [20.0, 0.1]
+}
+
+[sub_resource type="Animation" id="Animation_473iv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("boss_track_1:unit_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [20.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_07jwr"]
+_data = {
+"RESET": SubResource("Animation_473iv"),
+"fade_bunydogy": SubResource("Animation_ku3wx")
+}
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_a8sfq"]
 size = Vector3(150, 1, 100)
 
@@ -520,7 +559,7 @@ shape = SubResource("CylinderShape3D_7omef")
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 17.3, -7)
 
 [node name="player_pos_start" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.6, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, -3.6, 11)
 
 [node name="angel_spawn" type="Marker3D" parent="SubViewportContainer/SubViewport/true_arena"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.6, 22)
@@ -941,7 +980,11 @@ text = "- dev -
 hadahlia 
 
 - sfx, title ost -
-prism_up2it "
+prism_up2it 
+
+- boss track -
+bunydogy 
+"
 vertical_alignment = 2
 
 [node name="ui_select" type="AudioStreamPlayer3D" parent="gui/title_screen"]
@@ -1045,6 +1088,13 @@ unit_size = 80.0
 autoplay = true
 
 [node name="boss_track_1" type="AudioStreamPlayer3D" parent="Sfx"]
+stream = ExtResource("24_pqkn8")
+unit_size = 20.0
+
+[node name="fade_track" type="AnimationPlayer" parent="Sfx"]
+libraries = {
+"": SubResource("AnimationLibrary_07jwr")
+}
 
 [node name="void_trig" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -9, 0)
@@ -1075,6 +1125,7 @@ one_shot = true
 [connection signal="gui_input" from="gui/title_screen" to="gui" method="_on_title_screen_gui_input"]
 [connection signal="animation_finished" from="gui/title_screen/AnimationPlayer" to="gui" method="_on_title_animation_finished"]
 [connection signal="animation_finished" from="gui/fade/AnimationPlayer" to="gui" method="_on_animation_player_animation_finished"]
+[connection signal="animation_finished" from="Sfx/fade_track" to="." method="_on_fade_track_animation_finished"]
 [connection signal="body_entered" from="void_trig" to="." method="_on_void_trig_body_entered"]
 [connection signal="body_entered" from="void_trig2" to="." method="_on_void_trig_body_entered"]
 [connection signal="timeout" from="upgrade_spawn_time" to="." method="_on_upgrade_spawn_time_timeout"]
