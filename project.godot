@@ -13,7 +13,7 @@ config_version=5
 config/name="Dianthus"
 config/description="gamey game game. mode 7 target snes like
 "
-config/version="0.2"
+config/version="1.0"
 run/main_scene="res://scenes/mach_arena.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 run/max_fps=60

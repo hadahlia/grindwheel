@@ -22,9 +22,10 @@ func enter():
 		snake_den_scene._set_target(den_array[rr].global_position)
 		#if dipsa_body.segments[0].global_position == snake_den_scene.snake_point.global_position:
 			#state_machine.states["emerge"].enter()
+		
 		get_tree().create_timer(5.0).timeout.connect(func() -> void:
 			if dipsa_body._phase_two:
-				
+				$"../../dipsa_sfx_root/siren".play()
 				#rebuild the snake with like 30 segments
 				dipsa_body.set_phase_two()
 				state_machine.states["hell"].enter()

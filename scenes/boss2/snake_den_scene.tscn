@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://5w61ddfgrwoh"]
+[gd_scene load_steps=22 format=3 uid="uid://5w61ddfgrwoh"]
 
 [ext_resource type="Script" path="res://script/grinder/boss_ai/snake_den_manager.gd" id="1_mp7v2"]
 [ext_resource type="PackedScene" uid="uid://ewairoktau6u" path="res://scenes/the_dipsa.tscn" id="1_unswi"]
@@ -8,6 +8,8 @@
 [ext_resource type="Script" path="res://script/util/state/dipsa/hell.gd" id="4_ssmol"]
 [ext_resource type="Script" path="res://script/util/state/dipsa/disperse.gd" id="5_fljye"]
 [ext_resource type="AudioStream" uid="uid://cv2utsv1637jh" path="res://audio/sfx/dipsa/dipsa_grinder.wav" id="7_6ul7s"]
+[ext_resource type="AudioStream" uid="uid://dh0om7m4ay8jr" path="res://audio/sfx/dipsa/emergency-siren.mp3" id="9_lj3ad"]
+[ext_resource type="AudioStream" uid="uid://dsm8a8djms0sm" path="res://audio/sfx/dipsa/563687__jrmythical__dragon-howling-roar.mp3" id="10_vuguk"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_kfbck"]
 size = Vector3(10, 5, 10)
@@ -52,6 +54,18 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("dipsa_sfx_root/roar:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_xvov3"]
@@ -109,7 +123,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_udwkb"]
 resource_name = "flight intro"
 length = 16.0
-step = 0.5
+step = 0.25
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -117,16 +131,28 @@ tracks/0/path = NodePath("snake_point_animated:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10.5, 11, 14),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 2, 3, 3.5, 4.5, 5.25, 6, 7, 8, 9, 10, 10.5, 11, 14),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 3.4, -28), Vector3(0, 3.4, -28), Vector3(49, 6.4, -10), Vector3(26, 6.4, 31), Vector3(3.8, 6.4, 52), Vector3(-25, 6.4, 54), Vector3(-29, 9.4, 48), Vector3(-23, 6.4, -14), Vector3(21, -1.6, -17), Vector3(12, -1.6, 13), Vector3(30, 31.4, 1), Vector3(47.8333, 6.23333, 13.3333), Vector3(312, -1.6, -3)]
+"values": [Vector3(0, 3.4, -28), Vector3(0, 3.4, -28), Vector3(49, 6.4, -10), Vector3(26, 6.4, 31), Vector3(36.9, 6.4, 158.5), Vector3(3.8, 6.4, 52), Vector3(-25, 6.4, 54), Vector3(-29, 9.4, 48), Vector3(-23, 6.4, -14), Vector3(21, 3.4, -40), Vector3(22, 6.4, 1), Vector3(30, 31.4, 1), Vector3(47.8333, 6.23333, 13.3333), Vector3(312, -1.6, -3)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("dipsa_sfx_root/roar:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 5, 14.25),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
 }
 
 [sub_resource type="Animation" id="Animation_5dymf"]
 resource_name = "hell"
-length = 10.0
-loop_mode = 2
+length = 18.0
+loop_mode = 1
 step = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -135,10 +161,10 @@ tracks/0/path = NodePath("snake_point_animated:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2, 3, 4, 5, 6, 7, 8, 9, 10),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 2, 3, 4, 5, 6, 7, 8, 9, 9.5, 11.5, 12.5, 13, 13.5, 14.5, 16, 16.5, 18),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 0, -15), Vector3(0, 0, -15), Vector3(44, 0, -14), Vector3(-42, 0, -7), Vector3(41, 0, 8), Vector3(-42, 0, 25), Vector3(43, 0, 36), Vector3(-35, 0, 75), Vector3(38, 0, 89), Vector3(63, 0, 72)]
+"values": [Vector3(0, 0, -15), Vector3(0, 0, -24), Vector3(44, 0, -14), Vector3(-42, 0, -7), Vector3(41, 0, 8), Vector3(-42, 0, 25), Vector3(43, 0, 36), Vector3(-35, 0, 75), Vector3(38, 0, 89), Vector3(46.3333, 0, 181.333), Vector3(46.3333, 0, 181.333), Vector3(-29, 0, 72), Vector3(11.2727, 0, -19.8182), Vector3(67.1455, 0, -64.3364), Vector3(215.224, 0, -182.373), Vector3(215.224, 0, -182.373), Vector3(-0.581818, 0, -140.53), Vector3(-0.581818, 0, -140.53)]
 }
 
 [sub_resource type="Animation" id="Animation_q8civ"]
@@ -203,7 +229,7 @@ script = ExtResource("5_fljye")
 [node name="Node4" type="Node" parent="state_machine"]
 
 [node name="snake_point_animated" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 312, -1.6, -3)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="snake_point_animated"]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
@@ -220,6 +246,7 @@ skeleton = NodePath("../../snake_point_animated")
 surface_material_override/0 = SubResource("StandardMaterial3D_3wi6r")
 
 [node name="snake_animator" type="AnimationPlayer" parent="."]
+reset_on_save = false
 libraries = {
 "": SubResource("AnimationLibrary_83p1d")
 }
@@ -269,6 +296,17 @@ material = SubResource("StandardMaterial3D_q1j38")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -90)
 
 [node name="dipsa_sfx_root" type="Node3D" parent="."]
+
+[node name="siren" type="AudioStreamPlayer3D" parent="dipsa_sfx_root"]
+stream = ExtResource("9_lj3ad")
+volume_db = -1.0
+unit_size = 20.0
+
+[node name="roar" type="AudioStreamPlayer3D" parent="dipsa_sfx_root"]
+stream = ExtResource("10_vuguk")
+volume_db = -1.0
+unit_size = 30.0
+pitch_scale = 1.1
 
 [connection signal="intro_finish" from="." to="state_machine" method="_on_snake_den_scene_intro_finish"]
 [connection signal="animation_finished" from="snake_animator" to="." method="_on_snake_animator_animation_finished"]
