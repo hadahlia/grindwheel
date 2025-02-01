@@ -1,10 +1,10 @@
-class_name BossWheel
+class_name SerbianWheel
 extends CharacterBody3D
 
-signal dread_intro_finish
+#signal dread_intro_finish
 signal boss_spawned
 
-signal update_health
+signal update_serb_health
 #signal output_damage
 signal enter_phase_two
 signal boss_death
@@ -13,8 +13,8 @@ var bullets_spawn_scene : PackedScene = preload("res://scenes/bullet/bullets_sce
 var bullets_ref : Node3D
 
 #@onready var state_machine = $state_machine
-@onready var state_machine = $state_machine
-@onready var dread_anims = $dread_anims
+#@onready var state_machine = $state_machine
+#@onready var dread_anims = $dread_anims
 #@onready var col_body = $col_body
 @onready var hurt_radius = $hurt_ball/hurt_radius
 
@@ -42,7 +42,7 @@ var _dmg : int
 var wish_dir : Vector3 = Vector3.ZERO
 var acceleration : Vector3 = Vector3.ZERO
 
-var _stability : int
+#var _stability : int
 var _health : float
 var _max_health : float = 1000
 
@@ -61,15 +61,15 @@ var saw_damn : float = 0
 func _ready():
 	wheel_sfx.stream = stats.bump_sound
 	_dmg = stats.damage
-	_max_health = stats.health + ((stats.health * Globals.RoundCount) * 0.5)
+	_max_health = stats.health + ((stats.health * Globals.RoundCount) * 0.2)
 	_health = _max_health
 	
-	dread_anims.play("dread_intro")
-	bullets_ref = bullets_spawn_scene.instantiate()
-	
 	get_tree().create_timer(0.5).timeout.connect(func()->void:
-		update_health.emit(_health, _max_health)
+		update_serb_health.emit(_health, _max_health)
 	)
+	
+	#dread_anims.play("dread_intro")
+	#bullets_ref = bullets_spawn_scene.instantiate()
 	#cur_state.emit(str(state_machine.current_state))
 	#boss_spawned.emit()
 #const SPEED = 5.0
@@ -104,9 +104,11 @@ func _physics_process(delta):
 			wheel_sfx.pitch_scale = 1 + randf_range(-0.35, 0.35)
 			wheel_sfx.play()
 			
-			get_tree().create_timer(0.1).timeout.connect(func()->void:
-				fire_projectiles()
-			)
+			var ri := randi_range(1, 10)
+			if ri > 8.0:
+				get_tree().create_timer(0.1).timeout.connect(func()->void:
+					fire_projectiles()
+				)
 			#wheel_sfx.pitch_scale += 0.2
 			#data.bump_sound.play()
 			#velocity *= 0.48
@@ -150,22 +152,25 @@ func _take_damage_once(val: float) -> void:
 	if _health < (_max_health / 2):
 		_phase_two = true
 		enter_phase_two.emit()
-	update_health.emit(_health, _max_health)
+	
 	if _health <= 0:
 		_death()
+	update_serb_health.emit(_health, _max_health)
 	_invuln = true
 	_invuln_timer.start()
 
-func _take_damage(delta: float) -> void:
-	if _invuln_saw: return
-	_health -= saw_damn * delta
-	update_health.emit(_health)
-	if _health <= 0:
-		_death()
-	_invuln_saw = true
-	_invuln_saw_time.start()
+#func _take_damage(delta: float) -> void:
+	#if _invuln_saw: return
+	#_health -= saw_damn * delta
+	#update_health.emit(_health)
+	#if _health <= 0:
+		#_death()
+	#_invuln_saw = true
+	#_invuln_saw_time.start()
 
 func _death():
+	_health = 0
+	update_serb_health.emit(_health, _max_health)
 	#var exp := explosion_scene.instantiate()
 	#add_child(exp)
 	#exp.explode()
@@ -212,20 +217,22 @@ func _on_hurt_ball_area_entered(area):
 	if p is GrindWheel:
 		#print("hit!")
 		_take_damage_once(p._saw_dmg)
-		#if p.velocity == Vector3.ZERO:
+		if velocity.length() < p.velocity.length():
+			velocity = p.velocity
 			#p.velocity = self.velocity
 
 
-func _on_dread_anims_current_animation_changed(name):
-	if name == "dread_intro":
-		Globals.can_move = false
+#func _on_dread_anims_current_animation_changed(name):
+	#if name == "dread_intro":
+		#Globals.can_move = false
 
 
-func _on_dread_anims_animation_finished(anim_name):
-	if anim_name == "dread_intro":
-		Globals.can_move = true
-		hurt_radius.disabled = false
-		dread_intro_finish.emit()
+#func _on_dread_anims_animation_finished(anim_name):
+	#if anim_name == "dread_intro":
+		#Globals.can_move = true
+func enable_hitbox():
+	hurt_radius.disabled = false
+		#dread_intro_finish.emit()
 
 
 func _on_laser_cooldown_timer_timeout():

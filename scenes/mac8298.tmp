@@ -1152,7 +1152,7 @@ collision_mask = 16
 shape = SubResource("BoxShape3D_a8sfq")
 
 [node name="upgrade_spawn_time" type="Timer" parent="."]
-wait_time = 4.0
+wait_time = 6.0
 one_shot = true
 
 [connection signal="call_death_screen" from="." to="gui" method="_on_grindwheel_die"]

@@ -22,6 +22,9 @@ signal finally_fucking_start
 @onready var boss_track_1 = $Sfx/boss_track_1
 @onready var fade_track = $Sfx/fade_track
 
+@onready var hymn = $Sfx/hymn
+
+
 @onready var boss_pos_start = $SubViewportContainer/SubViewport/true_arena/boss_pos_start
 @onready var player_pos_start = $SubViewportContainer/SubViewport/true_arena/player_pos_start
 @onready var angel_spawn = $SubViewportContainer/SubViewport/true_arena/angel_spawn
@@ -53,6 +56,7 @@ const explosion_vfx : PackedScene = preload("res://scenes/vfx/deathsplosion.tscn
 #boss scenes
 const dread_wheel : PackedScene = preload("res://scenes/opponent_wheel.tscn")
 const dipsa : PackedScene = preload("res://scenes/boss2/snake_den_scene.tscn")
+const cerberus : PackedScene = preload("res://scenes/boss2/cerbus_manager.tscn")
 
 # refs to existing boss and player
 #@export_node_path("GrindWheel") var player_ref_path
@@ -70,8 +74,8 @@ const BASEDMG : float = 4
 func _ready():
 	#gui.toggle_healthbar(false)
 	# REMEMBER TO UNCOMMENT B4 UPLOAD
-	Globals.RoundCount = 0
-	Globals.DianthusCount = 0
+	#Globals.RoundCount = 0
+	#Globals.DianthusCount = 0
 	fade_out.emit()
 	#_start_round()
 	#pass
@@ -173,7 +177,7 @@ func spawn_player():
 
 func spawn_boss():
 	var rc = Globals.RoundCount
-	var numrounds : int = 2
+	var numrounds : int = 3
 	if rc > numrounds:
 		rc = (rc % numrounds) #+ 1
 		if rc == 0:
@@ -198,6 +202,8 @@ func spawn_boss():
 			gui._set_boss_name(" DREAD WHEEL ")
 			gui.toggle_healthbar(true)
 			#bc.boss_spawned.connect(_get_spinner_reference)
+			
+		# snake (dipsa)
 		2:
 			var sd := dipsa.instantiate()
 			true_arena.add_child(sd)
@@ -208,9 +214,23 @@ func spawn_boss():
 			gui._set_boss_name(" DIPSA THE VITRIOL ")
 			gui.toggle_healthbar(false)
 			
-		# snake (dipsa)
-		# dead hands
 		# cerberus
+		3:
+			var crb := cerberus.instantiate()
+			true_arena.add_child(crb)
+			
+			crb.crb_intro_finish.connect(_on_boss_intro_finish)
+			crb.forward_dead_wheel.connect(_on_boss_die)
+			crb.all_dead_captain.connect(_on_boss_death_no_explosion)
+			
+			var ctr := get_tree().get_first_node_in_group("CenterPoint")
+			crb.global_position = ctr.global_position
+			
+			
+			gui._set_boss_name(" CERBERUS ")
+			#gui.toggle_healthbar(false)
+			
+		# dead hands
 		# widower
 
 func _on_boss_intro_finish():
@@ -232,6 +252,8 @@ func spawn_upgrades():
 		#upg.global_position.z = -28
 		upg.rotation_degrees.y += 90
 		true_arena.add_child(upg)
+		hymn.play()
+		fade_track.play("fade_in_hymn")
 	#else:
 		#pass
 
@@ -276,6 +298,7 @@ func _on_end_game():
 	call_fade.emit()
 
 func _on_trans_level():
+	fade_track.play("fade_out_hymn")
 	call_fade.emit()
 
 func _get_spinner_reference():
@@ -295,15 +318,27 @@ func _get_spinner_reference():
 func fade_music():
 	fade_track.play("fade_bunydogy")
 
+var cursor_dead : bool = false
+
 func _on_gem_die(pos: Vector3) -> void:
-	if cursor_ref:
+	if !cursor_dead:
 		cursor_ref.queue_free()
+		cursor_dead = true
 	spawn_explosion(pos)
 	call_death_screen.emit()
 	is_dead = true
 	#boss_track_1.stop()
 	fade_music()
 
+func _on_boss_die(pos: Vector3) -> void:
+	spawn_explosion(pos)
+
+func _on_boss_death_no_explosion() -> void:
+	#spawn_explosion(pos)
+	if !upgrade_spawn_time.is_stopped(): return
+	upgrade_spawn_time.start()
+	#boss_track_1.stop()
+	fade_music()
 
 func _on_opponent_wheel_boss_death(pos: Vector3) -> void:
 	spawn_explosion(pos)
@@ -374,9 +409,9 @@ func spawn_explosion(pos: Vector3) -> void:
 func destroy_actors():
 	var sg = get_tree().get_first_node_in_group("Angel Gem")
 	
-	var bss = get_tree().get_first_node_in_group("BossEnem")
-	if bss:
-		bss.queue_free()
+	var bss = get_tree().get_nodes_in_group("BossEnem")
+	for b in bss:
+		b.queue_free()
 	
 	var sdd = get_tree().get_first_node_in_group("Snake Den")
 	if sdd:
@@ -451,3 +486,5 @@ func _on_upgrade_spawn_time_timeout():
 func _on_fade_track_animation_finished(anim_name):
 	if anim_name == "fade_bunydogy":
 		boss_track_1.stop()
+	if anim_name == "fade_out_hymn":
+		hymn.stop()

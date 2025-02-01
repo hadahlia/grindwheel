@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WheelStats" load_steps=3 format=3 uid="uid://dg212o4vbky7i"]
+
+[ext_resource type="AudioStream" uid="uid://w4jg2q3un5o3" path="res://audio/sfx/bounce.wav" id="1_tegg5"]
+[ext_resource type="Script" path="res://script/util/class/wheel_stats.gd" id="2_ltakw"]
+
+[resource]
+script = ExtResource("2_ltakw")
+dash_cooldown = 8
+_movespeed = 30.0
+damage = 5
+rot_speed = 10.0
+stability = 20
+dash_max_charge = 4
+health = 50.0
+bump_sound = ExtResource("1_tegg5")

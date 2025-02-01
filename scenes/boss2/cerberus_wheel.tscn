@@ -1,134 +1,45 @@
-[gd_scene load_steps=25 format=3 uid="uid://dnp37a43gamo6"]
+[gd_scene load_steps=19 format=3 uid="uid://mnbm8jdi71rs"]
 
-[ext_resource type="Script" path="res://script/util/state/state_machine.gd" id="1_51oic"]
-[ext_resource type="Script" path="res://script/grinder/boss_spinner.gd" id="1_e7753"]
-[ext_resource type="Resource" uid="uid://c7i2nigfsygj5" path="res://resource/spinners/final_dread_wheel.tres" id="2_88lgt"]
-[ext_resource type="Script" path="res://script/util/state/BossChase.gd" id="2_a7us7"]
-[ext_resource type="Script" path="res://script/util/state/LastStand.gd" id="6_12e1k"]
-[ext_resource type="Texture2D" uid="uid://ge4mu7x3pkk8" path="res://sprite/env/Horror_Metal_03-128x128.png" id="6_hjqlx"]
-[ext_resource type="PackedScene" uid="uid://bjkmyvklh5di" path="res://object/weapons/bronzer.tscn" id="6_tm7t4"]
-[ext_resource type="AudioStream" uid="uid://5qb8oqcyyy3k" path="res://audio/sfx/198985__kolczok__circ_saw-01.wav" id="7_fjmq4"]
-[ext_resource type="Texture2D" uid="uid://fp4vnmefpim8" path="res://sprite/env/metal/Horror_Metal_12-128x128.png" id="8_i1s02"]
-[ext_resource type="AudioStream" uid="uid://dsc4lj3vbtiwd" path="res://audio/sfx/newer/hit_danger.mp3" id="9_uam27"]
-[ext_resource type="PackedScene" uid="uid://daewaxobrnn2r" path="res://scenes/boss1/laser_machine.tscn" id="12_gu33v"]
-[ext_resource type="AudioStream" uid="uid://cbald22birjo3" path="res://audio/sfx/dreadwheel/734759__drakedeweerd21__tractor-beam.mp3" id="13_yj1bx"]
+[ext_resource type="Script" path="res://script/grinder/cerbian_spinner.gd" id="1_c2n8f"]
+[ext_resource type="Resource" uid="uid://dg212o4vbky7i" path="res://resource/spinners/cerberus_stats.tres" id="2_ro5at"]
+[ext_resource type="Texture2D" uid="uid://ge4mu7x3pkk8" path="res://sprite/env/Horror_Metal_03-128x128.png" id="6_ut7v2"]
+[ext_resource type="PackedScene" uid="uid://bjkmyvklh5di" path="res://object/weapons/bronzer.tscn" id="7_bhe3q"]
+[ext_resource type="Texture2D" uid="uid://fp4vnmefpim8" path="res://sprite/env/metal/Horror_Metal_12-128x128.png" id="8_tbwpa"]
+[ext_resource type="AudioStream" uid="uid://dsc4lj3vbtiwd" path="res://audio/sfx/newer/hit_danger.mp3" id="9_3s36h"]
+[ext_resource type="AudioStream" uid="uid://5qb8oqcyyy3k" path="res://audio/sfx/198985__kolczok__circ_saw-01.wav" id="10_l0gi8"]
+[ext_resource type="AudioStream" uid="uid://cbald22birjo3" path="res://audio/sfx/dreadwheel/734759__drakedeweerd21__tractor-beam.mp3" id="11_gfr83"]
+[ext_resource type="PackedScene" uid="uid://daewaxobrnn2r" path="res://scenes/boss1/laser_machine.tscn" id="12_gbcbv"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ymlrj"]
-height = 1.37734
-radius = 1.88417
+height = 1.6
+radius = 2.4
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cogx4"]
 albedo_color = Color(0.258824, 0.117647, 0.298039, 1)
-albedo_texture = ExtResource("6_hjqlx")
+albedo_texture = ExtResource("6_ut7v2")
 metallic = 0.79
 metallic_specular = 0.59
 uv1_scale = Vector3(2, 2, 2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1k38f"]
 albedo_color = Color(0.486275, 0.580392, 0.52549, 1)
-albedo_texture = ExtResource("6_hjqlx")
+albedo_texture = ExtResource("6_ut7v2")
 uv1_triplanar = true
 
 [sub_resource type="PrismMesh" id="PrismMesh_fhp5m"]
-size = Vector3(1.2, 1.8, 0.5)
+size = Vector3(2, 1.8, 0.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_js0t3"]
-albedo_color = Color(0.541176, 1, 0.862745, 1)
-albedo_texture = ExtResource("8_i1s02")
+albedo_color = Color(2, 0.5, 0.06, 1)
+albedo_texture = ExtResource("8_tbwpa")
 metallic = 1.0
 metallic_specular = 0.36
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_og54v"]
-radius = 2.2
+radius = 3.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_tr0d1"]
 radius = 1.72289
-
-[sub_resource type="Animation" id="Animation_f0l48"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0.846653, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("spin_root:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("hurt_ball/hurt_radius:disabled")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-
-[sub_resource type="Animation" id="Animation_ypq7n"]
-resource_name = "dread_intro"
-length = 5.0
-step = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0.846653, 0), Vector3(17, 0.846653, 15), Vector3(-17, 0.846653, 11), Vector3(-19, 0.846653, -18), Vector3(22, 0.846653, -25), Vector3(0, 0.846653, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("spin_root:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1, 2, 3, 4, 5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 3.14159, 0), Vector3(0, -3.14159, 0), Vector3(0, 0, 0), Vector3(0, 3.14159, 0), Vector3(0, 0, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("hurt_ball/hurt_radius:disabled")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, true]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_10074"]
-_data = {
-"RESET": SubResource("Animation_f0l48"),
-"dread_intro": SubResource("Animation_ypq7n")
-}
 
 [sub_resource type="QuadMesh" id="QuadMesh_skfoo"]
 size = Vector2(2.2, 50)
@@ -137,40 +48,17 @@ size = Vector2(2.2, 50)
 shading_mode = 0
 albedo_color = Color(0.871, 0, 0, 0.37)
 
-[node name="opponent_wheel" type="CharacterBody3D" groups=["BossEnem"]]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.846653, 0)
+[node name="serbian_wheel" type="CharacterBody3D"]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0.846653, 0)
 collision_layer = 32
 collision_mask = 33
 input_ray_pickable = false
-script = ExtResource("1_e7753")
-stats = ExtResource("2_88lgt")
+script = ExtResource("1_c2n8f")
+stats = ExtResource("2_ro5at")
 
 [node name="col_body" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.677951, 0)
 shape = SubResource("CylinderShape3D_ymlrj")
-
-[node name="state_machine" type="Node" parent="." node_paths=PackedStringArray("init_state", "phase_2_state")]
-script = ExtResource("1_51oic")
-init_state = NodePath("pursuit")
-phase_2_state = NodePath("last_stand")
-
-[node name="idle" type="Node" parent="state_machine"]
-
-[node name="pursuit" type="Node" parent="state_machine" node_paths=PackedStringArray("enem")]
-script = ExtResource("2_a7us7")
-enem = NodePath("../..")
-
-[node name="last_stand" type="Node" parent="state_machine" node_paths=PackedStringArray("self_reference")]
-script = ExtResource("6_12e1k")
-self_reference = NodePath("../..")
-
-[node name="laser_cooldown_timer" type="Timer" parent="state_machine/last_stand"]
-wait_time = 4.0
-one_shot = true
-
-[node name="shoot_gun" type="Node" parent="state_machine"]
-
-[node name="Node2" type="Node" parent="state_machine"]
 
 [node name="spin_root" type="Node3D" parent="."]
 
@@ -182,12 +70,13 @@ sides = 9
 ring_sides = 8
 material = SubResource("StandardMaterial3D_cogx4")
 
-[node name="weapon" parent="spin_root" instance=ExtResource("6_tm7t4")]
+[node name="weapon" parent="spin_root" instance=ExtResource("7_bhe3q")]
 transform = Transform3D(18, 0, 0, 0, 17.9855, -0.722374, 0, 0.722374, 17.9855, 0, 1.02202, 0)
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="spin_root"]
 transform = Transform3D(1, 0, 0, 0, 0.999211, -0.0397132, 0, 0.0397132, 0.999211, 0, 1.92171, -0.0274796)
-radius = 0.110892
+radius = 0.172
+height = 1.156
 material = SubResource("StandardMaterial3D_1k38f")
 
 [node name="CSGCylinder3D2" type="CSGCylinder3D" parent="spin_root"]
@@ -240,13 +129,15 @@ disabled = true
 
 [node name="wheel_sfx" type="AudioStreamPlayer3D" parent="."]
 volume_db = 1.2
-pitch_scale = 0.41
+unit_size = 25.0
+pitch_scale = 0.21
 max_polyphony = 3
 
 [node name="attacked_sfx" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-stream = ExtResource("9_uam27")
+stream = ExtResource("9_3s36h")
 volume_db = 4.0
+pitch_scale = 1.26
 max_distance = 423.72
 max_polyphony = 3
 
@@ -263,7 +154,7 @@ shape = SubResource("SphereShape3D_tr0d1")
 disabled = true
 
 [node name="boss_slice_sfx" type="AudioStreamPlayer3D" parent="weapon"]
-stream = ExtResource("7_fjmq4")
+stream = ExtResource("10_l0gi8")
 volume_db = -3.404
 pitch_scale = 1.06
 
@@ -283,17 +174,12 @@ autostart = true
 
 [node name="laser_idle" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-stream = ExtResource("13_yj1bx")
+stream = ExtResource("11_gfr83")
 unit_size = 20.0
-
-[node name="dread_anims" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_10074")
-}
 
 [node name="gun_laser_root" type="Node3D" parent="."]
 
-[node name="laser_machine" parent="gun_laser_root" instance=ExtResource("12_gu33v")]
+[node name="laser_machine" parent="gun_laser_root" instance=ExtResource("12_gbcbv")]
 visible = false
 
 [node name="gun_" type="Node3D" parent="gun_laser_root"]
@@ -320,10 +206,5 @@ transform = Transform3D(4.37114e-08, 1, -4.37114e-08, -5.96046e-08, 4.37114e-08,
 mesh = SubResource("QuadMesh_skfoo")
 material = SubResource("StandardMaterial3D_hfmon")
 
-[connection signal="enter_phase_two" from="." to="state_machine" method="_enter_phase_two"]
-[connection signal="cur_state" from="state_machine" to="." method="_on_state_machine_cur_state"]
-[connection signal="timeout" from="state_machine/last_stand/laser_cooldown_timer" to="state_machine/last_stand" method="_on_laser_cooldown_timer_timeout"]
 [connection signal="area_entered" from="hurt_ball" to="." method="_on_hurt_ball_area_entered"]
 [connection signal="timeout" from="_invuln_timer" to="." method="_on__invuln_timer_timeout"]
-[connection signal="animation_finished" from="dread_anims" to="." method="_on_dread_anims_animation_finished"]
-[connection signal="current_animation_changed" from="dread_anims" to="." method="_on_dread_anims_current_animation_changed"]

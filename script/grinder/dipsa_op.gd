@@ -82,6 +82,10 @@ func _ready():
 	Bait_Point = get_tree().get_first_node_in_group("SnakeArrow")
 	#get_parent().spawn_dipsa()
 	
+	get_tree().create_timer(0.5).timeout.connect(func()->void:
+		update_health.emit(_health, _max_health)
+	)
+	
 	_build_snake()
 	#segments[0] = head_
 	#cur_state.emit(str(state_machine.current_state))

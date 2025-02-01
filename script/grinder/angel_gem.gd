@@ -28,6 +28,7 @@ signal shatter
 @onready var _angel_damage = $_angel_damage
 @onready var _angel_blip = $_angel_blip
 
+var gem_dead : bool = false
 var _dir_to_cursor : Vector2
 var _dir_gem : Vector3
 
@@ -223,12 +224,13 @@ func _start_invuln():
 	gem_anims.play("hurt soul")
 
 func gem_death():
+	if gem_dead: return
 	health = 0
-	
+	gem_dead = true
 	#print("uh oh u shld be dead")
 	shatter.emit(self.global_position)
-	get_tree().create_timer(3.0).timeout.connect(queue_free)
-	
+	#get_tree().create_timer(1.0).timeout.connect(queue_free)
+	queue_free()
 
 
 func _on_hitbox_body_entered(body):

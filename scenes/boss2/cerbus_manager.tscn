@@ -1,0 +1,123 @@
+[gd_scene load_steps=7 format=3 uid="uid://dqoc4j4g3yeqr"]
+
+[ext_resource type="Script" path="res://script/grinder/boss_ai/cerberus/cerbus_manager.gd" id="1_qhubx"]
+[ext_resource type="PackedScene" uid="uid://mnbm8jdi71rs" path="res://scenes/boss2/cerberus_wheel.tscn" id="2_p88a5"]
+[ext_resource type="Script" path="res://script/util/state/state_machine.gd" id="3_01130"]
+
+[sub_resource type="Animation" id="Animation_d6lme"]
+resource_name = "intro sequence"
+length = 3.5
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("wheel_holder/cer1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.846653, -20), Vector3(0, 0.846653, -6), Vector3(0, 0.846653, -20)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("wheel_holder/cer2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-20, 0.846653, 0), Vector3(-20, 0.846653, 0), Vector3(-8, 0.846653, 0), Vector3(-20, 0.846653, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("wheel_holder/cer3:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2, 2.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(20, 0.846653, 0), Vector3(20, 0.846653, 0), Vector3(6, 0.846653, 0), Vector3(20, 0.846653, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_vrmtt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("wheel_holder/cer1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.846653, -20)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("wheel_holder/cer2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-20, 0.846653, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("wheel_holder/cer3:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(20, 0.846653, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_weh24"]
+_data = {
+"RESET": SubResource("Animation_vrmtt"),
+"intro sequence": SubResource("Animation_d6lme")
+}
+
+[node name="Cerbus_Manager" type="Node3D" groups=["Cerberus Manager"]]
+script = ExtResource("1_qhubx")
+
+[node name="cerberus_state" type="Node" parent="."]
+script = ExtResource("3_01130")
+
+[node name="wheel_holder" type="Node3D" parent="."]
+
+[node name="cer1" parent="wheel_holder" instance=ExtResource("2_p88a5")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0.846653, -20)
+
+[node name="cer2" parent="wheel_holder" instance=ExtResource("2_p88a5")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, -20, 0.846653, 0)
+
+[node name="cer3" parent="wheel_holder" instance=ExtResource("2_p88a5")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 20, 0.846653, 0)
+
+[node name="crbanim" type="AnimationPlayer" parent="."]
+reset_on_save = false
+libraries = {
+"": SubResource("AnimationLibrary_weh24")
+}
+
+[connection signal="boss_death" from="wheel_holder/cer1" to="." method="_on_cer_1_boss_death"]
+[connection signal="update_serb_health" from="wheel_holder/cer1" to="." method="_on_cer_update_health"]
+[connection signal="boss_death" from="wheel_holder/cer2" to="." method="_on_cer_2_boss_death"]
+[connection signal="update_serb_health" from="wheel_holder/cer2" to="." method="_on_cer_2_update_serb_health"]
+[connection signal="boss_death" from="wheel_holder/cer3" to="." method="_on_cer_3_boss_death"]
+[connection signal="update_serb_health" from="wheel_holder/cer3" to="." method="_on_cer_3_update_serb_health"]
+[connection signal="animation_finished" from="crbanim" to="." method="_on_crbanim_animation_finished"]
+[connection signal="current_animation_changed" from="crbanim" to="." method="_on_crbanim_current_animation_changed"]

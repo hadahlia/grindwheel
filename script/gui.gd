@@ -46,6 +46,9 @@ var selected : bool = false
 var soul : GemSoul
 var player : GrindWheel
 var bossy : CharacterBody3D
+
+var cerbman : CerberusMan
+#var bossy : Node3D
 #@onready var plyr = get_tree().get_first_node_in_group("Player")
 
 # Called when the node enters the scene tree for the first time.
@@ -67,12 +70,27 @@ func post_ready():
 		#_on_grindwheel_charge_spent(player._dash_charges)
 		
 	bossy = get_tree().get_first_node_in_group("BossEnem")
+	cerbman = get_tree().get_first_node_in_group("Cerberus Manager")
+	#var transmitted_hp: float = 0
+	#var transmitted_max_hp: float = 0
 	if bossy:
 		bossy.update_health.connect(_on_bossl_update_health)
-		boss_health.max_value = bossy._health
-		#dash_charge_.value = 0
-	
+		#transmitted_max_hp = 
+		#transmitted_hp = bossy._health
+		boss_health.max_value = bossy._max_health
+		#boss_health.max_value = bossy._health
 		_on_bossl_update_health(bossy._health, bossy._max_health)
+	
+	if cerbman:
+		cerbman.update_health.connect(_on_bossl_update_health)
+		#transmitted_max_hp = 
+		#transmitted_hp = cerbman.total_health
+		boss_health.max_value = cerbman.max_health
+		#boss_health.max_value = cerbman.max_health
+		_on_bossl_update_health(cerbman.total_health, cerbman.max_health)
+	
+	#boss_health.max_value = transmitted_max_hp
+	#_on_bossl_update_health(transmitted_hp, transmitted_max_hp)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -107,8 +125,16 @@ func _on_bossl_update_health(_new_health: float, _max_health: float) -> void:
 		#boss_health.hide()
 		#return
 	boss_health.value = _new_health
+	
+	
 	values.text = str(_new_health) + "/" + str(_max_health)
 
+#func _on_boss3_update_health(_new_health: float, _max_health: float) -> void:
+	##if !boss_health.visible: 
+		##boss_health.hide()
+		##return
+	#boss_health.value = _new_health
+	#values.text = str(_new_health) + "/" + str(_max_health)
 #@TODO update dash meter func
 
 func _on_reset():
