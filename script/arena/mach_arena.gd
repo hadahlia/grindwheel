@@ -74,8 +74,8 @@ const BASEDMG : float = 4
 func _ready():
 	#gui.toggle_healthbar(false)
 	# REMEMBER TO UNCOMMENT B4 UPLOAD
-	#Globals.RoundCount = 0
-	#Globals.DianthusCount = 0
+	Globals.RoundCount = 0
+	Globals.DianthusCount = 0
 	fade_out.emit()
 	#_start_round()
 	#pass
