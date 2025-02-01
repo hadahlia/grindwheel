@@ -15,7 +15,9 @@ signal update_health
 #var cer_1 : SerbianWheel
 #var cer_2 : SerbianWheel
 #var cer_3 : SerbianWheel
-@onready var cer_1 = $wheel_holder/cer1
+@onready var cer_1 = $cer1
+
+#@onready var cer_1 = $wheel_holder/cer1
 @onready var cer_2 = $wheel_holder/cer2
 #@onready var cer_3 = $wheel_holder/cer3
 @onready var cer_3 = $cer3
@@ -61,9 +63,9 @@ func max_health_calc(max_h: float):
 	max_health = max_h * 3
 	total_health = max_health
 
-func _physics_process(delta):
-	if !Globals.can_move: return
-	wheel_holder.rotation.y -= deg_to_rad(30) * (delta * 2)
+#func _physics_process(delta):
+	#if !Globals.can_move: return
+	#wheel_holder.rotation.y -= deg_to_rad(30) * (delta * 2)
 	#gun_laser_root
 
 #func reduce_cerberus_health():

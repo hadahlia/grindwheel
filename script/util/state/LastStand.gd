@@ -1,6 +1,6 @@
 extends State
 
-@export var self_reference : BossWheel
+@export var self_reference : CharacterBody3D
 #@onready var laser_machine = $"../../gun_/laser_machine"
 @onready var gun_laser_root = $"../../gun_laser_root"
 
@@ -26,7 +26,7 @@ var laser_exists : bool = false
 
 func enter():
 	target = get_tree().get_first_node_in_group("CenterPoint").global_position
-	
+	self_reference.set_physics_process(false)
 	get_tree().create_timer(1.0).timeout.connect(func()->void:
 		fire_lasers()
 	)
@@ -109,10 +109,10 @@ func stop_lasers():
 func physics_update(_dt: float):
 	#if !laser_machine: return
 	if dir_clockwise:
-		gun_laser_root.rotation.y -= deg_to_rad(30) * (_dt * 2)
+		self_reference.rotation.y -= deg_to_rad(30) * (_dt * 2)
 		#laser_machine.rotation.y -= deg_to_rad(30) * (_dt * 2)
 	else:
-		gun_laser_root.rotation.y += deg_to_rad(30) * (_dt * 2)
+		self_reference.rotation.y += deg_to_rad(30) * (_dt * 2)
 		#laser_machine.rotation.y += deg_to_rad(30) * (_dt * 2)
 	
 	self_reference.global_position = self_reference.global_position.move_toward(target, 10 * _dt)

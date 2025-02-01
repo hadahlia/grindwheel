@@ -7,10 +7,10 @@ var can_move : bool = true
 enum GameState { FIGHT, MENU1, MENU2, WORLDPEACE }
 var superstate = GameState.MENU1
 
-var RoundCount : int = 0
+var RoundCount : int = 3
 
 var OrbitMode : bool = false
-var DianthusCount : int = 0
+var DianthusCount : int = 3
 var DianthusDamage : float = 5
 var GemMaxHP : int = 3
 

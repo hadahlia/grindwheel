@@ -75,11 +75,11 @@ func _ready():
 	#boss_spawned.emit()
 #const SPEED = 5.0
 #const JUMP_VELOCITY = 4.5
-func visual_spin():
-	spin_root.rotation.y += stats.rot_speed * stats.stability
+func visual_spin(dt: float) -> void:
+	spin_root.rotation.y += deg_to_rad(stats.rot_speed) * 2 * dt
 
 func _physics_process(delta):
-	if _phase_two or !Globals.can_move: return
+	if !Globals.can_move: return
 	vel_y = _grav
 	if is_on_floor():
 		vel_y = 0
@@ -90,7 +90,7 @@ func _physics_process(delta):
 	#if saw_col:
 		#_take_damage(delta)
 	
-	visual_spin()
+	visual_spin(delta)
 	#if !_dashing:
 	velocity = wish_dir.normalized() * stats._movespeed
 	velocity.y = vel_y
