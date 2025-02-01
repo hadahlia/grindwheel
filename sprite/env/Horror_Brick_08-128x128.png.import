@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cjm4ox8h0t5sb"
 path.bptc="res://.godot/imported/Horror_Brick_08-128x128.png-19d8014f5e5d9732b083537be0acebcd.bptc.ctex"
+path.astc="res://.godot/imported/Horror_Brick_08-128x128.png-19d8014f5e5d9732b083537be0acebcd.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/env/Horror_Brick_08-128x128.png"
-dest_files=["res://.godot/imported/Horror_Brick_08-128x128.png-19d8014f5e5d9732b083537be0acebcd.bptc.ctex"]
+dest_files=["res://.godot/imported/Horror_Brick_08-128x128.png-19d8014f5e5d9732b083537be0acebcd.bptc.ctex", "res://.godot/imported/Horror_Brick_08-128x128.png-19d8014f5e5d9732b083537be0acebcd.astc.ctex"]
 
 [params]
 

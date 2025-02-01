@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c2vikaxo4qlok"
 path.bptc="res://.godot/imported/hand_clay.png-9db8913bb69e34b3072d1a110cff91e6.bptc.ctex"
+path.astc="res://.godot/imported/hand_clay.png-9db8913bb69e34b3072d1a110cff91e6.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/textures/hand_clay.png"
-dest_files=["res://.godot/imported/hand_clay.png-9db8913bb69e34b3072d1a110cff91e6.bptc.ctex"]
+dest_files=["res://.godot/imported/hand_clay.png-9db8913bb69e34b3072d1a110cff91e6.bptc.ctex", "res://.godot/imported/hand_clay.png-9db8913bb69e34b3072d1a110cff91e6.astc.ctex"]
 
 [params]
 

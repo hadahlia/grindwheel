@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dhlde2ear35ej"
 path.bptc="res://.godot/imported/dianthusLogo2.png-ac0d935cb6f8b5098dea1cda6d5d1f52.bptc.ctex"
+path.astc="res://.godot/imported/dianthusLogo2.png-ac0d935cb6f8b5098dea1cda6d5d1f52.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/gui/title/dianthusLogo2.png"
-dest_files=["res://.godot/imported/dianthusLogo2.png-ac0d935cb6f8b5098dea1cda6d5d1f52.bptc.ctex"]
+dest_files=["res://.godot/imported/dianthusLogo2.png-ac0d935cb6f8b5098dea1cda6d5d1f52.bptc.ctex", "res://.godot/imported/dianthusLogo2.png-ac0d935cb6f8b5098dea1cda6d5d1f52.astc.ctex"]
 
 [params]
 

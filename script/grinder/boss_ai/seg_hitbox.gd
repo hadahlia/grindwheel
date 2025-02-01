@@ -13,7 +13,7 @@ signal core_destroyed
 @onready var dipsa_body = $"../../../.."
 
 
-var _piece_health : float = 20
+var _piece_health : float = 22
 var max_hp : float
 
 var invuln: bool = false
@@ -49,7 +49,7 @@ func _damage_core(val: float) -> void:
 		#weakpoint_.queue_free()
 
 func fucking_die():
-	core_destroyed.emit(max_hp / 2)
+	core_destroyed.emit(max_hp / 2) # + ((max_hp * Globals.RoundCount)* 0.2)
 	delete_triggers()
 
 func _on_area_entered(area):

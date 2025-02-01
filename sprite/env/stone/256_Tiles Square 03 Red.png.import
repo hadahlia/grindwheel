@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://5a2s2qe4whgp"
 path.bptc="res://.godot/imported/256_Tiles Square 03 Red.png-6599e159db1d24a5b237b9aff87a0c9c.bptc.ctex"
+path.astc="res://.godot/imported/256_Tiles Square 03 Red.png-6599e159db1d24a5b237b9aff87a0c9c.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/env/stone/256_Tiles Square 03 Red.png"
-dest_files=["res://.godot/imported/256_Tiles Square 03 Red.png-6599e159db1d24a5b237b9aff87a0c9c.bptc.ctex"]
+dest_files=["res://.godot/imported/256_Tiles Square 03 Red.png-6599e159db1d24a5b237b9aff87a0c9c.bptc.ctex", "res://.godot/imported/256_Tiles Square 03 Red.png-6599e159db1d24a5b237b9aff87a0c9c.astc.ctex"]
 
 [params]
 

@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://ba3uskjlpgy0t"
 path.bptc="res://.godot/imported/testmap.png-c19f356f7f90d6c42c774745b4bdd32f.bptc.ctex"
+path.astc="res://.godot/imported/testmap.png-c19f356f7f90d6c42c774745b4bdd32f.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/env/testmap.png"
-dest_files=["res://.godot/imported/testmap.png-c19f356f7f90d6c42c774745b4bdd32f.bptc.ctex"]
+dest_files=["res://.godot/imported/testmap.png-c19f356f7f90d6c42c774745b4bdd32f.bptc.ctex", "res://.godot/imported/testmap.png-c19f356f7f90d6c42c774745b4bdd32f.astc.ctex"]
 
 [params]
 

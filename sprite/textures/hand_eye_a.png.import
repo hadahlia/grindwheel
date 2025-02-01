@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bq7w5618rop7v"
 path.bptc="res://.godot/imported/hand_eye_a.png-335f3252137ab078174c92f861097707.bptc.ctex"
+path.astc="res://.godot/imported/hand_eye_a.png-335f3252137ab078174c92f861097707.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/textures/hand_eye_a.png"
-dest_files=["res://.godot/imported/hand_eye_a.png-335f3252137ab078174c92f861097707.bptc.ctex"]
+dest_files=["res://.godot/imported/hand_eye_a.png-335f3252137ab078174c92f861097707.bptc.ctex", "res://.godot/imported/hand_eye_a.png-335f3252137ab078174c92f861097707.astc.ctex"]
 
 [params]
 

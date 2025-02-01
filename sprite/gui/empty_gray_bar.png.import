@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cllq0gulo6nap"
 path.bptc="res://.godot/imported/empty_gray_bar.png-3f102a51c272bd05ddebc654fb28dc89.bptc.ctex"
+path.astc="res://.godot/imported/empty_gray_bar.png-3f102a51c272bd05ddebc654fb28dc89.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/gui/empty_gray_bar.png"
-dest_files=["res://.godot/imported/empty_gray_bar.png-3f102a51c272bd05ddebc654fb28dc89.bptc.ctex"]
+dest_files=["res://.godot/imported/empty_gray_bar.png-3f102a51c272bd05ddebc654fb28dc89.bptc.ctex", "res://.godot/imported/empty_gray_bar.png-3f102a51c272bd05ddebc654fb28dc89.astc.ctex"]
 
 [params]
 

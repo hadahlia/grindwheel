@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dn3a7f3vf4mul"
 path.bptc="res://.godot/imported/unstable.png-20b8ab290209bd20b4755986fee9421e.bptc.ctex"
+path.astc="res://.godot/imported/unstable.png-20b8ab290209bd20b4755986fee9421e.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/gui/unstable.png"
-dest_files=["res://.godot/imported/unstable.png-20b8ab290209bd20b4755986fee9421e.bptc.ctex"]
+dest_files=["res://.godot/imported/unstable.png-20b8ab290209bd20b4755986fee9421e.bptc.ctex", "res://.godot/imported/unstable.png-20b8ab290209bd20b4755986fee9421e.astc.ctex"]
 
 [params]
 

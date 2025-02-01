@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dm0moakcxvcb1"
 path.bptc="res://.godot/imported/4.png-2f8226f8152128e659b21234ec8612ce.bptc.ctex"
+path.astc="res://.godot/imported/4.png-2f8226f8152128e659b21234ec8612ce.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/env/ocean_layers/4.png"
-dest_files=["res://.godot/imported/4.png-2f8226f8152128e659b21234ec8612ce.bptc.ctex"]
+dest_files=["res://.godot/imported/4.png-2f8226f8152128e659b21234ec8612ce.bptc.ctex", "res://.godot/imported/4.png-2f8226f8152128e659b21234ec8612ce.astc.ctex"]
 
 [params]
 

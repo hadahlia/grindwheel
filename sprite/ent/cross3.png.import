@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b0aij0hhcmi74"
 path.bptc="res://.godot/imported/cross3.png-08f944c3571693885458b48ccbaa2409.bptc.ctex"
+path.astc="res://.godot/imported/cross3.png-08f944c3571693885458b48ccbaa2409.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/ent/cross3.png"
-dest_files=["res://.godot/imported/cross3.png-08f944c3571693885458b48ccbaa2409.bptc.ctex"]
+dest_files=["res://.godot/imported/cross3.png-08f944c3571693885458b48ccbaa2409.bptc.ctex", "res://.godot/imported/cross3.png-08f944c3571693885458b48ccbaa2409.astc.ctex"]
 
 [params]
 

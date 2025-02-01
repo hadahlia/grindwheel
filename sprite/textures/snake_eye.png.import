@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://d3mqk2nylbrul"
 path.bptc="res://.godot/imported/snake_eye.png-f74e168a3ad2a1445c3df873e8750ecc.bptc.ctex"
+path.astc="res://.godot/imported/snake_eye.png-f74e168a3ad2a1445c3df873e8750ecc.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/textures/snake_eye.png"
-dest_files=["res://.godot/imported/snake_eye.png-f74e168a3ad2a1445c3df873e8750ecc.bptc.ctex"]
+dest_files=["res://.godot/imported/snake_eye.png-f74e168a3ad2a1445c3df873e8750ecc.bptc.ctex", "res://.godot/imported/snake_eye.png-f74e168a3ad2a1445c3df873e8750ecc.astc.ctex"]
 
 [params]
 

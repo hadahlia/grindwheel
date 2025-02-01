@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dyyuajh3ud0o4"
 path.bptc="res://.godot/imported/Circular_06-256x256.png-0c5453a3068c895587a49a94d4e6a5d3.bptc.ctex"
+path.astc="res://.godot/imported/Circular_06-256x256.png-0c5453a3068c895587a49a94d4e6a5d3.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/particle/Circular_06-256x256.png"
-dest_files=["res://.godot/imported/Circular_06-256x256.png-0c5453a3068c895587a49a94d4e6a5d3.bptc.ctex"]
+dest_files=["res://.godot/imported/Circular_06-256x256.png-0c5453a3068c895587a49a94d4e6a5d3.bptc.ctex", "res://.godot/imported/Circular_06-256x256.png-0c5453a3068c895587a49a94d4e6a5d3.astc.ctex"]
 
 [params]
 

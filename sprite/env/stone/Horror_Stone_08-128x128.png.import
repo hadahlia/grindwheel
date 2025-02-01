@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://85wy0ph1ptom"
 path.bptc="res://.godot/imported/Horror_Stone_08-128x128.png-a9cea62152fcbe023463a88aa89ab25c.bptc.ctex"
+path.astc="res://.godot/imported/Horror_Stone_08-128x128.png-a9cea62152fcbe023463a88aa89ab25c.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/env/stone/Horror_Stone_08-128x128.png"
-dest_files=["res://.godot/imported/Horror_Stone_08-128x128.png-a9cea62152fcbe023463a88aa89ab25c.bptc.ctex"]
+dest_files=["res://.godot/imported/Horror_Stone_08-128x128.png-a9cea62152fcbe023463a88aa89ab25c.bptc.ctex", "res://.godot/imported/Horror_Stone_08-128x128.png-a9cea62152fcbe023463a88aa89ab25c.astc.ctex"]
 
 [params]
 

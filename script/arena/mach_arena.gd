@@ -181,7 +181,7 @@ func spawn_boss():
 	if rc > numrounds:
 		rc = (rc % numrounds) #+ 1
 		if rc == 0:
-			rc += 1
+			rc = 3
 	match rc:
 		# tutorial msg
 		0:

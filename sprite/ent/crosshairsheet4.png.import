@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://chhcdgqoc54bs"
 path.bptc="res://.godot/imported/crosshairsheet4.png-2cf9a80556c13fcae713a6c34112aeb9.bptc.ctex"
+path.astc="res://.godot/imported/crosshairsheet4.png-2cf9a80556c13fcae713a6c34112aeb9.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/ent/crosshairsheet4.png"
-dest_files=["res://.godot/imported/crosshairsheet4.png-2cf9a80556c13fcae713a6c34112aeb9.bptc.ctex"]
+dest_files=["res://.godot/imported/crosshairsheet4.png-2cf9a80556c13fcae713a6c34112aeb9.bptc.ctex", "res://.godot/imported/crosshairsheet4.png-2cf9a80556c13fcae713a6c34112aeb9.astc.ctex"]
 
 [params]
 

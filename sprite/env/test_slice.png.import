@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://d2bfrp475pf5g"
 path.bptc="res://.godot/imported/test_slice.png-8ce18484a6110c269b6c88e0a582f185.bptc.ctex"
+path.astc="res://.godot/imported/test_slice.png-8ce18484a6110c269b6c88e0a582f185.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/env/test_slice.png"
-dest_files=["res://.godot/imported/test_slice.png-8ce18484a6110c269b6c88e0a582f185.bptc.ctex"]
+dest_files=["res://.godot/imported/test_slice.png-8ce18484a6110c269b6c88e0a582f185.bptc.ctex", "res://.godot/imported/test_slice.png-8ce18484a6110c269b6c88e0a582f185.astc.ctex"]
 
 [params]
 

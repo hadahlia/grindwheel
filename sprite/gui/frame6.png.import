@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cqkljf2d0hf17"
 path.bptc="res://.godot/imported/frame6.png-eb1807b216c80f18cb31c831c9bf63b2.bptc.ctex"
+path.astc="res://.godot/imported/frame6.png-eb1807b216c80f18cb31c831c9bf63b2.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/gui/frame6.png"
-dest_files=["res://.godot/imported/frame6.png-eb1807b216c80f18cb31c831c9bf63b2.bptc.ctex"]
+dest_files=["res://.godot/imported/frame6.png-eb1807b216c80f18cb31c831c9bf63b2.bptc.ctex", "res://.godot/imported/frame6.png-eb1807b216c80f18cb31c831c9bf63b2.astc.ctex"]
 
 [params]
 

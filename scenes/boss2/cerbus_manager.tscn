@@ -8,47 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://dhs8pmg1iceku" path="res://scenes/dianthus_floor.tscn" id="5_petxr"]
 [ext_resource type="Script" path="res://script/util/state/cerberus/frantic.gd" id="6_f15sd"]
 
-[sub_resource type="Animation" id="Animation_d6lme"]
-resource_name = "intro sequence"
-length = 3.5
-step = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("wheel_holder/cer1:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0.846653, -20), Vector3(0, 0.846653, -6), Vector3(0, 0.846653, -20)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("wheel_holder/cer2:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1, 1.5, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(-20, 0.846653, 0), Vector3(-20, 0.846653, 0), Vector3(-8, 0.846653, 0), Vector3(-20, 0.846653, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("cer3:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 2, 2.5, 3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(20, 10.847, 0), Vector3(20, 10.847, 0), Vector3(6, 10.847, 0), Vector3(20, 10.847, 0)]
-}
-
 [sub_resource type="Animation" id="Animation_vrmtt"]
 length = 0.001
 tracks/0/type = "value"
@@ -104,6 +63,47 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector3(20, 0, 0), Vector3(26, 0, 0), Vector3(18.684, 0, 18), Vector3(0.757, 0, 26), Vector3(-19.111, 0, 18.471), Vector3(-28.666, 0, -0.684), Vector3(-20.422, 0, -21.638), Vector3(-0.535, 0, -30.093), Vector3(21.045, 0, -20.778), Vector3(26, 0, 0), Vector3(20, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_d6lme"]
+resource_name = "intro sequence"
+length = 3.5
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("wheel_holder/cer1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.846653, -20), Vector3(0, 0.846653, -6), Vector3(0, 0.846653, -20)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("wheel_holder/cer2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-20, 0.846653, 0), Vector3(-20, 0.846653, 0), Vector3(-8, 0.846653, 0), Vector3(-20, 0.846653, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("cer3:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2, 2.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(20, 10.847, 0), Vector3(20, 10.847, 0), Vector3(6, 10.847, 0), Vector3(20, 10.847, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_weh24"]

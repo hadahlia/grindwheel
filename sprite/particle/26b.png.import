@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dx65kbx2kyasm"
 path.bptc="res://.godot/imported/26b.png-fc0c77bf53b9fb9c866c80c7aeec1c1b.bptc.ctex"
+path.astc="res://.godot/imported/26b.png-fc0c77bf53b9fb9c866c80c7aeec1c1b.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/particle/26b.png"
-dest_files=["res://.godot/imported/26b.png-fc0c77bf53b9fb9c866c80c7aeec1c1b.bptc.ctex"]
+dest_files=["res://.godot/imported/26b.png-fc0c77bf53b9fb9c866c80c7aeec1c1b.bptc.ctex", "res://.godot/imported/26b.png-fc0c77bf53b9fb9c866c80c7aeec1c1b.astc.ctex"]
 
 [params]
 

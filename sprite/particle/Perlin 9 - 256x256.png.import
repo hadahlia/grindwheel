@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bknd1wcxr08xl"
 path.bptc="res://.godot/imported/Perlin 9 - 256x256.png-8bd830ac237e9706a1f69e969ad8497e.bptc.ctex"
+path.astc="res://.godot/imported/Perlin 9 - 256x256.png-8bd830ac237e9706a1f69e969ad8497e.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://sprite/particle/Perlin 9 - 256x256.png"
-dest_files=["res://.godot/imported/Perlin 9 - 256x256.png-8bd830ac237e9706a1f69e969ad8497e.bptc.ctex"]
+dest_files=["res://.godot/imported/Perlin 9 - 256x256.png-8bd830ac237e9706a1f69e969ad8497e.bptc.ctex", "res://.godot/imported/Perlin 9 - 256x256.png-8bd830ac237e9706a1f69e969ad8497e.astc.ctex"]
 
 [params]
 
