@@ -6,10 +6,10 @@
 [resource]
 script = ExtResource("2_ltakw")
 dash_cooldown = 8
-_movespeed = 30.0
+_movespeed = 22.0
 damage = 5
 rot_speed = 10.0
 stability = 20
 dash_max_charge = 4
-health = 50.0
+health = 65.0
 bump_sound = ExtResource("1_tegg5")

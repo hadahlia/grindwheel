@@ -1,8 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://dqoc4j4g3yeqr"]
+[gd_scene load_steps=12 format=3 uid="uid://dqoc4j4g3yeqr"]
 
 [ext_resource type="Script" path="res://script/grinder/boss_ai/cerberus/cerbus_manager.gd" id="1_qhubx"]
 [ext_resource type="PackedScene" uid="uid://mnbm8jdi71rs" path="res://scenes/boss2/cerberus_wheel.tscn" id="2_p88a5"]
 [ext_resource type="Script" path="res://script/util/state/state_machine.gd" id="3_01130"]
+[ext_resource type="Script" path="res://script/util/state/cerberus/stalk.gd" id="3_m55sv"]
+[ext_resource type="Script" path="res://script/grinder/boss_ai/cerberus/gun.gd" id="5_n1na4"]
+[ext_resource type="PackedScene" uid="uid://dhs8pmg1iceku" path="res://scenes/dianthus_floor.tscn" id="5_petxr"]
+[ext_resource type="Script" path="res://script/util/state/cerberus/frantic.gd" id="6_f15sd"]
 
 [sub_resource type="Animation" id="Animation_d6lme"]
 resource_name = "intro sequence"
@@ -35,14 +39,14 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("wheel_holder/cer3:position")
+tracks/2/path = NodePath("cer3:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0, 2, 2.5, 3),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(20, 0.846653, 0), Vector3(20, 0.846653, 0), Vector3(6, 0.846653, 0), Vector3(20, 0.846653, 0)]
+"values": [Vector3(20, 10.847, 0), Vector3(20, 10.847, 0), Vector3(6, 10.847, 0), Vector3(20, 10.847, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_vrmtt"]
@@ -74,7 +78,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("wheel_holder/cer3:position")
+tracks/2/path = NodePath("cer3:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -84,19 +88,54 @@ tracks/2/keys = {
 "values": [Vector3(20, 0.846653, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_lbnh6"]
+resource_name = "asshole_rim"
+length = 5.0
+loop_mode = 1
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("cer3:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(20, 0, 0), Vector3(26, 0, 0), Vector3(18.684, 0, 18), Vector3(0.757, 0, 26), Vector3(-19.111, 0, 18.471), Vector3(-28.666, 0, -0.684), Vector3(-20.422, 0, -21.638), Vector3(-0.535, 0, -30.093), Vector3(21.045, 0, -20.778), Vector3(26, 0, 0), Vector3(20, 0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_weh24"]
 _data = {
 "RESET": SubResource("Animation_vrmtt"),
+"asshole_rim": SubResource("Animation_lbnh6"),
 "intro sequence": SubResource("Animation_d6lme")
 }
 
 [node name="Cerbus_Manager" type="Node3D" groups=["Cerberus Manager"]]
 script = ExtResource("1_qhubx")
 
-[node name="cerberus_state" type="Node" parent="."]
+[node name="cerberus_state" type="Node" parent="." node_paths=PackedStringArray("init_state")]
 script = ExtResource("3_01130")
+init_state = NodePath("stalk")
+
+[node name="stalk" type="Node" parent="cerberus_state" node_paths=PackedStringArray("cer1")]
+script = ExtResource("3_m55sv")
+cer1 = NodePath("../../wheel_holder/cer1")
+
+[node name="cer3" parent="." instance=ExtResource("2_p88a5")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 20, 0, 0)
+
+[node name="gun" type="Node3D" parent="cer3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+script = ExtResource("5_n1na4")
+
+[node name="shoot_timer" type="Timer" parent="cer3/gun"]
+wait_time = 1.8
 
 [node name="wheel_holder" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
 
 [node name="cer1" parent="wheel_holder" instance=ExtResource("2_p88a5")]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0.846653, -20)
@@ -104,8 +143,16 @@ transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0.846653, -20)
 [node name="cer2" parent="wheel_holder" instance=ExtResource("2_p88a5")]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, -20, 0.846653, 0)
 
-[node name="cer3" parent="wheel_holder" instance=ExtResource("2_p88a5")]
-transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 20, 0.846653, 0)
+[node name="cer2_states" type="Node" parent="wheel_holder/cer2" node_paths=PackedStringArray("init_state")]
+script = ExtResource("3_01130")
+init_state = NodePath("frantic")
+
+[node name="frantic" type="Node" parent="wheel_holder/cer2/cer2_states" node_paths=PackedStringArray("cer2")]
+script = ExtResource("6_f15sd")
+cer2 = NodePath("../..")
+
+[node name="Timer" type="Timer" parent="wheel_holder/cer2/cer2_states"]
+wait_time = 3.0
 
 [node name="crbanim" type="AnimationPlayer" parent="."]
 reset_on_save = false
@@ -113,11 +160,17 @@ libraries = {
 "": SubResource("AnimationLibrary_weh24")
 }
 
+[node name="dianthus_floor" parent="." instance=ExtResource("5_petxr")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -4, -2)
+
+[connection signal="boss_death" from="cer3" to="." method="_on_cer_3_boss_death"]
+[connection signal="update_serb_health" from="cer3" to="." method="_on_cer_3_update_serb_health"]
+[connection signal="timeout" from="cer3/gun/shoot_timer" to="cer3/gun" method="_on_shoot_timer_timeout"]
 [connection signal="boss_death" from="wheel_holder/cer1" to="." method="_on_cer_1_boss_death"]
 [connection signal="update_serb_health" from="wheel_holder/cer1" to="." method="_on_cer_update_health"]
 [connection signal="boss_death" from="wheel_holder/cer2" to="." method="_on_cer_2_boss_death"]
 [connection signal="update_serb_health" from="wheel_holder/cer2" to="." method="_on_cer_2_update_serb_health"]
-[connection signal="boss_death" from="wheel_holder/cer3" to="." method="_on_cer_3_boss_death"]
-[connection signal="update_serb_health" from="wheel_holder/cer3" to="." method="_on_cer_3_update_serb_health"]
+[connection signal="timeout" from="wheel_holder/cer2/cer2_states/Timer" to="wheel_holder/cer2/cer2_states/frantic" method="_on_timer_timeout"]
 [connection signal="animation_finished" from="crbanim" to="." method="_on_crbanim_animation_finished"]
 [connection signal="current_animation_changed" from="crbanim" to="." method="_on_crbanim_current_animation_changed"]
+[connection signal="current_animation_changed" from="crbanim" to="cer3/gun" method="_on_crbanim_current_animation_changed"]

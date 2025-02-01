@@ -27,9 +27,9 @@ signal boss_death
 @onready var spin_root = $mesh_head/spinning_
 
 # timers
-@onready var _stun_timer = $_stun_timer
+#@onready var _stun_timer = $_stun_timer
 @onready var _invuln_timer = $_invuln_timer
-@onready var _invuln_saw_time = $_invuln_saw_time
+#@onready var _invuln_saw_time = $_invuln_saw_time
 
 
 # SOUNDS
@@ -38,14 +38,14 @@ signal boss_death
 @onready var attacked_sfx = $attacked_sfx
 
 
-var _grav : float = -20
+#var _grav : float = -20
 var friction : float = -24
 var _dmg : int
 
 var wish_dir : Vector3 = Vector3.ZERO
 var acceleration : Vector3 = Vector3.ZERO
 
-var _stability : int
+#var _stability : int
 var _health : float
 var _max_health : float = 1000
 

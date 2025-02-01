@@ -11,8 +11,8 @@ extends State
 
 
 func enter():
-	var den_array = den_spawns.get_children()
-	var rr : int = randi_range(0, 4)
+	#var den_array = den_spawns.get_children()
+	#var rr : int = randi_range(0, 4)
 		
 	if dipsa_body:
 		#dipsa_body.segments[0].global_position = den_array[rr].global_position

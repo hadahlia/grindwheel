@@ -2,7 +2,7 @@ class_name SerbianWheel
 extends CharacterBody3D
 
 #signal dread_intro_finish
-signal boss_spawned
+#signal boss_spawned
 
 signal update_serb_health
 #signal output_damage
@@ -36,6 +36,7 @@ var bullets_ref : Node3D
 @onready var gun_laser_root = $gun_laser_root
 
 var _grav : float = -20
+var vel_y : float = 0
 var friction : float = -9
 var _dmg : int
 
@@ -79,19 +80,23 @@ func visual_spin():
 
 func _physics_process(delta):
 	if _phase_two or !Globals.can_move: return
+	vel_y = _grav
 	if is_on_floor():
-		#get_input()
-		apply_friction(delta)
+		vel_y = 0
+		##get_input()
+		#apply_friction(delta)
 		
 		#velocity.y -= fall_speed * delta
 	#if saw_col:
 		#_take_damage(delta)
-	acceleration.y = _grav
+	
 	visual_spin()
 	#if !_dashing:
+	velocity = wish_dir.normalized() * stats._movespeed
+	velocity.y = vel_y
 	if velocity.length() < 35:
 		
-		velocity += acceleration * delta
+		#velocity += acceleration * delta
 		#move_and_collide(velocity * delta)
 		move_and_slide()
 		#if _dashing:
@@ -138,12 +143,12 @@ func set_direction(_dir: Vector3) -> void:
 	if stunned: return
 	
 	#var t_speed = _move_speed * delta
-	acceleration = Vector3.ZERO
+	#acceleration = Vector3.ZERO
 	#_input_vector = Input.get_vector("Left", "Right", "Up", "Down")
 	
 	wish_dir = _dir #.rotated(Vector3.UP, cam.rotation.z)
 	
-	acceleration = wish_dir * stats._movespeed
+	#acceleration = wish_dir * stats._movespeed
 
 func _take_damage_once(val: float) -> void:
 	if _invuln: return
@@ -217,8 +222,8 @@ func _on_hurt_ball_area_entered(area):
 	if p is GrindWheel:
 		#print("hit!")
 		_take_damage_once(p._saw_dmg)
-		if velocity.length() < p.velocity.length():
-			velocity = p.velocity
+		#if velocity.length() < p.velocity.length():
+			#velocity = p.velocity
 			#p.velocity = self.velocity
 
 

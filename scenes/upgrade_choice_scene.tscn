@@ -10,7 +10,7 @@ size = Vector3(4, 4, 4)
 
 [sub_resource type="PrismMesh" id="PrismMesh_av6xb"]
 
-[node name="upgrade_choice_scene" type="Node3D"]
+[node name="upgrade_choice_scene" type="Node3D" groups=["Upgrade Scene"]]
 script = ExtResource("1_nbf1t")
 
 [node name="spinner_upgrade_trig" type="Area3D" parent="."]

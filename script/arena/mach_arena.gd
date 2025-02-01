@@ -74,8 +74,8 @@ const BASEDMG : float = 4
 func _ready():
 	#gui.toggle_healthbar(false)
 	# REMEMBER TO UNCOMMENT B4 UPLOAD
-	Globals.RoundCount = 0
-	Globals.DianthusCount = 0
+	#Globals.RoundCount = 0
+	#Globals.DianthusCount = 0
 	fade_out.emit()
 	#_start_round()
 	#pass
@@ -407,6 +407,11 @@ func spawn_explosion(pos: Vector3) -> void:
 	#boss_ref.velocity = player_vel #* 0.8 #* vel_diff * 0.5
 
 func destroy_actors():
+	var pg = get_tree().get_first_node_in_group("Upgrade Scene")
+	upgrade_spawn_time.stop()
+	if pg:
+		pg.queue_free()
+		
 	var sg = get_tree().get_first_node_in_group("Angel Gem")
 	
 	var bss = get_tree().get_nodes_in_group("BossEnem")
@@ -416,6 +421,10 @@ func destroy_actors():
 	var sdd = get_tree().get_first_node_in_group("Snake Den")
 	if sdd:
 		sdd.queue_free()
+		
+	var crbm = get_tree().get_first_node_in_group("Cerberus Manager")
+	if crbm:
+		crbm.queue_free()
 	#if dipsa:
 		#dipsa.queue_free()
 	

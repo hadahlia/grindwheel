@@ -17,7 +17,9 @@ signal update_health
 #var cer_3 : SerbianWheel
 @onready var cer_1 = $wheel_holder/cer1
 @onready var cer_2 = $wheel_holder/cer2
-@onready var cer_3 = $wheel_holder/cer3
+#@onready var cer_3 = $wheel_holder/cer3
+@onready var cer_3 = $cer3
+
 
 @onready var crbanim = $crbanim
 
@@ -81,6 +83,9 @@ func _on_crbanim_animation_finished(anim_name):
 		cer_2.enable_hitbox()
 		cer_3.enable_hitbox()
 		crb_intro_finish.emit()
+		get_tree().create_timer(2.0).timeout.connect(func()->void:
+			crbanim.play("asshole_rim")
+		)
 
 func end_fight():
 	all_dead_captain.emit()

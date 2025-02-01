@@ -77,7 +77,7 @@ func post_ready():
 		bossy.update_health.connect(_on_bossl_update_health)
 		#transmitted_max_hp = 
 		#transmitted_hp = bossy._health
-		boss_health.max_value = bossy._max_health
+		#boss_health.max_value = bossy._max_health
 		#boss_health.max_value = bossy._health
 		_on_bossl_update_health(bossy._health, bossy._max_health)
 	
@@ -85,7 +85,7 @@ func post_ready():
 		cerbman.update_health.connect(_on_bossl_update_health)
 		#transmitted_max_hp = 
 		#transmitted_hp = cerbman.total_health
-		boss_health.max_value = cerbman.max_health
+		#boss_health.max_value = cerbman.max_health
 		#boss_health.max_value = cerbman.max_health
 		_on_bossl_update_health(cerbman.total_health, cerbman.max_health)
 	
@@ -125,6 +125,7 @@ func _on_bossl_update_health(_new_health: float, _max_health: float) -> void:
 		#boss_health.hide()
 		#return
 	boss_health.value = _new_health
+	boss_health.max_value = _max_health
 	
 	
 	values.text = str(_new_health) + "/" + str(_max_health)
