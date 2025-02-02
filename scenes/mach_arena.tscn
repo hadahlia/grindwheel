@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://cau0atwkvl67f"]
+[gd_scene load_steps=63 format=3 uid="uid://cau0atwkvl67f"]
 
 [ext_resource type="Script" path="res://script/arena/mach_arena.gd" id="1_lwp4d"]
 [ext_resource type="Texture2D" uid="uid://cvbxjk0rh5p8k" path="res://sprite/gui/frame1.png" id="2_7qsjr"]
@@ -25,6 +25,7 @@
 [ext_resource type="AudioStream" uid="uid://dkk82dqglwds" path="res://audio/sfx/Retro Event UI 01.wav" id="23_f3ha4"]
 [ext_resource type="AudioStream" uid="uid://c3pdqv52uv1eq" path="res://audio/music/final_bunydogy.mp3" id="24_pqkn8"]
 [ext_resource type="AudioStream" uid="uid://b5j5oo7wtkbil" path="res://audio/music/hymn.ogg" id="25_5pg4d"]
+[ext_resource type="AudioStream" uid="uid://cvi3qa6u1mxcd" path="res://audio/music/sacred_chunks-6.wav" id="25_bljvh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fcpmf"]
 shader = ExtResource("6_sikrn")
@@ -292,6 +293,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [20.0]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("boss_track_2:unit_size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [20.0]
+}
 
 [sub_resource type="Animation" id="Animation_ku3wx"]
 resource_name = "fade_bunydogy"
@@ -304,6 +317,18 @@ tracks/0/path = NodePath("boss_track_1:unit_size")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [20.0, 0.1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("boss_track_2:unit_size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(0, 3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
@@ -1021,7 +1046,9 @@ prism_up2it
 
 - boss track -
 bunydogy 
-"
+
+- final boss track -
+xewcurfoo"
 vertical_alignment = 2
 
 [node name="ui_select" type="AudioStreamPlayer3D" parent="gui/title_screen"]
@@ -1126,6 +1153,10 @@ autoplay = true
 
 [node name="boss_track_1" type="AudioStreamPlayer3D" parent="Sfx"]
 stream = ExtResource("24_pqkn8")
+unit_size = 20.0
+
+[node name="boss_track_2" type="AudioStreamPlayer3D" parent="Sfx"]
+stream = ExtResource("25_bljvh")
 unit_size = 20.0
 
 [node name="fade_track" type="AnimationPlayer" parent="Sfx"]

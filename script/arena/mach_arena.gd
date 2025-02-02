@@ -20,6 +20,8 @@ signal finally_fucking_start
 # music
 @onready var title_music = $Sfx/title_music
 @onready var boss_track_1 = $Sfx/boss_track_1
+@onready var boss_track_2 = $Sfx/boss_track_2
+
 @onready var fade_track = $Sfx/fade_track
 
 @onready var hymn = $Sfx/hymn
@@ -57,6 +59,7 @@ const explosion_vfx : PackedScene = preload("res://scenes/vfx/deathsplosion.tscn
 const dread_wheel : PackedScene = preload("res://scenes/opponent_wheel.tscn")
 const dipsa : PackedScene = preload("res://scenes/boss2/snake_den_scene.tscn")
 const cerberus : PackedScene = preload("res://scenes/boss2/cerbus_manager.tscn")
+const ramses : PackedScene = preload("res://scenes/boss4/ramses_scene_main.tscn")
 
 # refs to existing boss and player
 #@export_node_path("GrindWheel") var player_ref_path
@@ -177,11 +180,11 @@ func spawn_player():
 
 func spawn_boss():
 	var rc = Globals.RoundCount
-	var numrounds : int = 3
+	var numrounds : int = 4
 	if rc > numrounds:
 		rc = (rc % numrounds) #+ 1
 		if rc == 0:
-			rc = 3
+			rc = 4
 	match rc:
 		# tutorial msg
 		0:
@@ -228,17 +231,32 @@ func spawn_boss():
 			
 			
 			gui._set_boss_name(" CERBERUS ")
-			#gui.toggle_healthbar(false)
-			
+			gui.toggle_healthbar(false)
 		# dead hands
+		4:
+			var rmses := ramses.instantiate()
+			true_arena.add_child(rmses)
+			
+			rmses.ramses_intro_finish.connect(_on_boss_intro_finish)
+			rmses.forward_dead_hand.connect(_on_boss_die)
+			rmses.both_dead.connect(_on_boss_death_no_explosion)
+			
+			#var ctr := get_tree().get_first_node_in_group("CenterPoint")
+			#rmses.global_position = ctr.global_position
+			
+			gui._set_boss_name(" PROJECTION RAMSES III ")
 		# widower
 
 func _on_boss_intro_finish():
 	Globals.can_move = true
 	#gui.show_gui()
 	gui.toggle_healthbar(true)
-	boss_track_1.unit_size = 25
-	boss_track_1.play()
+	if Globals.RoundCount % 4 == 0:
+		boss_track_2.unit_size = 25
+		boss_track_2.play()
+	else:
+		boss_track_1.unit_size = 25
+		boss_track_1.play()
 
 func spawn_upgrades():
 	gui.toggle_healthbar(false)
@@ -269,7 +287,7 @@ func spawn_hole(was_health_chosen: bool):
 		hc.trans_level.connect(_on_trans_level)
 		hc.global_position = hole_spot.global_position
 		true_arena.add_child(hc)
-	if Globals.RoundCount > 1 and Globals.RoundCount % 3 == 0:
+	if Globals.RoundCount % 4 == 0:
 		heaven_hole()
 
 #@TODO ending handling
@@ -298,6 +316,8 @@ func _on_end_game():
 	call_fade.emit()
 
 func _on_trans_level():
+	boss_track_1.stop()
+	boss_track_2.stop()
 	fade_track.play("fade_out_hymn")
 	call_fade.emit()
 
@@ -425,6 +445,10 @@ func destroy_actors():
 	var crbm = get_tree().get_first_node_in_group("Cerberus Manager")
 	if crbm:
 		crbm.queue_free()
+	
+	var rmsy = get_tree().get_first_node_in_group("Handsy")
+	if rmsy:
+		rmsy.queue_free()
 	#if dipsa:
 		#dipsa.queue_free()
 	

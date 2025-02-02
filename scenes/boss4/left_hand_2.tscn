@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=3 uid="uid://cdjyb0jsadfn4"]
+
+[ext_resource type="PackedScene" uid="uid://cmnfg1bu6fgfs" path="res://object/handy/left_hand.glb" id="1_p0b86"]
+[ext_resource type="Material" uid="uid://b6aj5kx3w27kd" path="res://shader/material/clay_skin.tres" id="2_736wq"]
+[ext_resource type="Material" uid="uid://csapuctg10s6n" path="res://shader/material/clay_eye.tres" id="3_o0kir"]
+
+[node name="left_hand2" instance=ExtResource("1_p0b86")]
+
+[node name="left_hand" parent="." index="0"]
+surface_material_override/0 = ExtResource("2_736wq")
+surface_material_override/1 = ExtResource("3_o0kir")

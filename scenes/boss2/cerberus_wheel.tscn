@@ -137,6 +137,7 @@ max_polyphony = 3
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 stream = ExtResource("9_3s36h")
 volume_db = 4.0
+unit_size = 25.0
 pitch_scale = 1.26
 max_distance = 423.72
 max_polyphony = 3
@@ -159,15 +160,6 @@ volume_db = -3.404
 pitch_scale = 1.06
 
 [node name="_invuln_timer" type="Timer" parent="."]
-wait_time = 0.05
-one_shot = true
-autostart = true
-
-[node name="_stun_timer" type="Timer" parent="."]
-wait_time = 3.0
-one_shot = true
-
-[node name="_invuln_saw_time" type="Timer" parent="."]
 wait_time = 0.05
 one_shot = true
 autostart = true

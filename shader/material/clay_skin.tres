@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://b6aj5kx3w27kd"]
+
+[ext_resource type="Texture2D" uid="uid://c2vikaxo4qlok" path="res://sprite/textures/hand_clay.png" id="1_bxp0c"]
+
+[resource]
+specular_mode = 2
+disable_ambient_light = true
+albedo_texture = ExtResource("1_bxp0c")
+texture_filter = 2

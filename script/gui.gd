@@ -48,6 +48,8 @@ var player : GrindWheel
 var bossy : CharacterBody3D
 
 var cerbman : CerberusMan
+var ramsy : RamsesManager
+
 #var bossy : Node3D
 #@onready var plyr = get_tree().get_first_node_in_group("Player")
 
@@ -68,7 +70,13 @@ func post_ready():
 		#player.update_spin.connect(_on_grindwheel_update_spin)
 		#player.update_stability.connect(_on_wheel_update_stability)
 		#_on_grindwheel_charge_spent(player._dash_charges)
-		
+	
+	ramsy = get_tree().get_first_node_in_group("Handsy")
+	if ramsy:
+		ramsy.update_health.connect(_on_bossl_update_health)
+		_on_bossl_update_health(ramsy.total_health, ramsy.max_health)
+		return
+	
 	bossy = get_tree().get_first_node_in_group("BossEnem")
 	cerbman = get_tree().get_first_node_in_group("Cerberus Manager")
 	#var transmitted_hp: float = 0
@@ -80,6 +88,7 @@ func post_ready():
 		#boss_health.max_value = bossy._max_health
 		#boss_health.max_value = bossy._health
 		_on_bossl_update_health(bossy._health, bossy._max_health)
+		return
 	
 	if cerbman:
 		cerbman.update_health.connect(_on_bossl_update_health)
@@ -88,6 +97,8 @@ func post_ready():
 		#boss_health.max_value = cerbman.max_health
 		#boss_health.max_value = cerbman.max_health
 		_on_bossl_update_health(cerbman.total_health, cerbman.max_health)
+		return
+	
 	
 	#boss_health.max_value = transmitted_max_hp
 	#_on_bossl_update_health(transmitted_hp, transmitted_max_hp)

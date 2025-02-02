@@ -212,7 +212,7 @@ func _take_damage_once(val: float) -> void:
 	if _invuln: return
 	attacked_sfx.play()
 	_health -= val
-	if _health <= (_max_health * 0.2) and !_phase_two:
+	if _health <= (_max_health * 0.25) and !_phase_two:
 		#set_phase_two()
 		_phase_two = true
 		enter_phase_two.emit()

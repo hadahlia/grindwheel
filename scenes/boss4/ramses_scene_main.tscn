@@ -1,0 +1,323 @@
+[gd_scene load_steps=17 format=3 uid="uid://cpmul6g1ujcsf"]
+
+[ext_resource type="Script" path="res://script/grinder/boss_ai/ramses/ramses_scene_main.gd" id="1_gfttm"]
+[ext_resource type="PackedScene" uid="uid://dhs8pmg1iceku" path="res://scenes/dianthus_floor.tscn" id="1_j5kcd"]
+[ext_resource type="PackedScene" uid="uid://djuaf2hp7l7b5" path="res://scenes/boss4/ramses_left.tscn" id="2_4q7wv"]
+[ext_resource type="PackedScene" uid="uid://dk6digf7ic2jb" path="res://scenes/boss4/ramses_right.tscn" id="2_482hd"]
+[ext_resource type="Script" path="res://script/util/state/state_machine.gd" id="4_k6i0b"]
+[ext_resource type="Script" path="res://script/util/state/ramses/phase_vomit.gd" id="5_stn0x"]
+[ext_resource type="Script" path="res://script/util/state/ramses/phase_sweep.gd" id="7_dc2sc"]
+[ext_resource type="AudioStream" uid="uid://cbald22birjo3" path="res://audio/sfx/dreadwheel/734759__drakedeweerd21__tractor-beam.mp3" id="8_brxuu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dtb7s"]
+albedo_color = Color(1, 0.247059, 0.521569, 1)
+
+[sub_resource type="Animation" id="Animation_vlmya"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ramses_anim_point_r:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-9, 2, -10)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ramses_anim_point_l:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(9, 2, -10)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ramses_right:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -1.5708, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ramses_left:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_q4nhb"]
+resource_name = "ramses intro"
+length = 4.0
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ramses_anim_point_r:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.5, 2.5, 3.75, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-9, 2, -10), Vector3(-25, 3.5, -10), Vector3(-15, 13, -10), Vector3(-3, 17.3333, -10), Vector3(-9, -2, -10), Vector3(-9, 0, -10)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ramses_anim_point_l:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.5, 2.5, 3.75, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(9, 2, -10), Vector3(29.5, 2, -10), Vector3(16, 14, -10), Vector3(0.666666, 5, -10), Vector3(9, -2, -10), Vector3(9, 0, -10)]
+}
+
+[sub_resource type="Animation" id="Animation_t7pb8"]
+resource_name = "clap"
+length = 4.0
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ramses_anim_point_l:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1, 2, 2.5, 3, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(50, 2, 0), Vector3(50, 2, 0), Vector3(1, 2, 0), Vector3(1, 2, 0), Vector3(23, 2, -12)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ramses_anim_point_r:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1, 2, 2.5, 3, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-46, 2, 1), Vector3(-46, 2, 1), Vector3(-1, 2, 1), Vector3(-1, 2, 1), Vector3(-18, 2, -12)]
+}
+
+[sub_resource type="Animation" id="Animation_6pryn"]
+resource_name = "cookie cutter"
+length = 8.0
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ramses_anim_point_r:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.75, 1.25, 2.25, 2.75, 3.75, 4.25, 4.75, 5.25, 6.25, 6.75, 7.5, 8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-26, 2, 2), Vector3(-26, 2, 2), Vector3(32, 2, -27), Vector3(32, 2, -27), Vector3(-34, 2, 33), Vector3(-34, 2, 33), Vector3(18, 2, 16), Vector3(18, 2, 16), Vector3(18, 2, -14), Vector3(18, 2, -14), Vector3(10, 2, 6), Vector3(10, 2, 6), Vector3(-24, 2, 31), Vector3(-24, 2, 2)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ramses_anim_point_l:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25, 1.25, 1.75, 3.25, 3.75, 4.25, 4.75, 5.25, 5.75, 6.75, 7.25, 7.5, 8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(25, 2, 2), Vector3(25, 2, 2), Vector3(43, 2, 2), Vector3(43, 2, 2), Vector3(-43, 2, 2), Vector3(-43, 2, 2), Vector3(-18, 2, -17), Vector3(-18, 2, -17), Vector3(-18, 2, 16), Vector3(-18, 2, 16), Vector3(-10, 2, -8), Vector3(-10, 2, -8), Vector3(27, 2, -33), Vector3(24, 2, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_eu7aw"]
+resource_name = "sweep_right"
+length = 5.0
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ramses_anim_point_l:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-47, 2, -12), Vector3(-41, 2, -27), Vector3(-0.555553, 2, -27), Vector3(41, 2, -27)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ramses_anim_point_r:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-47, 2, -12), Vector3(-41, 2, -27), Vector3(-0.555553, 2, -27), Vector3(41, 2, -27)]
+}
+
+[sub_resource type="Animation" id="Animation_4sar2"]
+resource_name = "sweep_left"
+length = 5.0
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ramses_anim_point_l:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(46, 2, -12), Vector3(41, 2, -29), Vector3(-0.111111, 2, -30), Vector3(-38, 2, -29)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ramses_anim_point_r:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(46, 2, -12), Vector3(41, 2, -29), Vector3(-0.111111, 2, -30), Vector3(-38, 2, -29)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ramses_right:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-1.5708, -1.5708, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ramses_left:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1.5708, -1.5708, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q22kh"]
+_data = {
+"RESET": SubResource("Animation_vlmya"),
+"clap": SubResource("Animation_t7pb8"),
+"cookie cutter": SubResource("Animation_6pryn"),
+"ramses intro": SubResource("Animation_q4nhb"),
+"sweep_left": SubResource("Animation_4sar2"),
+"sweep_right": SubResource("Animation_eu7aw")
+}
+
+[node name="ramses_scene_main" type="Node3D" groups=["Handsy"]]
+script = ExtResource("1_gfttm")
+
+[node name="ramses_anim_point_r" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 2, -10)
+
+[node name="ex" type="CSGBox3D" parent="ramses_anim_point_r"]
+visible = false
+size = Vector3(2, 3, 1)
+material = SubResource("StandardMaterial3D_dtb7s")
+
+[node name="ramses_anim_point_l" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2, -10)
+
+[node name="ex2" type="CSGBox3D" parent="ramses_anim_point_l"]
+visible = false
+size = Vector3(2, 3, 1)
+material = SubResource("StandardMaterial3D_dtb7s")
+
+[node name="dianthus_floor" parent="." instance=ExtResource("1_j5kcd")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -4, -2)
+
+[node name="ramses_left" parent="." instance=ExtResource("2_4q7wv")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 8, 2.8, -18)
+_max_health = 90.0
+
+[node name="r3_l_statemachine" type="Node" parent="ramses_left" node_paths=PackedStringArray("phase_2_state")]
+script = ExtResource("4_k6i0b")
+phase_2_state = NodePath("phase_vomit")
+
+[node name="phase_vomit" type="Node" parent="ramses_left/r3_l_statemachine"]
+script = ExtResource("5_stn0x")
+
+[node name="vomit_timer" type="Timer" parent="ramses_left/r3_l_statemachine/phase_vomit"]
+wait_time = 0.5
+
+[node name="ramses_right" parent="." instance=ExtResource("2_482hd")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -9, 2.6, -18)
+_max_health = 90.0
+
+[node name="r3_r_statemachine" type="Node" parent="ramses_right" node_paths=PackedStringArray("phase_2_state")]
+script = ExtResource("4_k6i0b")
+phase_2_state = NodePath("phase_sweep")
+
+[node name="phase_sweep" type="Node" parent="ramses_right/r3_r_statemachine"]
+script = ExtResource("7_dc2sc")
+
+[node name="laser_cooldown" type="Timer" parent="ramses_right/r3_r_statemachine/phase_sweep"]
+one_shot = true
+
+[node name="laser_sustain" type="Timer" parent="ramses_right/r3_r_statemachine/phase_sweep"]
+wait_time = 2.7
+one_shot = true
+
+[node name="ramses_anims" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_q22kh")
+}
+
+[node name="state_timer_of_some_kind" type="Timer" parent="."]
+wait_time = 14.0
+
+[node name="laser_idle" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("8_brxuu")
+unit_size = 20.0
+
+[connection signal="enter_phase_two" from="ramses_left" to="ramses_left/r3_l_statemachine" method="_enter_phase_two"]
+[connection signal="hand_dead" from="ramses_left" to="." method="_on_ramses_left_hand_dead"]
+[connection signal="update_hand_health" from="ramses_left" to="." method="_left_update_hand_health"]
+[connection signal="timeout" from="ramses_left/r3_l_statemachine/phase_vomit/vomit_timer" to="ramses_left/r3_l_statemachine/phase_vomit" method="_on_vomit_timer_timeout"]
+[connection signal="enter_phase_two" from="ramses_right" to="ramses_right/r3_r_statemachine" method="_enter_phase_two"]
+[connection signal="hand_dead" from="ramses_right" to="." method="_on_ramses_right_hand_dead"]
+[connection signal="update_hand_health" from="ramses_right" to="." method="_right_update_hand_health"]
+[connection signal="timeout" from="ramses_right/r3_r_statemachine/phase_sweep/laser_cooldown" to="ramses_right/r3_r_statemachine/phase_sweep" method="_on_laser_cooldown_timeout"]
+[connection signal="timeout" from="ramses_right/r3_r_statemachine/phase_sweep/laser_sustain" to="ramses_right/r3_r_statemachine/phase_sweep" method="_on_laser_sustain_timeout"]
+[connection signal="animation_finished" from="ramses_anims" to="." method="_on_ramses_anims_animation_finished"]
+[connection signal="animation_finished" from="ramses_anims" to="ramses_right/r3_r_statemachine/phase_sweep" method="_on_ramses_anims_animation_finished"]
+[connection signal="current_animation_changed" from="ramses_anims" to="." method="_on_ramses_anims_current_animation_changed"]
+[connection signal="timeout" from="state_timer_of_some_kind" to="." method="_on_state_timer_of_some_kind_timeout"]

@@ -72,6 +72,7 @@ Bullet=""
 "Cerberus Manager"=""
 "Upgrade Scene"=""
 "Tri Points"=""
+Handsy=""
 
 [importer_defaults]
 
@@ -122,6 +123,7 @@ reset={
 3d_physics/layer_6="boss_body"
 3d_physics/layer_7="gem_col"
 3d_physics/layer_8="cursor detectable"
+3d_physics/layer_9="ramses"
 
 [physics]
 

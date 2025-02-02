@@ -212,9 +212,8 @@ _data = {
 "RESET": SubResource("Animation_blwh2")
 }
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7p12d"]
-radius = 1.5
-height = 20.0
+[sub_resource type="BoxShape3D" id="BoxShape3D_dtend"]
+size = Vector3(3, 53, 14.2)
 
 [node name="laser_beam" type="Node3D"]
 script = ExtResource("1_rve87")
@@ -265,6 +264,6 @@ collision_mask = 16
 monitoring = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="death_area"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 9.7)
-shape = SubResource("CapsuleShape3D_7p12d")
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -3.1, 26.7)
+shape = SubResource("BoxShape3D_dtend")
 disabled = true

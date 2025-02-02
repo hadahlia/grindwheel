@@ -45,23 +45,32 @@ var total_health : float
 var max_health : float = 100
 
 func _ready():
-	max_health = cer_1._max_health
-	total_health = max_health
+	#max_health = cer_1._max_health
+	
 	
 	crbanim.play("intro sequence")
+	get_tree().create_timer(2.0).timeout.connect(func()->void:
+		max_health_calc()
+		#calculate_total_health()
+		#update_health.emit(total_health, max_health)
+		#total_health = max_health
+	)
+	
 	#max_health_calc(cer_1._max_health)
 	#update_health.emit(total_health, max_health)
 	#total_health = max_health
 
-func max_health_calc(max_h: float):
+func max_health_calc():
 	#if !tr_hp_1 or !tr_hp_2 or !tr_hp_3: return
 	#var tmp_health : float = 0
 	##for i in 3:
 	#tmp_health = max_health * 3
 	#for w in wheel_holder.get_children():
 		#tmp_health += w._max_health
-	max_health = max_h * 3
-	total_health = max_health
+	max_health = cer_1._max_health + cer_2._max_health + cer_3._max_health
+	#max_health = max_h * 3
+	#total_health = max_health
+	#calculate_total_health()
 
 #func _physics_process(delta):
 	#if !Globals.can_move: return
@@ -148,7 +157,7 @@ func _on_cer_3_update_serb_health(hp: float, _max_hp: float) -> void:
 	if !tr_hp_3:
 		#cer_hp_two_max = max_hp
 		tr_hp_3 = true
-		max_health_calc(_max_hp)
+		max_health_calc()
 	cer_hp_three = hp
 	calculate_total_health()
 
