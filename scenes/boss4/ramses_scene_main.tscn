@@ -63,35 +63,6 @@ tracks/3/keys = {
 "values": [Vector3(0, -1.5708, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_q4nhb"]
-resource_name = "ramses intro"
-length = 4.0
-step = 0.25
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ramses_anim_point_r:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 1.5, 2.5, 3.75, 4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(-9, 2, -10), Vector3(-25, 3.5, -10), Vector3(-15, 13, -10), Vector3(-3, 17.3333, -10), Vector3(-9, -2, -10), Vector3(-9, 0, -10)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("ramses_anim_point_l:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5, 1.5, 2.5, 3.75, 4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(9, 2, -10), Vector3(29.5, 2, -10), Vector3(16, 14, -10), Vector3(0.666666, 5, -10), Vector3(9, -2, -10), Vector3(9, 0, -10)]
-}
-
 [sub_resource type="Animation" id="Animation_t7pb8"]
 resource_name = "clap"
 length = 4.0
@@ -150,33 +121,33 @@ tracks/1/keys = {
 "values": [Vector3(25, 2, 2), Vector3(25, 2, 2), Vector3(43, 2, 2), Vector3(43, 2, 2), Vector3(-43, 2, 2), Vector3(-43, 2, 2), Vector3(-18, 2, -17), Vector3(-18, 2, -17), Vector3(-18, 2, 16), Vector3(-18, 2, 16), Vector3(-10, 2, -8), Vector3(-10, 2, -8), Vector3(27, 2, -33), Vector3(24, 2, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_eu7aw"]
-resource_name = "sweep_right"
-length = 5.0
+[sub_resource type="Animation" id="Animation_q4nhb"]
+resource_name = "ramses intro"
+length = 4.0
 step = 0.25
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("ramses_anim_point_l:position")
+tracks/0/path = NodePath("ramses_anim_point_r:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 2.5, 5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.5, 1.5, 2.5, 3.75, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(-47, 2, -12), Vector3(-41, 2, -27), Vector3(-0.555553, 2, -27), Vector3(41, 2, -27)]
+"values": [Vector3(-9, 2, -10), Vector3(-25, 3.5, -10), Vector3(-15, 13, -10), Vector3(-3, 17.3333, -10), Vector3(-9, -2, -10), Vector3(-9, 0, -10)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("ramses_anim_point_r:position")
+tracks/1/path = NodePath("ramses_anim_point_l:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5, 2.5, 5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.5, 1.5, 2.5, 3.75, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(-47, 2, -12), Vector3(-41, 2, -27), Vector3(-0.555553, 2, -27), Vector3(41, 2, -27)]
+"values": [Vector3(9, 2, -10), Vector3(29.5, 2, -10), Vector3(16, 14, -10), Vector3(0.666666, 5, -10), Vector3(9, -2, -10), Vector3(9, 0, -10)]
 }
 
 [sub_resource type="Animation" id="Animation_4sar2"]
@@ -232,6 +203,35 @@ tracks/3/keys = {
 "values": [Vector3(1.5708, -1.5708, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_eu7aw"]
+resource_name = "sweep_right"
+length = 5.0
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ramses_anim_point_l:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-47, 2, -12), Vector3(-41, 2, -27), Vector3(-0.555553, 2, -27), Vector3(41, 2, -27)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ramses_anim_point_r:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-47, 2, -12), Vector3(-41, 2, -27), Vector3(-0.555553, 2, -27), Vector3(41, 2, -27)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_q22kh"]
 _data = {
 "RESET": SubResource("Animation_vlmya"),
@@ -265,7 +265,7 @@ material = SubResource("StandardMaterial3D_dtb7s")
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -4, -2)
 
 [node name="ramses_left" parent="." instance=ExtResource("2_4q7wv")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 8, 2.8, -18)
+transform = Transform3D(-3.61999e-06, 0, -1, 0, 1, 0, 1, 0, -3.61999e-06, 8, 2.8, -18)
 _max_health = 90.0
 
 [node name="r3_l_statemachine" type="Node" parent="ramses_left" node_paths=PackedStringArray("phase_2_state")]
@@ -279,7 +279,7 @@ script = ExtResource("5_stn0x")
 wait_time = 0.5
 
 [node name="ramses_right" parent="." instance=ExtResource("2_482hd")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -9, 2.6, -18)
+transform = Transform3D(-3.61999e-06, 0, -1, 0, 1, 0, 1, 0, -3.61999e-06, -9, 2.6, -18)
 _max_health = 90.0
 
 [node name="r3_r_statemachine" type="Node" parent="ramses_right" node_paths=PackedStringArray("phase_2_state")]

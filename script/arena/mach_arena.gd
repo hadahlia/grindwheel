@@ -287,7 +287,7 @@ func spawn_hole(was_health_chosen: bool):
 		hc.trans_level.connect(_on_trans_level)
 		hc.global_position = hole_spot.global_position
 		true_arena.add_child(hc)
-	if Globals.RoundCount % 4 == 0:
+	if (Globals.RoundCount + 1) % 5 == 0:
 		heaven_hole()
 
 #@TODO ending handling
